@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import { SupabaseProvider } from './providers/SupabaseProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -13,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Workspace',
-  description: 'Workspace in Next.js',
+  title: 'E-commerce App',
+  description: 'Aplicación de e-commerce con Next.js, TypeScript y Supabase',
   icons: {
     icon: '/favicon.ico',
   },
@@ -26,8 +27,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+    <html lang="es">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <SupabaseProvider>{children}</SupabaseProvider>
+      </body>
     </html>
   );
 }
