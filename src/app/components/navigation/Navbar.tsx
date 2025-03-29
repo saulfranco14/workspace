@@ -23,12 +23,11 @@ export default function Navbar() {
           />
         </Link>
       </Logo>
-      <Nav>
-        <NavLink href="/about">About</NavLink>
-        <NavLink href="/features">Features</NavLink>
-        <NavLink href="/pricing">Pricing</NavLink>
+      <Nav> 
         <NavLink href="/plantas">Plantas</NavLink>
+        <NavLink href="/accesorios">Accesorios</NavLink>
         <NavLink href="/favoritos">Favoritos</NavLink>
+        <NavLink href="/ofertas">Ofertas</NavLink>
       </Nav>
       <CartIcon>
         <Image 

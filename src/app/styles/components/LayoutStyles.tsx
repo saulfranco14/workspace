@@ -5,8 +5,12 @@ export const PageContainer = styled.div`
   min-height: 100vh;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  background-color: #f5f5f5;
+  background-color: white;
+  
+  @media (max-width: 768px) {
+    padding: 0;
+    background-color: #f5f5f5;
+  }
 `;
 
 export const ContentContainer = styled.div`
@@ -14,18 +18,22 @@ export const ContentContainer = styled.div`
   width: 100%;
   max-width: 1200px;
   background-color: white;
-  border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   
   @media (max-width: 768px) {
     flex-direction: column;
+    margin: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   }
 `;
 
 export const FormSection = styled.div`
   flex: 1;
   padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   
   @media (max-width: 768px) {
     padding: 2rem 1.5rem;
@@ -38,9 +46,12 @@ export const ImageSection = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f9f9f9;
+  height: 70vh;
   
   @media (max-width: 768px) {
-    display: none;
+    height: auto;
+    max-height: 350px;
+    min-height: 300px;
+    order: -1;
   }
 `; 

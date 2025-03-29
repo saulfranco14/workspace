@@ -19,6 +19,7 @@ import {
   FormContainer,
   FormTitle,
   FormLink,
+  FormFooter
 } from '@/app/styles/components/FormStyles';
 import { AlertMessage } from '@/app/styles/components/AlertStyle';
 import { InputGroup, InputLabel, TextInput, ErrorMessage } from '@/app/styles/components/InputStyle';
@@ -61,6 +62,7 @@ export default function RegisterForm() {
 
   return (
     <FormContainer>
+      <InputLabel>Correo electrónico</InputLabel>
       
       {error && (
         <AlertMessage type="error">
@@ -76,25 +78,26 @@ export default function RegisterForm() {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputGroup>
-          <InputLabel htmlFor="email">Correo electrónico</InputLabel>
           <TextInput
             id="email"
             type="email"
             placeholder="Escribe tu correo electrónico"
             {...register('email')}
             disabled={loading || success}
+            className={errors.email ? 'error' : ''}
           />
           {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
         </InputGroup>
 
         <InputGroup>
-          <InputLabel htmlFor="password">Contraseña</InputLabel>
+          <InputLabel>Contraseña</InputLabel>
           <TextInput
             id="password"
             type="password"
             placeholder="Escribe tu contraseña"
             {...register('password')}
             disabled={loading || success}
+            className={errors.password ? 'error' : ''}
           />
           {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
         </InputGroup>
@@ -102,6 +105,10 @@ export default function RegisterForm() {
         <SubmitButton type="submit" disabled={loading || success}>
           {loading ? 'Creando cuenta...' : 'Crear mi cuenta gratis'}
         </SubmitButton>
+        
+        <FormFooter>
+          Al registrarte en esta página, aceptas nuestra Política de privacidad y Condiciones de servicio.
+        </FormFooter>
       </form>
 
       <FormLink>

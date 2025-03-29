@@ -25,8 +25,7 @@ export default function RegisterPage() {
           <Image 
             src="/register/ilustration.svg" 
             alt="Planta decorativa" 
-            layout="fill" 
-            objectFit="cover" 
+            fill
             priority 
           />
         </ImageSection>

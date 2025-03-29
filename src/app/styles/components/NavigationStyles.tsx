@@ -3,12 +3,14 @@ import styled from 'styled-components';
 export const NavSection = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  align-items: center;
+  padding: 1.5rem;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10;
+  background-color: transparent;
 `;
 
 export const Logo = styled.div`
@@ -18,16 +20,21 @@ export const Logo = styled.div`
 
 export const Nav = styled.nav`
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const NavLink = styled.a`
   text-decoration: none;
   color: #333;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  font-weight: 500;
   
   &:hover {
-    color: #1E8E3E;
+    color: #007537;
   }
 `;
 
