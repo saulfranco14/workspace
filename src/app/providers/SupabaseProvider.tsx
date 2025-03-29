@@ -3,8 +3,9 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 
-import { supabase, getSession } from '@/app/config/client';
 import { SupabaseContextType } from '@/app/types/provider.type';
+import { getSession } from '@/app/services';
+import { supabase } from '@/app/config/supabaseClient';
 
 const defaultContextValue: SupabaseContextType = {
   user: null,

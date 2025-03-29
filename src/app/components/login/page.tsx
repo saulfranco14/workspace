@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { signIn, signInWithProvider } from '@/app/auth/auth';
+import { signIn } from '@/app/auth/auth';
 import { useSupabase } from '@/app/providers/SupabaseProvider';
 
-export default function LoginPage() {
+function LoginContent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,9 +33,9 @@ export default function LoginPage() {
       if (data.session) {
         router.push(redirectUrl);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error al iniciar sesión:', error);
-      setErrorMessage(error.message || 'Error al iniciar sesión');
+      setErrorMessage(error instanceof Error ? error.message : 'Error al iniciar sesión');
     } finally {
       setLoading(false);
     }
@@ -139,5 +139,17 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex min-h-screen flex-col items-center justify-center">
+        <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }

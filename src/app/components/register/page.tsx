@@ -38,9 +38,9 @@ export default function RegisterPage() {
           router.push('/');
         }, 3000);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error al registrarse:', error);
-      setErrorMessage(error.message || 'Error al registrarse');
+      setErrorMessage(error instanceof Error ? error.message : 'Error al registrarse');
     } finally {
       setLoading(false);
     }
