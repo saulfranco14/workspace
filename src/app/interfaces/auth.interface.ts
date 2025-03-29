@@ -9,3 +9,10 @@ export interface SignInCredentials {
   email: string;
   password: string;
 }
+
+export interface AuthState {
+  user: any | null;
+  loading: boolean;
+  error: string | null;
+  success: boolean;
+}
