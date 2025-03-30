@@ -6,8 +6,12 @@ export default function NotFound() {
       <div className="max-w-md">
         <h1 className="text-4xl font-bold mb-4">404 - Página no encontrada</h1>
         <p className="mb-6">Lo sentimos, la página que estás buscando no existe o ha sido movida.</p>
-        <Link href="/" className="px-4 py-2 bg-black text-white hover:bg-gray-800 transition-colors rounded-md">
-          Volver al inicio
+        <Link
+          href="/"
+          className="mt-3 block w-full rounded-md bg-default px-3 py-2 text-center text-sm font-semibold text-white"
+          role="button"
+        >
+          Volver a la página de inicio
         </Link>
       </div>
     </div>

@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
     } = await supabase.auth.getSession();
 
     if (!session) {
-      const redirectUrl = new URL('/auth/login', req.url);
+      const redirectUrl = new URL('/login', req.url);
       redirectUrl.searchParams.set('redirect', req.nextUrl.pathname);
       return NextResponse.redirect(redirectUrl);
     }
@@ -27,5 +27,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/profile/:path*', '/checkout/:path*', '/favorites/:path*', '/auth/:path*'],
+  matcher: ['/profile/:path*', '/checkout/:path*', '/favorites/:path*', '/login', '/registrarse'],
 };

@@ -1,23 +1,14 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { SupabaseProvider } from './providers/SupabaseProvider';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+import StoreProvider from './providers/StoreProvider';
+import { AuthProvider } from './contexts/AuthContext';
 
 export const metadata: Metadata = {
   title: 'E-commerce App',
   description: 'Aplicación de e-commerce con Next.js, TypeScript y Supabase',
   icons: {
-    icon: '/favicon.ico',
+    icon: '/logo.svg',
   },
 };
 
@@ -28,8 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <SupabaseProvider>{children}</SupabaseProvider>
+      <body>
+        <StoreProvider>
+          <SupabaseProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </SupabaseProvider>
+        </StoreProvider>
       </body>
     </html>
   );

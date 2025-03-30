@@ -40,7 +40,7 @@ function AuthErrorContent() {
 
           <Link
             href="/"
-            className="mt-3 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-center text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50"
+            className="mt-3 block w-full rounded-md bg-default px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-gray-50"
           >
             Volver a la página de inicio
           </Link>
@@ -56,11 +56,13 @@ function AuthErrorContent() {
 
 export default function AuthErrorPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen flex-col items-center justify-center">
-        <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen flex-col items-center justify-center">
+          <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
+        </div>
+      }
+    >
       <AuthErrorContent />
     </Suspense>
   );

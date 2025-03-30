@@ -1,10 +1,10 @@
-import { AuthError, AuthResponse } from '@supabase/supabase-js';
+import { AuthError, AuthResponse as SupabaseAuthResponse } from '@supabase/supabase-js';
 import { SignInCredentials, SignUpCredentials } from '@/app/interfaces/auth.interface';
 import { supabase } from '@/app/config/supabaseClient';
 
 export async function signUp({ email, password, firstName, lastName }: SignUpCredentials) {
   try {
-    const response: AuthResponse = await supabase.auth.signUp({
+    const response: SupabaseAuthResponse = await supabase.auth.signUp({
       email,
       password,
       options: {
