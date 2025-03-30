@@ -5,7 +5,7 @@ export default function useAuthRedirect(
   success: boolean,
   router: ReturnType<typeof useRouter>,
   redirectPath: string = '/',
-  delay: number = 3000
+  delay: number = 2000
 ) {
   useEffect(() => {
     if (success) {
