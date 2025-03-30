@@ -1,5 +1,6 @@
 import { supabase } from '@/app/config/supabaseClient';
 import { RegisterFormData, LoginFormData } from '@/app/validations/authValidation';
+import { AuthResponse, LogoutResponse } from '@/app/interfaces/auth.interface';
 
 export const getSession = async () => {
   const {
@@ -20,7 +21,7 @@ export const getCurrentUser = async () => {
   return session?.user || null;
 };
 
-export const registerUser = async (userData: RegisterFormData) => {
+export const registerUser = async (userData: RegisterFormData): Promise<AuthResponse> => {
   const { email, password } = userData;
 
   try {
@@ -42,7 +43,7 @@ export const registerUser = async (userData: RegisterFormData) => {
   }
 };
 
-export const loginUser = async (userData: LoginFormData) => {
+export const loginUser = async (userData: LoginFormData): Promise<AuthResponse> => {
   const { email, password } = userData;
 
   try {
@@ -64,7 +65,7 @@ export const loginUser = async (userData: LoginFormData) => {
   }
 };
 
-export const logoutUser = async () => {
+export const logoutUser = async (): Promise<LogoutResponse> => {
   try {
     const { error } = await supabase.auth.signOut();
 

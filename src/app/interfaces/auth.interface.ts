@@ -1,33 +1,32 @@
-import { Session } from '@supabase/supabase-js';
-import { RegisterFormData } from '../validations/authValidation';
-import { LoginFormData } from '../validations/authValidation';
+import { Session, User } from '@supabase/supabase-js';
+import { RegisterFormData, LoginFormData } from '../validations/authValidation';
 
-export interface SignUpCredentials {
+export interface BaseCredentials {
   email: string;
   password: string;
+}
+
+export interface SignUpCredentials extends BaseCredentials {
   firstName?: string;
   lastName?: string;
 }
 
-export interface SignInCredentials {
-  email: string;
-  password: string;
-}
+export type SignInCredentials = BaseCredentials;
 
-export interface AuthState {
-  user: any | null;
+interface BaseAuthState {
   loading: boolean;
   error: string | null;
   success: boolean;
+}
+
+export interface AuthState extends BaseAuthState {
+  user: User | null;
   session: Session | null;
   isAuthenticated?: boolean;
 }
 
-export interface AuthContextType {
-  user: any | null;
-  loading: boolean;
-  error: string | null;
-  success: boolean;
+export interface AuthContextType extends BaseAuthState {
+  user: User | null;
   isAuthenticated: boolean;
   logout: () => Promise<void>;
   resetAuth: () => void;
@@ -41,3 +40,19 @@ export interface FormFieldsProps<T> {
 
 export type LoginFormFieldsProps = FormFieldsProps<LoginFormData>;
 export type RegisterFormFieldsProps = FormFieldsProps<RegisterFormData>;
+
+interface BaseResponse {
+  success: boolean;
+  error?: string | null;
+}
+
+export interface AuthData {
+  user: User | null;
+  session: Session | null;
+}
+
+export interface AuthResponse extends BaseResponse {
+  data?: AuthData | null;
+}
+
+export type LogoutResponse = BaseResponse;

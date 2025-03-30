@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function useAuthRedirect(
   success: boolean,
-  router: any,
+  router: ReturnType<typeof useRouter>,
   redirectPath: string = '/',
   delay: number = 3000
 ) {

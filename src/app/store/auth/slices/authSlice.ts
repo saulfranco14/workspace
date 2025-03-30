@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AuthState } from '@/app/interfaces/auth.interface';
+import { AuthState, AuthData } from '@/app/interfaces/auth.interface';
 import { registerUserThunk, loginUserThunk, logoutUserThunk } from '@/app/store/auth/thunk/authThunk';
+import { User } from '@supabase/supabase-js';
 
 const initialState: AuthState = {
   user: null,
@@ -25,7 +26,7 @@ const authSlice = createSlice({
       state.error = null;
       state.loading = false;
     },
-    setUser: (state, action: PayloadAction<any>) => {
+    setUser: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
       state.isAuthenticated = !!action.payload;
     },
@@ -36,9 +37,9 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(registerUserThunk.fulfilled, (state, action: PayloadAction<any>) => {
+      .addCase(registerUserThunk.fulfilled, (state, action: PayloadAction<AuthData | null | undefined>) => {
         state.loading = false;
-        state.user = action.payload.user;
+        state.user = action.payload?.user || null;
         state.success = true;
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
@@ -49,9 +50,9 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginUserThunk.fulfilled, (state, action: PayloadAction<any>) => {
+      .addCase(loginUserThunk.fulfilled, (state, action: PayloadAction<AuthData | null | undefined>) => {
         state.loading = false;
-        state.user = action.payload.user;
+        state.user = action.payload?.user || null;
         state.success = true;
       })
       .addCase(loginUserThunk.rejected, (state, action) => {
