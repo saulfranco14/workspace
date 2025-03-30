@@ -1,5 +1,5 @@
 import { supabase } from '@/app/config/supabaseClient';
-import { RegisterFormData } from '@/app/validations/authValidation';
+import { RegisterFormData, LoginFormData } from '@/app/validations/authValidation';
 
 export const getSession = async () => {
   const {
@@ -39,5 +39,44 @@ export const registerUser = async (userData: RegisterFormData) => {
       return { error: error.message, success: false };
     }
     return { error: 'Error desconocido durante el registro', success: false };
+  }
+};
+
+export const loginUser = async (userData: LoginFormData) => {
+  const { email, password } = userData;
+
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return { data, success: true };
+  } catch (error) {
+    if (error instanceof Error) {
+      return { error: error.message, success: false };
+    }
+    return { error: 'Error desconocido durante el inicio de sesión', success: false };
+  }
+};
+
+export const logoutUser = async () => {
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return { success: true };
+  } catch (error) {
+    if (error instanceof Error) {
+      return { error: error.message, success: false };
+    }
+    return { error: 'Error desconocido al cerrar sesión', success: false };
   }
 };

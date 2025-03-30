@@ -4,13 +4,20 @@ export const NavSection = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem;
+  padding: 1rem;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10;
   background-color: transparent;
+  margin: 0;
+  width: 100%;
+  
+  @media (max-width: 768px) {
+    position: relative;
+    padding: 1rem;
+  }
 `;
 
 export const Logo = styled.div`

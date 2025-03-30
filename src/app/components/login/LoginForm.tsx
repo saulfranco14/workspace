@@ -5,16 +5,18 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RegisterFormData } from '@/app/validations/authValidation';
+import { LoginFormData } from '@/app/validations/authValidation';
 import { resetAuthState } from '@/app/store/auth/slices/authSlice';
 import { selectAuthLoading, selectAuthError, selectAuthSuccess } from '@/app/selectors/authSelectors';
 import { AppDispatch } from '@/app/store/store';
-import { registerUserThunk } from '@/app/store/auth/thunk/authThunk';
+import { loginUserThunk } from '@/app/store/auth/thunk/authThunk';
 import { FormContainer, FormTitle, FormLink } from '@/app/styles/components/FormStyles';
+
+import AuthFormStatus from '@/app/components/shared/FormStatus';
 import useAuthRedirect from '@/app/hooks/useAuthRedirect';
-import AuthFormStatus from '../shared/FormStatus';
-import RegisterFormFields from '@/app/components/register/RegisterFormFields';
-export default function RegisterForm() {
+import LoginFormFields from '@/app/components/login/LoginFormFields';
+
+export default function LoginForm() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
@@ -28,20 +30,24 @@ export default function RegisterForm() {
 
   useAuthRedirect(success, router);
 
-  const onSubmit = (data: RegisterFormData) => {
-    dispatch(registerUserThunk(data));
+  const onSubmit = (data: LoginFormData) => {
+    dispatch(loginUserThunk(data));
   };
 
   return (
     <FormContainer>
-      <FormTitle>Registrarte</FormTitle>
+      <FormTitle>Iniciar Sesión</FormTitle>
 
-      <AuthFormStatus error={error} success={success} successMessage="Registro exitoso. Serás redirigido en breve." />
+      <AuthFormStatus
+        error={error}
+        success={success}
+        successMessage="Inicio de sesión exitoso. Serás redirigido en breve."
+      />
 
-      <RegisterFormFields onSubmit={onSubmit} loading={loading} success={success} />
+      <LoginFormFields onSubmit={onSubmit} loading={loading} success={success} />
 
       <FormLink>
-        ¿Ya tienes una cuenta? <Link href="/login">Iniciar Sesión</Link>
+        ¿No tienes una cuenta? <Link href="/registrarse">Regístrate</Link>
       </FormLink>
     </FormContainer>
   );

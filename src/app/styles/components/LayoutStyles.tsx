@@ -6,10 +6,11 @@ export const PageContainer = styled.div`
   align-items: center;
   justify-content: center;
   background-color: white;
-  
+  flex-direction: column;
+
   @media (max-width: 768px) {
     padding: 0;
-    background-color: #f5f5f5;
+    justify-content: flex-start;
   }
 `;
 
@@ -19,12 +20,11 @@ export const ContentContainer = styled.div`
   max-width: 1200px;
   background-color: white;
   overflow: hidden;
-  
+
   @media (max-width: 768px) {
     flex-direction: column;
-    margin: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin: 0;
+    padding: 0;
   }
 `;
 
@@ -34,7 +34,7 @@ export const FormSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
+
   @media (max-width: 768px) {
     padding: 2rem 1.5rem;
   }
@@ -47,11 +47,11 @@ export const ImageSection = styled.div`
   justify-content: center;
   align-items: center;
   height: 70vh;
-  
+
   @media (max-width: 768px) {
     height: auto;
     max-height: 350px;
     min-height: 300px;
     order: -1;
   }
-`; 
+`;

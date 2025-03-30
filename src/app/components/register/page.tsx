@@ -1,35 +1,29 @@
 'use client';
 
-import Image from 'next/image';
-
 import RegisterForm from './RegisterForm';
 import Navbar from '../navigation/Navbar';
-import {
-  PageContainer,
-  ContentContainer,
-  FormSection,
-  ImageSection
-} from '@/app/styles';
+import { ContentContainer, FormSection, ImageSection } from '@/app/styles';
+import Image from 'next/image';
+import MainContainer from '../shared/MainContainer';
 
 export default function RegisterPage() {
   return (
-    <PageContainer>
+    <MainContainer>
+      <Navbar />
       <ContentContainer>
-        <Navbar />
-
         <FormSection>
           <RegisterForm />
         </FormSection>
-
         <ImageSection>
-          <Image 
-            src="/register/ilustration.svg" 
-            alt="Planta decorativa" 
+          <Image
+            src="/register/plant_2.jpg"
+            alt="Planta decorativa"
+            priority
             fill
-            priority 
+            className="object-cover lg:rounded-3xl"
           />
         </ImageSection>
       </ContentContainer>
-    </PageContainer>
+    </MainContainer>
   );
 }
