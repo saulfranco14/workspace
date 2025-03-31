@@ -1,16 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AuthState, AuthData } from '@/app/interfaces/auth.interface';
+import { AuthData } from '@/app/interfaces/auth.interface';
 import { registerUserThunk, loginUserThunk, logoutUserThunk } from '@/app/store/auth/thunk/authThunk';
 import { User } from '@supabase/supabase-js';
-
-const initialState: AuthState = {
-  user: null,
-  loading: false,
-  error: null,
-  success: false,
-  session: null,
-};
+import { initialState } from '@/app/store/auth/initialState';
 
 const authSlice = createSlice({
   name: 'auth',
