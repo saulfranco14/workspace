@@ -42,16 +42,8 @@ const SearchResults = () => {
     );
   }
 
-  // Si no hay búsqueda ni categoría seleccionada, no mostrar nada
-  if (!searchTerm && !selectedCategory) {
-    return null;
-  }
-
-  // Si hay una categoría seleccionada pero no hay búsqueda activa,
-  // la interfaz de usuario muestra los productos filtrados en otra parte
-  if (!searchTerm && selectedCategory) {
-    return null;
-  }
+  if (!searchTerm && !selectedCategory) return null;
+  if (!searchTerm && selectedCategory) return null;
 
   if (filteredProducts.length === 0) {
     return (

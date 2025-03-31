@@ -3,6 +3,8 @@ import './globals.css';
 import { SupabaseProvider } from './providers/SupabaseProvider';
 import StoreProvider from './providers/StoreProvider';
 import { AuthProvider } from './contexts/AuthContext';
+import CartDrawer from './components/cart/CartDrawer';
+import Header from './components/layout/Header';
 
 export const metadata: Metadata = {
   title: 'E-commerce App',
@@ -22,7 +24,11 @@ export default function RootLayout({
       <body>
         <StoreProvider>
           <SupabaseProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              <Header />
+              {children}
+              <CartDrawer />
+            </AuthProvider>
           </SupabaseProvider>
         </StoreProvider>
       </body>
