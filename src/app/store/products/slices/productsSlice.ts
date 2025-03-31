@@ -17,9 +17,16 @@ const productsSlice = createSlice({
       state.selectedCategory = action.payload;
 
       if (action.payload === null) {
-        state.filteredProducts = state.products;
+        if (state.searchTerm) {
+        } else {
+          state.filteredProducts = state.products;
+        }
       } else {
-        state.filteredProducts = state.products.filter((product) => product.category_id === action.payload);
+        if (state.searchTerm) {
+          state.filteredProducts = state.filteredProducts.filter((product) => product.category_id === action.payload);
+        } else {
+          state.filteredProducts = state.products.filter((product) => product.category_id === action.payload);
+        }
       }
     },
     setSearchTerm(state, action: PayloadAction<string>) {
@@ -107,11 +114,22 @@ const productsSlice = createSlice({
 
       .addCase(searchProductsThunk.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(searchProductsThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.filteredProducts = action.payload || [];
         state.error = null;
+
+        if (action.meta.arg) {
+          state.searchTerm = action.meta.arg;
+        }
+
+        if (state.selectedCategory) {
+          state.filteredProducts = state.filteredProducts.filter(
+            (product) => product.category_id === state.selectedCategory
+          );
+        }
       })
       .addCase(searchProductsThunk.rejected, (state, action) => {
         state.loading = false;

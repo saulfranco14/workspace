@@ -52,3 +52,40 @@ export interface ProductsState {
   loading: boolean;
   error: string | null;
 }
+
+interface BaseSectionProps {
+  selectedCategory: string | null;
+  selectedCategoryType: 'plant' | 'accessory' | 'kit' | null;
+}
+
+export interface PlantCategoriesSectionProps extends BaseSectionProps {
+  categories: Category[];
+}
+
+export interface PlantProductsSectionProps extends BaseSectionProps {
+  products: Product[];
+  selectedCategoryName: string | null | undefined;
+}
+
+export interface AccessoryCategoriesSectionProps extends BaseSectionProps {
+  categories: Category[];
+}
+
+export interface CategoryAccesoryProps extends BaseSectionProps {
+  categories: Category[];
+}
+
+export interface AccessoryProductsSectionProps extends BaseSectionProps {
+  products: Product[];
+  selectedCategoryName: string | null | undefined;
+}
+
+export interface FeaturedKitSectionProps {
+  kitProduct: Product;
+  selectedCategory: string | null;
+}
+
+export interface FeaturedProductsSectionProps {
+  products: Product[];
+  selectedCategory: string | null;
+}
