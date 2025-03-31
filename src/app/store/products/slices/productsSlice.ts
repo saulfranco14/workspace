@@ -18,6 +18,7 @@ const productsSlice = createSlice({
 
       if (action.payload === null) {
         if (state.searchTerm) {
+          state.filteredProducts = state.filteredProducts.filter((product) => product.category_id === action.payload);
         } else {
           state.filteredProducts = state.products;
         }

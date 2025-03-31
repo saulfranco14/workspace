@@ -8,6 +8,7 @@ import Navbar from '../navigation/Navbar';
 import MainContainer from '../shared/MainContainer';
 import HomeContent from './HomeContent';
 import { useHomeData } from '@/app/hooks/useHome';
+import { Product } from '@/app/interfaces/product.interface';
 
 const HomePage = () => {
   const {
@@ -42,7 +43,7 @@ const HomePage = () => {
           accessoryCategories={accessoryCategories}
           filteredPlantProducts={filteredPlantProducts}
           filteredAccessoryProducts={filteredAccessoryProducts}
-          featuredKit={featuredKit}
+          featuredKit={featuredKit as Product}
           featuredProducts={featuredProducts}
           selectedCategory={selectedCategory}
           selectedCategoryType={selectedCategoryType}

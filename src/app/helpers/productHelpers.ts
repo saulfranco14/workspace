@@ -1,13 +1,15 @@
-export const filterProductsByCategory = (products: any[], categoryIds: string[]) => {
+import { Category, Product } from '../interfaces/product.interface';
+
+export const filterProductsByCategory = (products: Product[], categoryIds: string[]) => {
   if (!products.length) return [];
   return products.filter((product) => product.category_id && categoryIds.includes(product.category_id));
 };
 
 export const getCategoryType = (
   selectedCategory: string | null,
-  plantCategories: any[],
-  accessoryCategories: any[],
-  kitCategories: any[]
+  plantCategories: Category[],
+  accessoryCategories: Category[],
+  kitCategories: Category[]
 ): 'plant' | 'accessory' | 'kit' | null => {
   if (!selectedCategory) return null;
 
@@ -32,12 +34,12 @@ export const getCategoryType = (
  * @returns {Object[]} - Filtered products
  */
 export const getFilteredProductsByType = (
-  products: any[],
-  productsByType: any[],
+  products: Product[],
+  productsByType: Product[],
   selectedCategory: string | null,
   selectedCategoryType: 'plant' | 'accessory' | 'kit' | null,
   type: 'plant' | 'accessory' | 'kit'
-): any[] => {
+): Product[] => {
   if (!selectedCategory) {
     return productsByType;
   }
