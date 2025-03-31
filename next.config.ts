@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   images: {
     unoptimized: true,
-    domains: ['images.pexels.com'],
+    domains: ['images.pexels.com', 'cdn.pixabay.com'],
   },
   compiler: {
     styledComponents: true,

@@ -93,7 +93,7 @@ export const searchProducts = async (searchTerm: string): Promise<ProductsRespon
     const { data, error } = await supabase
       .from('products')
       .select('*, category:categories(name)')
-      .textSearch('name', searchTerm, { config: 'spanish' })
+      .ilike('name', `%${searchTerm}%`)
       .order('name');
 
     return { data: data as Product[], error };

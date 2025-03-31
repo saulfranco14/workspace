@@ -104,9 +104,13 @@ export const searchProductsThunk = createAsyncThunk(
   async (searchTerm: string, { rejectWithValue }) => {
     try {
       const { data, error } = await searchProducts(searchTerm);
-      if (error) throw new Error(error.message);
+      if (error) {
+        console.error('Error en la búsqueda:', error);
+        throw new Error(error.message || 'Error en la búsqueda');
+      }
       return data;
     } catch (error) {
+      console.error('Error en searchProductsThunk:', error);
       if (error instanceof Error) {
         return rejectWithValue(error.message);
       }
