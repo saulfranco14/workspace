@@ -5,9 +5,6 @@ import { Cart, CartItem } from '@/app/interfaces/cart.interface';
 export const getOrCreateCart = async (userId?: string) => {
   try {
     const fingerprint = await getFingerprint();
-    console.log('fingerprint->', fingerprint);
-    console.log('userId dentro del getOrCreateCart', userId);
-
     const query = supabase.from('carts').select('*');
 
     if (userId) {
@@ -23,10 +20,10 @@ export const getOrCreateCart = async (userId?: string) => {
 
     if (searchError) {
       console.error('Error al buscar carrito:', searchError);
+      return null;
     }
 
     if (existingCart) {
-      console.log('Carrito existente encontrado:', existingCart);
       return existingCart;
     }
 
@@ -37,8 +34,6 @@ export const getOrCreateCart = async (userId?: string) => {
       },
     ];
 
-    console.log('Creando nuevo carrito:', newCartData);
-
     const { data: newCart, error: createError } = await supabase.from('carts').insert(newCartData).select().single();
 
     if (createError) {
@@ -46,7 +41,6 @@ export const getOrCreateCart = async (userId?: string) => {
       throw createError;
     }
 
-    console.log('Nuevo carrito creado:', newCart);
     return newCart;
   } catch (error) {
     console.error('Error al obtener o crear carrito:', error);

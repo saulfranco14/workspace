@@ -6,7 +6,6 @@ export const useSingleEffect = (effect: () => void | (() => void), deps: any[] =
 
   useEffect(() => {
     if (!hasRun.current) {
-      console.log('useSingleEffect: ejecutando efecto por primera vez');
       hasRun.current = true;
       cleanup.current = effect() ?? null;
     }
@@ -15,5 +14,5 @@ export const useSingleEffect = (effect: () => void | (() => void), deps: any[] =
         cleanup.current();
       }
     };
-  }, []); // Eliminamos las dependencias para garantizar que solo se ejecute una vez
+  }, []);
 };

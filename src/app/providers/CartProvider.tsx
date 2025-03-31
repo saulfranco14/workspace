@@ -15,7 +15,6 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const { session } = useSession();
 
   useSingleEffect(() => {
-    console.log('CartProvider: Llamando a fetchCart una sola vez');
     const userId = session?.user?.id;
     // @ts-ignore - Because fetchCart expects a specifically typed argument
     dispatch(fetchCart(userId));
