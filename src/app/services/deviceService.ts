@@ -11,9 +11,15 @@ export const getFingerprint = async () => {
     throw new Error('FingerprintJS no está inicializado');
   }
 
-  const fp = await fpPromise;
-  const result = await fp.get();
+  try {
+    const fp = await fpPromise;
+    const result = await fp.get();
 
-  const fingerprint = result.visitorId;
-  return fingerprint;
+    const fingerprint = result?.visitorId ?? 'No visitorId found';
+
+    return fingerprint;
+  } catch (error) {
+    console.error('Error obteniendo fingerprint:', error);
+    return null;
+  }
 };

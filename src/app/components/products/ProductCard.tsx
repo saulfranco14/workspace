@@ -129,7 +129,7 @@ const ProductDetails = styled.div`
 
 const Price = styled.span`
   font-weight: 600;
-  color: #4caf50;
+  color: var(--primary);
   font-size: 16px;
 `;
 

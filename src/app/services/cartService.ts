@@ -3,32 +3,50 @@ import { getFingerprint } from './deviceService';
 import { Cart, CartItem } from '@/app/interfaces/cart.interface';
 
 export const getOrCreateCart = async (userId?: string) => {
-  const fingerprint = getFingerprint();
-
   try {
-    const { data: existingCart, error: searchError } = await supabase
-      .from('carts')
-      .select('*')
-      .or(userId ? `user_id.eq.${userId}` : `device_fingerprint.eq.${fingerprint}`)
-      .maybeSingle();
+    const fingerprint = await getFingerprint();
+    console.log('fingerprint->', fingerprint);
+    console.log('userId dentro del getOrCreateCart', userId);
 
-    if (searchError) throw searchError;
+    const query = supabase.from('carts').select('*');
 
-    if (existingCart) return existingCart;
+    if (userId) {
+      query.eq('user_id', userId);
+    } else if (fingerprint) {
+      query.eq('device_fingerprint', fingerprint);
+    } else {
+      console.error('No se pudo obtener userId o fingerprint');
+      return null;
+    }
 
-    const { data: newCart, error: createError } = await supabase
-      .from('carts')
-      .insert([
-        {
-          user_id: userId || null,
-          device_fingerprint: !userId ? await getFingerprint() : null,
-        },
-      ])
-      .select()
-      .single();
+    const { data: existingCart, error: searchError } = await query.maybeSingle();
 
-    if (createError) throw createError;
+    if (searchError) {
+      console.error('Error al buscar carrito:', searchError);
+    }
 
+    if (existingCart) {
+      console.log('Carrito existente encontrado:', existingCart);
+      return existingCart;
+    }
+
+    const newCartData = [
+      {
+        user_id: userId || null,
+        device_fingerprint: userId ? null : fingerprint,
+      },
+    ];
+
+    console.log('Creando nuevo carrito:', newCartData);
+
+    const { data: newCart, error: createError } = await supabase.from('carts').insert(newCartData).select().single();
+
+    if (createError) {
+      console.error('Error al crear carrito:', createError);
+      throw createError;
+    }
+
+    console.log('Nuevo carrito creado:', newCart);
     return newCart;
   } catch (error) {
     console.error('Error al obtener o crear carrito:', error);

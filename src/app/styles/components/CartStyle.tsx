@@ -6,7 +6,7 @@ export const CartStyle = {
     border: none;
     position: relative;
     font-size: 24px;
-    color: #4caf50;
+    color: var(--primary);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -40,7 +40,7 @@ export const CartStyle = {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background-color: #4caf50;
+    background-color: var(--primary);
     color: white;
     border: none;
     border-radius: 4px;
@@ -115,9 +115,9 @@ export const CartStyle = {
 
   ContinueButton: styled.button`
     padding: 12px;
-    border: 1px solid #4caf50;
+    border: 1px solid var(--primary);
     background-color: white;
-    color: #4caf50;
+    color: var(--primary);
     border-radius: 4px;
     cursor: pointer;
     font-weight: 500;
@@ -130,7 +130,7 @@ export const CartStyle = {
 
   CheckoutButton: styled.button`
     padding: 12px;
-    background-color: #4caf50;
+    background-color: var(--primary);
     color: white;
     border: none;
     border-radius: 4px;
@@ -158,7 +158,9 @@ export const CartStyle = {
     z-index: 998;
   `,
 
-  DrawerContainer: styled.div<{ isOpen: boolean }>`
+  DrawerContainer: styled.div.withConfig({
+    shouldForwardProp: (prop) => prop !== 'isOpen',
+  })<{ isOpen: boolean }>`
     position: fixed;
     top: 0;
     right: ${({ isOpen }) => (isOpen ? '0' : '-400px')};
@@ -193,7 +195,7 @@ export const CartStyle = {
     }
 
     svg {
-      color: #4caf50;
+      color: var(--primary);
     }
   `,
 
@@ -240,7 +242,7 @@ export const CartStyle = {
     }
 
     button {
-      background-color: #4caf50;
+      background-color: var(--primary);
       color: white;
       border: none;
       padding: 10px 15px;
@@ -294,7 +296,7 @@ export const CartStyle = {
 
   ItemPrice: styled.div`
     font-weight: 500;
-    color: #4caf50;
+    color: var(--primary);
     margin-bottom: 10px;
   `,
 
@@ -406,7 +408,7 @@ export const CartStyle = {
 
   ItemPriceItem: styled.div`
     font-weight: 500;
-    color: #4caf50;
+    color: var(--primary);
     margin-bottom: 5px;
   `,
 
@@ -614,7 +616,7 @@ export const CartStyle = {
 
   CheckoutButtonPage: styled.button`
     width: 100%;
-    background-color: #4caf50;
+    background-color: var(--primary);
     color: white;
     border: none;
     border-radius: 4px;
@@ -635,7 +637,7 @@ export const CartStyle = {
     align-items: center;
     justify-content: center;
     gap: 8px;
-    color: #4caf50;
+    color: var(--primary);
     font-size: 14px;
     text-decoration: none;
     width: 100%;
@@ -676,7 +678,7 @@ export const CartStyle = {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background-color: #4caf50;
+    background-color: var(--primary);
     color: white;
     padding: 12px 20px;
     border-radius: 4px;

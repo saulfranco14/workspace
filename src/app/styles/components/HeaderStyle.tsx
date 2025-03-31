@@ -26,7 +26,7 @@ export const HeaderStyle = {
   Logo: styled.div`
     font-size: 1.5rem;
     font-weight: bold;
-    color: #4caf50;
+    color: var(--primary);
   `,
 
   LogoLink: styled(Link)`
@@ -70,7 +70,7 @@ export const HeaderStyle = {
     transition: color 0.2s;
 
     &:hover {
-      color: #4caf50;
+      color: var(--primary);
     }
   `,
 
@@ -95,7 +95,7 @@ export const HeaderStyle = {
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: #f5f5f5;
+      background-color: var(--primary-dark);
     }
   `,
 
@@ -105,7 +105,7 @@ export const HeaderStyle = {
   `,
 
   LoginButton: styled.button`
-    background-color: #4caf50;
+    background-color: var(--primary);
     color: white;
     border: none;
     border-radius: 4px;
@@ -115,7 +115,7 @@ export const HeaderStyle = {
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: #388e3c;
+      background-color: var(--primary-dark);
     }
   `,
 

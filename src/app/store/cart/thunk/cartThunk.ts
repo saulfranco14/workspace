@@ -10,8 +10,12 @@ import {
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId: string | undefined) => {
+  console.count('fetchCart called');
+
   const cart = await getOrCreateCart(userId);
-  if (!cart) throw new Error('No se pudo obtener el carrito');
+
+  if (!cart) console.error('No se pudo obtener el carrito');
+  if (!cart) return null;
 
   const cartWithItems = await getCartWithItems(cart.id);
   return cartWithItems;

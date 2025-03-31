@@ -3,6 +3,7 @@ import './globals.css';
 import { SupabaseProvider } from './providers/SupabaseProvider';
 import StoreProvider from './providers/StoreProvider';
 import { AuthProvider } from './contexts/AuthContext';
+import CartProvider from './providers/CartProvider';
 import CartDrawer from './components/cart/CartDrawer';
 import Header from './components/layout/Header';
 
@@ -25,9 +26,11 @@ export default function RootLayout({
         <StoreProvider>
           <SupabaseProvider>
             <AuthProvider>
-              <Header />
-              {children}
-              <CartDrawer />
+              <CartProvider>
+                <Header />
+                {children}
+                <CartDrawer />
+              </CartProvider>
             </AuthProvider>
           </SupabaseProvider>
         </StoreProvider>

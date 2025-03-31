@@ -25,6 +25,7 @@ import {
 } from '@/app/store/products/thunk/productThunk';
 
 import { filterProductsByCategory, getCategoryType, getFilteredProductsByType } from '@/app/helpers/productHelpers';
+import { useSingleEffect } from './useSingleEffect';
 
 export const useHomeData = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,7 +41,7 @@ export const useHomeData = () => {
   const error = useSelector(selectProductsError);
   const categories = useSelector(selectCategories);
 
-  useEffect(() => {
+  useSingleEffect(() => {
     dispatch(fetchCategories());
     dispatch(fetchCategoriesByType());
     dispatch(fetchProducts());

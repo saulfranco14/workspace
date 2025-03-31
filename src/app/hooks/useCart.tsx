@@ -1,24 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useSession } from '@/app/hooks/useSession';
 import { openCart, closeCart } from '@/app/store/cart/slices/cartSlice';
 import { RootState } from '@/app/store/store';
-import { fetchCart } from '@/app/store/cart/thunk/cartThunk';
+import { addToCart, updateItemQuantity, removeFromCart, emptyCart } from '@/app/store/cart/thunk/cartThunk';
+import { useSingleEffect } from './useSingleEffect';
+import { useEffect } from 'react';
 
 export const useCart = () => {
   const dispatch = useDispatch();
   const { session } = useSession();
 
   const { cart, items, loading, error, isOpen } = useSelector((state: RootState) => state.cart);
-
-  useEffect(() => {
-    const userId = session?.user?.id;
-    // @ts-ignore - Because fetchCart expects a specifically typed argument
-    dispatch(fetchCart(userId));
-  }, [dispatch, session]);
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
