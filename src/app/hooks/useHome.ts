@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@/app/store/store';
 
@@ -26,7 +26,7 @@ import {
 
 import { filterProductsByCategory, getCategoryType, getFilteredProductsByType } from '@/app/helpers/productHelpers';
 import { useSingleEffect } from './useSingleEffect';
-
+import { Product } from '@/app/interfaces/product.interface';
 export const useHomeData = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -46,13 +46,13 @@ export const useHomeData = () => {
     dispatch(fetchCategoriesByType());
     dispatch(fetchProducts());
     dispatch(fetchFeaturedProducts());
-  }, [dispatch]);
+  });
 
   const plantProducts = useMemo(
     () =>
       filterProductsByCategory(
         products,
-        plantCategories.map((cat) => cat.id)
+        plantCategories.map((cat: { id: string }) => cat.id)
       ),
     [products, plantCategories]
   );
@@ -61,7 +61,7 @@ export const useHomeData = () => {
     () =>
       filterProductsByCategory(
         products,
-        accessoryCategories.map((cat) => cat.id)
+        accessoryCategories.map((cat: { id: string }) => cat.id)
       ),
     [products, accessoryCategories]
   );
@@ -70,12 +70,12 @@ export const useHomeData = () => {
     () =>
       filterProductsByCategory(
         products,
-        kitCategories.map((cat) => cat.id)
+        kitCategories.map((cat: { id: string }) => cat.id)
       ),
     [products, kitCategories]
   );
 
-  const featuredKit = useMemo(() => kitProducts.find((product) => product.is_featured), [kitProducts]);
+  const featuredKit = useMemo(() => kitProducts.find((product: Product) => product.is_featured), [kitProducts]);
 
   const selectedCategoryType = useMemo(
     () => getCategoryType(selectedCategory, plantCategories, accessoryCategories, kitCategories),

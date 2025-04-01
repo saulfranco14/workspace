@@ -14,5 +14,5 @@ export const useSingleEffect = (effect: () => void | (() => void)) => {
         cleanup.current();
       }
     };
-  }, []);
+  }, [effect]);
 };

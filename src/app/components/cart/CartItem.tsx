@@ -13,22 +13,23 @@ type CartItemProps = {
 const CartItem = ({ item }: CartItemProps) => {
   const { updateQuantity, removeItem } = useCart();
 
-  if (!item.product) return null;
-
-  const { id, quantity, product } = item;
-  const { name, price, image_url, stock } = product;
-
   const handleQuantityChange = useCallback(
     async (newQuantity: number) => {
-      if (newQuantity > stock || newQuantity <= 0) return;
-      await updateQuantity(id, newQuantity);
+      if (!item?.product || newQuantity > item.product.stock || newQuantity <= 0) return;
+      await updateQuantity(item.id, newQuantity);
     },
-    [id, stock, updateQuantity]
+    [item, updateQuantity]
   );
 
   const handleRemove = useCallback(async () => {
-    await removeItem(id);
-  }, [id, removeItem]);
+    if (!item) return;
+    await removeItem(item.id);
+  }, [item, removeItem]);
+
+  if (!item.product) return null;
+
+  const { quantity, product } = item;
+  const { name, price, image_url, stock } = product;
 
   return (
     <CartStyle.ItemContainer>

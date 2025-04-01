@@ -20,7 +20,7 @@ export const useCart = () => {
 
   const addProductToCart = async (productId: string, quantity: number = 1) => {
     try {
-      // @ts-ignore
+      // @ts-expect-error: TypeScript no reconoce el tipo de retorno de dispatch
       const resultAction = await dispatch(addToCart({ productId, quantity }));
 
       if (!cart?.id) {
@@ -28,7 +28,7 @@ export const useCart = () => {
       }
 
       if (resultAction.error) {
-        // @ts-ignore - Error message está disponible pero TypeScript no lo reconoce
+        // @ts-expect-error: TypeScript no reconoce el tipo de error en resultAction
         throw new Error(resultAction.error.message || 'Error al añadir al carrito');
       }
 
@@ -42,10 +42,10 @@ export const useCart = () => {
   const updateQuantity = async (itemId: string, quantity: number) => {
     try {
       if (quantity <= 0) {
-        // @ts-ignore
+        // @ts-expect-error: TypeScript no reconoce el tipo de retorno de dispatch
         await dispatch(removeFromCart(itemId));
       } else {
-        // @ts-ignore
+        // @ts-expect-error: TypeScript no reconoce el tipo de retorno de dispatch
         await dispatch(updateItemQuantity({ itemId, quantity }));
       }
     } catch (error) {
@@ -55,7 +55,7 @@ export const useCart = () => {
 
   const removeItem = async (itemId: string) => {
     try {
-      // @ts-ignore
+      // @ts-expect-error: TypeScript no reconoce el tipo de retorno de dispatch
       await dispatch(removeFromCart(itemId));
     } catch (error) {
       console.error('Error al eliminar item:', error);
@@ -64,7 +64,7 @@ export const useCart = () => {
 
   const clearCart = async () => {
     try {
-      // @ts-ignore
+      // @ts-expect-error: TypeScript no reconoce el tipo de retorno de dispatch
       await dispatch(emptyCart());
     } catch (error) {
       console.error('Error al vaciar carrito:', error);

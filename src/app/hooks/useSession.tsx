@@ -15,7 +15,6 @@ export const useSession = () => {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        // @ts-ignore
         dispatch({ type: 'auth/setSession', payload: session });
 
         const fingerprint = await getFingerprint();

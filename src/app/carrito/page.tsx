@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { FiTrash2, FiArrowLeft } from 'react-icons/fi';
 

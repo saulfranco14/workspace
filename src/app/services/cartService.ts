@@ -9,7 +9,7 @@ import {
   clearCartItems,
   getCartItems,
 } from './cart/cartItemsService';
-import { findCart, createCart, getCartById, deleteCart, updateCart } from './cart/cartDatabaseService';
+import { findCart, createCart, getCartById, deleteCart } from './cart/cartDatabaseService';
 
 export const getOrCreateCart = async (userId?: string) => {
   try {

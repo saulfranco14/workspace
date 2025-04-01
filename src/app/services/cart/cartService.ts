@@ -9,7 +9,7 @@ import {
   getCartItems,
   getCartItem,
 } from './cartItemsService';
-import { findCart, createCart, getCartById, deleteCart, updateCart } from './cartDatabaseService';
+import { findCart, createCart, getCartById, deleteCart } from './cartDatabaseService';
 
 export const getOrCreateCart = async (userId?: string) => {
   try {
@@ -120,18 +120,8 @@ export const addItemToCart = async (
 
     const existingItem = await getCartItemByProductId(cartId, productId);
 
-    console.log('--------------------------------');
-    console.log('existingItem', existingItem);
-    console.log('--------------------------------');
-
     if (existingItem) {
       const newQuantity = existingItem.quantity + quantity;
-
-      console.log('------------existingItem newQuantity  --------------------');
-      console.log('existingItem.id', existingItem.id);
-      console.log('newQuantity', newQuantity);
-      console.log('------------existingItem newQuantity  --------------------');
-
       await updateCartItemQty(existingItem.id, newQuantity);
     } else {
       await insertCartItem(cartId, productId, quantity);
