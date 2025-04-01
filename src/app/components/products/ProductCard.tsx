@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/app/interfaces/product.interface';
+import AddToCartButton from '@/app/components/cart/AddToCartButton';
+import styled from 'styled-components';
 
 interface ProductCardProps {
   product: Product;
@@ -8,9 +10,9 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <CardContainer>
       <Link href={`/products/${product.id}`}>
-        <div className="relative h-48 w-full bg-gray-100">
+        <ImageContainer>
           {product.image_url ? (
             <Image
               src={product.image_url}
@@ -21,7 +23,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               className="transition-transform hover:scale-105"
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+            <PlaceholderImage>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -41,25 +43,106 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
                 />
               </svg>
-            </div>
+            </PlaceholderImage>
           )}
-        </div>
-
-        <div className="p-4">
-          <h3 className="font-medium text-gray-900">{product.name}</h3>
-
-          {product.category?.name && <p className="text-xs text-gray-500 mt-1">{product.category.name}</p>}
-
-          <div className="mt-2 flex items-center justify-between">
-            <p className="text-emerald-600 font-medium">${product.price}</p>
-            <div className="text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">
-              {product.stock > 10 ? 'Disponible' : product.stock > 0 ? 'Pocas unidades' : 'Agotado'}
-            </div>
-          </div>
-        </div>
+        </ImageContainer>
       </Link>
-    </div>
+
+      <ContentContainer>
+        <Link href={`/products/${product.id}`}>
+          <ProductName>{product.name}</ProductName>
+
+          {product.category?.name && <CategoryName>{product.category.name}</CategoryName>}
+
+          <ProductDetails>
+            <Price>${product.price.toFixed(2)}</Price>
+            <StockBadge stock={product.stock}>
+              {product.stock > 10 ? 'Disponible' : product.stock > 0 ? 'Pocas unidades' : 'Agotado'}
+            </StockBadge>
+          </ProductDetails>
+        </Link>
+
+        <ButtonContainer>
+          <AddToCartButton productId={product.id} stock={product.stock} />
+        </ButtonContainer>
+      </ContentContainer>
+    </CardContainer>
   );
 };
+
+const CardContainer = styled.div`
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
+  height: 200px;
+  width: 100%;
+  background-color: #f9f9f9;
+`;
+
+const PlaceholderImage = styled.div`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+`;
+
+const ContentContainer = styled.div`
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ProductName = styled.h3`
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 5px 0;
+`;
+
+const CategoryName = styled.p`
+  font-size: 12px;
+  color: #777;
+  margin: 0 0 10px 0;
+`;
+
+const ProductDetails = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+`;
+
+const Price = styled.span`
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 16px;
+`;
+
+const StockBadge = styled.div<{ stock: number }>`
+  font-size: 11px;
+  border-radius: 20px;
+  padding: 3px 8px;
+  background-color: ${({ stock }) => (stock > 10 ? '#e8f5e9' : stock > 0 ? '#fff8e1' : '#ffebee')};
+  color: ${({ stock }) => (stock > 10 ? '#388e3c' : stock > 0 ? '#ff8f00' : '#d32f2f')};
+`;
+
+const ButtonContainer = styled.div`
+  margin-top: auto;
+`;
 
 export default ProductCard;

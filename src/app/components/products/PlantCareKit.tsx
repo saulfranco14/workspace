@@ -18,15 +18,6 @@ const PlantCareKit: React.FC<PlantCareKitProps> = ({ kitProduct }) => {
           <h3 className="text-xl font-medium text-gray-800 mb-2">{kitProduct.name}</h3>
           <p className="text-gray-600 mb-3 text-sm">{kitProduct.description}</p>
 
-          <p className="text-sm text-gray-600 mb-1">Incluye:</p>
-          <ul className="list-disc list-inside text-sm text-gray-600 mb-4 space-y-1">
-            <li>{kitProduct.name} seeds</li>
-            <li>Tierra enriquecida con nutrientes</li>
-            <li>Maceta de cerámica natural</li>
-            <li>Guía de cuidados detallada</li>
-            <li>Herramientas básicas</li>
-          </ul>
-
           <p className="text-emerald-600 font-medium text-lg mb-4">${kitProduct.price}</p>
 
           <Link
@@ -37,7 +28,7 @@ const PlantCareKit: React.FC<PlantCareKitProps> = ({ kitProduct }) => {
           </Link>
         </div>
 
-        <div className="md:w-1/2 relative h-[200px] md:h-auto">
+        <div className="md:w-1/2 relative h-[200px] md:h-[300px]">
           {kitProduct.image_url ? (
             <Image
               src={kitProduct.image_url}

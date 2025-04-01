@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { migrateCart } from '@/app/auth/auth';
 import { supabase } from '@/app/config/supabaseClient';
-import { getFingerprint } from '@/app/services';
+import { getFingerprint } from '@/app/services/deviceService';
+import { migrateCart } from '@/app/services/cart/cartService';
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     if (data.user) {
-      const fingerprint = getFingerprint();
+      const fingerprint = await getFingerprint();
       if (fingerprint) {
         await migrateCart(data.user.id, fingerprint);
       }

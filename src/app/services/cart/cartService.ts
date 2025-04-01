@@ -1,15 +1,15 @@
-import { getFingerprint } from './deviceService';
+import { getFingerprint } from '../deviceService';
 import { Cart, CartItem } from '@/app/interfaces/cart.interface';
 import {
   insertCartItem,
   getCartItemByProductId,
   updateCartItemQuantity as updateCartItemQty,
-  getCartItemById,
   removeCartItem as removeItem,
   clearCartItems,
   getCartItems,
-} from './cart/cartItemsService';
-import { findCart, createCart, getCartById, deleteCart } from './cart/cartDatabaseService';
+  getCartItem,
+} from './cartItemsService';
+import { findCart, createCart, getCartById, deleteCart } from './cartDatabaseService';
 
 export const getOrCreateCart = async (userId?: string) => {
   try {
@@ -20,14 +20,10 @@ export const getOrCreateCart = async (userId?: string) => {
       return null;
     }
 
-    // Buscar carrito existente
     const existingCart = await findCart(userId, fingerprint || undefined);
 
-    if (existingCart) {
-      return existingCart;
-    }
+    if (existingCart) return existingCart;
 
-    // Crear nuevo carrito
     return await createCart(userId, fingerprint || undefined);
   } catch (error) {
     console.error('Error al obtener o crear carrito:', error);
@@ -37,17 +33,14 @@ export const getOrCreateCart = async (userId?: string) => {
 
 export async function migrateCart(userId: string, fingerprint: string) {
   try {
-    // Buscar carrito anónimo
     const anonCart = await findCart(undefined, fingerprint);
     if (!anonCart) return { success: true };
 
-    // Buscar carrito de usuario
     const userCart = await findCart(userId);
 
     let targetCartId: string;
 
     if (!userCart) {
-      // Crear carrito de usuario si no existe
       const newCart = await createCart(userId);
       if (!newCart) throw new Error('Error al crear carrito de usuario');
       targetCartId = newCart.id;
@@ -55,16 +48,13 @@ export async function migrateCart(userId: string, fingerprint: string) {
       targetCartId = userCart.id;
     }
 
-    // Obtener items del carrito anónimo
     const anonItems = await getCartItems(anonCart.id);
 
     if (!anonItems?.length) {
-      // Eliminar carrito anónimo vacío
       await deleteCart(anonCart.id);
       return { success: true };
     }
 
-    // Migrar items al carrito de usuario
     const itemsToInsert = anonItems.map((item) => ({
       cart_id: targetCartId,
       product_id: item.product_id,
@@ -75,15 +65,12 @@ export async function migrateCart(userId: string, fingerprint: string) {
       const existingItem = await getCartItemByProductId(targetCartId, item.product_id);
 
       if (existingItem) {
-        // Actualizar cantidad si ya existe
         await updateCartItemQty(existingItem.id, existingItem.quantity + item.quantity);
       } else {
-        // Insertar nuevo item
         await insertCartItem(targetCartId, item.product_id, item.quantity);
       }
     }
 
-    // Eliminar carrito anónimo
     await deleteCart(anonCart.id);
 
     return { success: true };
@@ -122,22 +109,32 @@ export const addItemToCart = async (
   quantity: number = 1
 ): Promise<CartItem | null> => {
   try {
+    if (!cartId) throw new Error('Invalid cart ID');
+    if (!productId) throw new Error('Invalid product ID');
+    if (quantity <= 0) throw new Error('Quantity must be greater than 0');
+
+    const cart = await getCartById(cartId);
+    if (!cart) {
+      throw new Error('Cart does not exist');
+    }
+
     const existingItem = await getCartItemByProductId(cartId, productId);
 
     if (existingItem) {
       const newQuantity = existingItem.quantity + quantity;
-      return await updateCartItemQty(existingItem.id, newQuantity);
+      await updateCartItemQty(existingItem.id, newQuantity);
     } else {
-      const newItem = await insertCartItem(cartId, productId, quantity);
-
-      if (!newItem) {
-        throw new Error('No se pudo insertar el item en el carrito');
-      }
-
-      return await getCartItemById(newItem.id);
+      await insertCartItem(cartId, productId, quantity);
     }
+    const getItem = await getCartItem(cartId, productId);
+
+    if (!getItem) {
+      throw new Error('Could not insert product into cart');
+    }
+
+    return getItem;
   } catch (error) {
-    console.error('Error al añadir item al carrito:', error);
+    console.error('Error adding item to cart:', error);
     throw error;
   }
 };

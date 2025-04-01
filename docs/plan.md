@@ -49,7 +49,7 @@
 
 1. **Desarrollo del slice de Redux para carrito**
    - Implementar acciones para agregar, eliminar, actualizar productos
-   - Configurar persistencia con localStorage y Supabase
+   - Configurar persistencia con Redux y Supabase
 
 2. **Desarrollo de la interfaz del carrito**
    - Crear componente de carrito desplegable
