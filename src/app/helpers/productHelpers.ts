@@ -58,3 +58,19 @@ export const shouldShowSection = (
 ): boolean => {
   return !selectedCategory || selectedCategoryType === type;
 };
+
+export const formatCategory = (category: any): Category => ({
+  ...category,
+  type: 'plant' as 'plant' | 'accessory' | 'kit',
+});
+
+export const formatProduct = (product: any): Product => ({
+  ...product,
+  description: product.description || '',
+  category: product.category ? formatCategory(product.category) : undefined,
+});
+
+export const handleError = <T>(error: unknown, operation: string): { data: T | null; error: Error } => {
+  console.error(`Error al ${operation}:`, error);
+  return { data: null, error: error as Error };
+};

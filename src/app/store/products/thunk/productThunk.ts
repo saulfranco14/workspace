@@ -5,6 +5,7 @@ import {
   getFeaturedProducts,
   getProductsByCategory,
   searchProducts,
+  getProductById,
 } from '@/app/services/productService';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
@@ -115,6 +116,22 @@ export const searchProductsThunk = createAsyncThunk(
         return rejectWithValue(error.message);
       }
       return rejectWithValue('Error desconocido durante la búsqueda de productos');
+    }
+  }
+);
+
+export const fetchProductById = createAsyncThunk(
+  'products/fetchProductById',
+  async (productId: string, { rejectWithValue }) => {
+    try {
+      const { data, error } = await getProductById(productId);
+      if (error) throw new Error(error.message);
+      return data;
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Error desconocido durante la búsqueda del producto');
     }
   }
 );

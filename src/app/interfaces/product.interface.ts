@@ -1,23 +1,20 @@
 export interface Category {
   id: string;
   name: string;
-  description: string | null;
-  created_at: string;
-  updated_at: string;
+  type: 'plant' | 'accessory' | 'kit';
+  description?: string;
 }
 
 export interface Product {
   id: string;
   name: string;
-  description: string | null;
+  description: string;
   price: number;
   stock: number;
-  image_url: string | null;
-  category_id: string | null;
-  is_featured: boolean;
-  created_at: string;
-  updated_at: string;
-  category?: Category | null;
+  image_url?: string;
+  category_id: string;
+  category?: Category;
+  is_featured?: boolean;
 }
 
 export interface ProductsResponse {
@@ -41,13 +38,16 @@ export interface FeaturedProduct extends Product {
 export interface ProductsState {
   products: Product[];
   filteredProducts: Product[];
-  productsByCategory: ProductsByCategory;
+  productsByCategory: Record<string, Product[]>;
   featuredProducts: Product[];
   categories: Category[];
   plantCategories: Category[];
   accessoryCategories: Category[];
   kitCategories: Category[];
   selectedCategory: string | null;
+  selectedCategoryType: 'plant' | 'accessory' | 'kit' | null;
+  selectedCategoryName: string | null;
+  selectedProduct: Product | null;
   searchTerm: string;
   loading: boolean;
   error: string | null;
@@ -88,4 +88,42 @@ export interface FeaturedKitSectionProps {
 export interface FeaturedProductsSectionProps {
   products: Product[];
   selectedCategory: string | null;
+}
+
+export interface ProductCardProps {
+  product: Product;
+}
+
+export interface ProductSectionProps {
+  title: string;
+  products: Product[];
+  viewMoreLink?: string;
+  categoryName?: string;
+  showEmpty?: boolean;
+}
+
+export interface PlantProductsSectionProps {
+  products: Product[];
+  selectedCategory: string | null;
+  selectedCategoryType: 'plant' | 'accessory' | 'kit' | null;
+  selectedCategoryName: string | null | undefined;
+}
+
+export interface AccessoryProductsSectionProps {
+  products: Product[];
+  selectedCategory: string | null;
+  selectedCategoryType: 'plant' | 'accessory' | 'kit' | null;
+  selectedCategoryName: string | null | undefined;
+}
+
+export interface PlantCategoriesSectionProps {
+  categories: Category[];
+  selectedCategory: string | null;
+  selectedCategoryType: 'plant' | 'accessory' | 'kit' | null;
+}
+
+export interface CategoryAccesoryProps {
+  categories: Category[];
+  selectedCategory: string | null;
+  selectedCategoryType: 'plant' | 'accessory' | 'kit' | null;
 }

@@ -21,3 +21,5 @@ export const selectProductsLoading = (state: RootState) => state.products.loadin
 export const selectProductsError = (state: RootState) => state.products.error;
 
 export const selectCategories = (state: RootState) => state.products.categories;
+
+export const selectSelectedProduct = (state: RootState) => state.products.selectedProduct;

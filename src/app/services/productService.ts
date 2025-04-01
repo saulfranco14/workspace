@@ -1,14 +1,18 @@
 import { supabase } from '@/app/config/supabaseClient';
-import { CategoriesResponse, Product, ProductsResponse } from '@/app/interfaces/product.interface';
+import { CategoriesResponse, Category, Product, ProductsResponse } from '@/app/interfaces/product.interface';
+import { formatProduct, handleError } from '../helpers/productHelpers';
+import { formatCategory } from '../helpers/productHelpers';
 
 export const getCategories = async (): Promise<CategoriesResponse> => {
   try {
-    const { data, error } = await supabase.from('categories').select('*').order('name');
+    const { data, error } = await supabase.from('categories').select('*, type:name').order('name');
 
-    return { data, error };
+    if (error) throw error;
+
+    const categories = data?.map(formatCategory) || null;
+    return { data: categories, error: null };
   } catch (error) {
-    console.error('Error al obtener categorías:', error);
-    return { data: null, error: error as Error };
+    return handleError<Category[]>(error, 'obtener categorías');
   }
 };
 
@@ -23,7 +27,7 @@ export const getCategories = async (): Promise<CategoriesResponse> => {
  */
 export const getCategoriesByType = async (typePatterns: string[]): Promise<CategoriesResponse> => {
   try {
-    let query = supabase.from('categories').select('*');
+    let query = supabase.from('categories').select('*, type:name');
 
     if (typePatterns.length > 0) {
       const orConditions = typePatterns.map((pattern) => `name.ilike.%${pattern}%`).join(',');
@@ -31,52 +35,48 @@ export const getCategoriesByType = async (typePatterns: string[]): Promise<Categ
     }
 
     const { data, error } = await query.order('name');
-    return { data, error };
+
+    if (error) throw error;
+
+    const categories = data?.map(formatCategory) || null;
+    return { data: categories, error: null };
   } catch (error) {
-    console.error('Error al obtener categorías por tipo:', error);
-    return { data: null, error: error as Error };
+    return handleError<Category[]>(error, 'obtener categorías por tipo');
+  }
+};
+
+// Base function for product queries
+const queryProducts = async (queryFn: (query: any) => any, operation: string): Promise<ProductsResponse> => {
+  try {
+    const baseQuery = supabase.from('products').select(`
+      *,
+      category:categories(id, name, description)
+    `);
+
+    const { data, error } = await queryFn(baseQuery);
+
+    if (error) throw error;
+
+    const products = data?.map(formatProduct) || null;
+    return { data: products, error: null };
+  } catch (error) {
+    return handleError<Product[]>(error, operation);
   }
 };
 
 export const getProducts = async (): Promise<ProductsResponse> => {
-  try {
-    const { data, error } = await supabase.from('products').select('*, category:categories(name)').order('name');
-
-    return { data: data as Product[], error };
-  } catch (error) {
-    console.error('Error al obtener productos:', error);
-    return { data: null, error: error as Error };
-  }
+  return queryProducts((query) => query.order('name'), 'obtener productos');
 };
 
 export const getFeaturedProducts = async (): Promise<ProductsResponse> => {
-  try {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*, category:categories(name)')
-      .eq('is_featured', true)
-      .limit(6);
-
-    return { data: data as Product[], error };
-  } catch (error) {
-    console.error('Error al obtener productos destacados:', error);
-    return { data: null, error: error as Error };
-  }
+  return queryProducts((query) => query.eq('is_featured', true).limit(6), 'obtener productos destacados');
 };
 
 export const getProductsByCategory = async (categoryId: string): Promise<ProductsResponse> => {
-  try {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*, category:categories(name)')
-      .eq('category_id', categoryId)
-      .order('name');
-
-    return { data: data as Product[], error };
-  } catch (error) {
-    console.error(`Error al obtener productos de la categoría ${categoryId}:`, error);
-    return { data: null, error: error as Error };
-  }
+  return queryProducts(
+    (query) => query.eq('category_id', categoryId).order('name'),
+    `obtener productos de la categoría ${categoryId}`
+  );
 };
 
 /**
@@ -89,18 +89,10 @@ export const getProductsByCategory = async (categoryId: string): Promise<Product
  * const response = await searchProducts('succulent');
  */
 export const searchProducts = async (searchTerm: string): Promise<ProductsResponse> => {
-  try {
-    const { data, error } = await supabase
-      .from('products')
-      .select('*, category:categories(name)')
-      .ilike('name', `%${searchTerm}%`)
-      .order('name');
-
-    return { data: data as Product[], error };
-  } catch (error) {
-    console.error(`Error al buscar productos con término "${searchTerm}":`, error);
-    return { data: null, error: error as Error };
-  }
+  return queryProducts(
+    (query) => query.ilike('name', `%${searchTerm}%`).order('name'),
+    `buscar productos con término "${searchTerm}"`
+  );
 };
 
 /**
@@ -114,16 +106,29 @@ export const searchProducts = async (searchTerm: string): Promise<ProductsRespon
  * const response = await getProductsByCategories(['123', '456']);
  */
 export const getProductsByCategories = async (categoryIds: string[]): Promise<ProductsResponse> => {
+  return queryProducts(
+    (query) => query.in('category_id', categoryIds).order('name'),
+    'obtener productos de múltiples categorías'
+  );
+};
+
+export const getProductById = async (id: string): Promise<{ data: Product | null; error: Error | null }> => {
   try {
     const { data, error } = await supabase
       .from('products')
-      .select('*, category:categories(name)')
-      .in('category_id', categoryIds)
-      .order('name');
+      .select(
+        `
+        *,
+        category:categories(id, name, description)
+      `
+      )
+      .eq('id', id)
+      .maybeSingle();
 
-    return { data: data as Product[], error };
+    if (error) throw error;
+
+    return { data: formatProduct(data), error: null };
   } catch (error) {
-    console.error(`Error al obtener productos de múltiples categorías:`, error);
-    return { data: null, error: error as Error };
+    return handleError<Product>(error, `obtener el producto con ID ${id}`);
   }
 };
