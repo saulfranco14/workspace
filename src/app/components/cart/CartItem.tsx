@@ -20,7 +20,7 @@ const CartItem = ({ item }: CartItemProps) => {
 
   const handleQuantityChange = useCallback(
     async (newQuantity: number) => {
-      if (newQuantity > stock) return;
+      if (newQuantity > stock || newQuantity <= 0) return;
       await updateQuantity(id, newQuantity);
     },
     [id, stock, updateQuantity]

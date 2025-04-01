@@ -7,6 +7,7 @@ import {
   removeCartItem,
   clearCart,
 } from '@/app/services/cart/cartService';
+import { getCartItemById } from '@/app/services/cart/cartItemsService';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId: string | undefined) => {
@@ -42,8 +43,8 @@ export const addToCart = createAsyncThunk(
       }
 
       return result;
-    } catch (error: any) {
-      const errorMessage = error.message || error.error_description || 'Error al añadir el producto al carrito';
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Error al añadir el producto al carrito';
 
       console.error('Error en addToCart thunk:', errorMessage);
       return rejectWithValue(errorMessage);
@@ -60,7 +61,12 @@ export const updateItemQuantity = createAsyncThunk(
       throw new Error('No se pudo actualizar la cantidad');
     }
 
-    return result;
+    const updatedItem = await getCartItemById(itemId);
+    if (!updatedItem) {
+      throw new Error('No se pudo obtener el item actualizado');
+    }
+
+    return updatedItem;
   }
 );
 

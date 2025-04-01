@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export const useSingleEffect = (effect: () => void | (() => void), deps: any[] = []) => {
+export const useSingleEffect = (effect: () => void | (() => void)) => {
   const hasRun = useRef<boolean>(false);
   const cleanup = useRef<(() => void) | null>(null);
 

@@ -34,17 +34,11 @@ const AddToCartButton = ({ productId, stock }: AddToCartButtonProps) => {
       } else {
         throw new Error('No se pudo añadir el producto al carrito');
       }
-    } catch (err: any) {
-      let errorMessage = 'Error al agregar al carrito';
-
-      if (err?.message) {
-        errorMessage = err.message;
-      } else if (typeof err === 'string') {
-        errorMessage = err;
-      }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Error al agregar al carrito';
 
       setError(errorMessage);
-      console.error('Error al agregar al carrito:', err);
+      console.error('Error al agregar al carrito:', errorMessage);
     } finally {
       setLoading(false);
     }
