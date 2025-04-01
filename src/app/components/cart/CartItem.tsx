@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useCallback } from 'react';
 import { FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi';
 
 import { useCart } from '@/app/hooks/useCart';
@@ -17,20 +18,23 @@ const CartItem = ({ item }: CartItemProps) => {
   const { id, quantity, product } = item;
   const { name, price, image_url, stock } = product;
 
-  const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity > stock) return;
-    updateQuantity(id, newQuantity);
-  };
+  const handleQuantityChange = useCallback(
+    async (newQuantity: number) => {
+      if (newQuantity > stock) return;
+      await updateQuantity(id, newQuantity);
+    },
+    [id, stock, updateQuantity]
+  );
 
-  const handleRemove = () => {
-    removeItem(id);
-  };
+  const handleRemove = useCallback(async () => {
+    await removeItem(id);
+  }, [id, removeItem]);
 
   return (
     <CartStyle.ItemContainer>
       <CartStyle.ImageContainer>
         {image_url ? (
-          <Image src={image_url} alt={name} width={70} height={70} objectFit="cover" />
+          <Image src={image_url} alt={name} width={70} height={70} style={{ objectFit: 'cover' }} />
         ) : (
           <CartStyle.PlaceholderImage>
             <span>Sin imagen</span>

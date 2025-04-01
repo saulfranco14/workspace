@@ -23,7 +23,7 @@ export const CartStyle = {
     position: absolute;
     top: 0;
     right: 0;
-    background-color: #f44336;
+    background-color: var(--primary);
     color: white;
     font-size: 10px;
     font-weight: bold;
@@ -163,7 +163,7 @@ export const CartStyle = {
   })<{ isOpen: boolean }>`
     position: fixed;
     top: 0;
-    right: ${({ isOpen }) => (isOpen ? '0' : '-400px')};
+    right: ${({ isOpen }) => isOpen && '0'};
     width: 100%;
     max-width: 400px;
     height: 100vh;
@@ -171,7 +171,8 @@ export const CartStyle = {
     box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
     transition: right 0.3s ease;
     z-index: 999;
-    display: flex;
+    top: 0;
+    display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
     flex-direction: column;
 
     @media (max-width: 480px) {
@@ -689,5 +690,12 @@ export const CartStyle = {
     &:hover {
       background-color: #388e3c;
     }
+  `,
+
+  ErrorMessage: styled.div`
+    color: #f44336;
+    font-size: 12px;
+    margin-top: 5px;
+    text-align: center;
   `,
 };

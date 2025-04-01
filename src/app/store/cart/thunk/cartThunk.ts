@@ -6,7 +6,7 @@ import {
   updateCartItemQuantity,
   removeCartItem,
   clearCart,
-} from '@/app/services/cartService';
+} from '@/app/services/cart/cartService';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId: string | undefined) => {
@@ -23,14 +23,30 @@ export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId: strin
 
 export const addToCart = createAsyncThunk(
   'cart/addToCart',
-  async ({ productId, quantity }: AddToCartPayload, { getState }) => {
-    const state = getState() as { cart: CartState };
-    if (!state.cart.cart?.id) throw new Error('No hay un carrito activo');
+  async ({ productId, quantity }: AddToCartPayload, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as { cart: CartState };
 
-    const result = await addItemToCart(state.cart.cart.id, productId, quantity);
-    if (!result) throw new Error('No se pudo añadir el producto al carrito');
+      if (!state.cart.cart?.id) {
+        return rejectWithValue('No hay un carrito activo');
+      }
 
-    return result;
+      if (!state.cart.cart) {
+        return rejectWithValue('Carrito no disponible');
+      }
+
+      const result = await addItemToCart(state.cart.cart.id, productId, quantity);
+
+      if (!result) return rejectWithValue('Could not add product to cart');
+
+      console.log('Producto añadido al carrito:', result);
+      return result;
+    } catch (error: any) {
+      const errorMessage = error.message || error.error_description || 'Error adding item to cart';
+
+      console.error('Error en addToCart thunk:', errorMessage);
+      return rejectWithValue(errorMessage);
+    }
   }
 );
 

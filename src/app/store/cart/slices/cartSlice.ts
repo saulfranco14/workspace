@@ -23,8 +23,9 @@ const cartSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchCart.fulfilled, (state, action) => {
+        console.log('action', action);
         state.loading = false;
-        state.cart = action.payload;
+        state.cart = action.payload?.cart || null;
         state.items = action.payload?.items || [];
       })
       .addCase(fetchCart.rejected, (state, action) => {
@@ -38,13 +39,16 @@ const cartSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.items.findIndex((item) => item.id === action.payload.id);
+        if (!action.payload) return;
+
+        const index = state.items.findIndex((item) => item.id === action.payload?.id);
         if (index !== -1) {
           state.items[index] = action.payload;
         } else {
           state.items.push(action.payload);
         }
       })
+
       .addCase(addToCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Error al añadir al carrito';

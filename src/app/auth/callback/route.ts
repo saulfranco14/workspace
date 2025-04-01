@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { supabase } from '@/app/config/supabaseClient';
 import { getFingerprint } from '@/app/services/deviceService';
-import { migrateCart } from '@/app/services/cartService';
+import { migrateCart } from '@/app/services/cart/cartService';
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);

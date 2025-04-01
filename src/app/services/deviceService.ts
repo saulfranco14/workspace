@@ -4,18 +4,20 @@ const fpPromise = typeof window !== 'undefined' ? FingerprintJS.load() : null;
 
 export const getFingerprint = async () => {
   if (typeof window === 'undefined') {
-    throw new Error('Fingerprint solo puede ser generado en el cliente');
+    console.warn('Fingerprint solo puede ser generado en el cliente');
+    return null;
   }
 
   if (!fpPromise) {
-    throw new Error('FingerprintJS no está inicializado');
+    console.warn('FingerprintJS no está inicializado');
+    return null;
   }
 
   try {
     const fp = await fpPromise;
     const result = await fp.get();
 
-    const fingerprint = result?.visitorId ?? 'No visitorId found';
+    const fingerprint = result?.visitorId ?? null;
 
     return fingerprint;
   } catch (error) {

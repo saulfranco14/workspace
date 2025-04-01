@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiX, FiTrash2, FiShoppingBag } from 'react-icons/fi';
 
@@ -13,42 +13,22 @@ const CartDrawer = () => {
   const drawerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (drawerRef.current && !drawerRef.current.contains(event.target as Node)) {
-        hideCart();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+  const handleClickOutside = (event: React.MouseEvent) => {
+    if (drawerRef.current && !drawerRef.current.contains(event.target as Node)) {
+      hideCart();
     }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen, hideCart]);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'visible';
-    }
-
-    return () => {
-      document.body.style.overflow = 'visible';
-    };
-  }, [isOpen]);
+  };
 
   const handleCheckout = () => {
     hideCart();
     router.push('/checkout');
   };
 
+  if (!isOpen) return null;
+
   return (
     <>
-      {isOpen && <CartStyle.Overlay />}
+      <CartStyle.Overlay onClick={handleClickOutside} />
       <CartStyle.DrawerContainer ref={drawerRef} isOpen={isOpen}>
         <CartStyle.DrawerHeader>
           <h3>
@@ -71,7 +51,7 @@ const CartDrawer = () => {
             <>
               <CartStyle.ItemsList>
                 {items.map((item) => (
-                  <CartItem key={item.id} item={item} />
+                  <CartItem key={`cart-item-${item.id}`} item={item} />
                 ))}
               </CartStyle.ItemsList>
 
@@ -87,10 +67,7 @@ const CartDrawer = () => {
                     <span>Subtotal:</span>
                     <strong>${totalPrice.toFixed(2)}</strong>
                   </div>
-                  <div>
-                    <span>Envío:</span>
-                    <strong>Calculado en el checkout</strong>
-                  </div>
+
                   <CartStyle.TotalRow>
                     <span>Total:</span>
                     <strong>${totalPrice.toFixed(2)}</strong>

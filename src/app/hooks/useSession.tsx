@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { supabase } from '@/app/config/supabaseClient';
 import { RootState } from '@/app/store/store';
-import { migrateCart } from '@/app/services/cartService';
+import { migrateCart } from '@/app/services/cart/cartService';
 import { getFingerprint } from '@/app/services/deviceService';
 
 export const useSession = () => {

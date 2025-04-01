@@ -1,20 +1,14 @@
 'use client';
 
 import { useDispatch, useSelector } from 'react-redux';
-
-import { useSession } from '@/app/hooks/useSession';
 import { openCart, closeCart } from '@/app/store/cart/slices/cartSlice';
 import { RootState } from '@/app/store/store';
 import { addToCart, updateItemQuantity, removeFromCart, emptyCart } from '@/app/store/cart/thunk/cartThunk';
-import { useSingleEffect } from './useSingleEffect';
-import { useEffect } from 'react';
 
 export const useCart = () => {
   const dispatch = useDispatch();
-  const { session } = useSession();
 
   const { cart, items, loading, error, isOpen } = useSelector((state: RootState) => state.cart);
-
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
   const totalPrice = items.reduce((sum, item) => {
@@ -24,38 +18,61 @@ export const useCart = () => {
     return sum;
   }, 0);
 
-  const addProductToCart = (productId: string, quantity: number = 1) => {
-    // @ts-ignore - Due to typed payloads
-    dispatch(addToCart({ productId, quantity }));
-  };
+  const addProductToCart = async (productId: string, quantity: number = 1) => {
+    try {
+      // @ts-ignore
+      const resultAction = await dispatch(addToCart({ productId, quantity }));
 
-  const updateQuantity = (itemId: string, quantity: number) => {
-    if (quantity <= 0) {
-      // @ts-ignore
-      dispatch(removeFromCart(itemId));
-    } else {
-      // @ts-ignore
-      dispatch(updateItemQuantity({ itemId, quantity }));
+      if (!cart?.id) {
+        throw new Error('No hay un carrito activo');
+      }
+
+      if (resultAction.error) {
+        // @ts-ignore - Error message está disponible pero TypeScript no lo reconoce
+        throw new Error(resultAction.error.message || 'Error al añadir al carrito');
+      }
+
+      return resultAction.payload;
+    } catch (error) {
+      console.error('Error en addProductToCart:', error);
+      throw error;
     }
   };
 
-  const removeItem = (itemId: string) => {
-    // @ts-ignore
-    dispatch(removeFromCart(itemId));
+  const updateQuantity = async (itemId: string, quantity: number) => {
+    try {
+      if (quantity <= 0) {
+        // @ts-ignore
+        await dispatch(removeFromCart(itemId));
+      } else {
+        // @ts-ignore
+        await dispatch(updateItemQuantity({ itemId, quantity }));
+      }
+    } catch (error) {
+      console.error('Error al actualizar cantidad:', error);
+    }
   };
 
-  const clearCart = () => {
-    // @ts-ignore
-    dispatch(emptyCart());
+  const removeItem = async (itemId: string) => {
+    try {
+      // @ts-ignore
+      await dispatch(removeFromCart(itemId));
+    } catch (error) {
+      console.error('Error al eliminar item:', error);
+    }
   };
 
-  const showCart = () => {
-    dispatch(openCart());
+  const clearCart = async () => {
+    try {
+      // @ts-ignore
+      await dispatch(emptyCart());
+    } catch (error) {
+      console.error('Error al vaciar carrito:', error);
+    }
   };
 
-  const hideCart = () => {
-    dispatch(closeCart());
-  };
+  const showCart = () => dispatch(openCart());
+  const hideCart = () => dispatch(closeCart());
 
   return {
     cart,

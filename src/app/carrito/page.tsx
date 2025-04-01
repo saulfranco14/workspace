@@ -37,11 +37,6 @@ export default function CartPage() {
               <span>${totalPrice.toFixed(2)}</span>
             </CartStyle.SummaryRow>
 
-            <CartStyle.SummaryRow>
-              <span>Envío</span>
-              <span>Calculado en el checkout</span>
-            </CartStyle.SummaryRow>
-
             <CartStyle.SummaryTotal>
               <span>Total</span>
               <strong>${totalPrice.toFixed(2)}</strong>
