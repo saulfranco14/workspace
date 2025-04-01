@@ -120,26 +120,29 @@ export const addItemToCart = async (
 
     const existingItem = await getCartItemByProductId(cartId, productId);
 
+    console.log('--------------------------------');
+    console.log('existingItem', existingItem);
+    console.log('--------------------------------');
+
     if (existingItem) {
       const newQuantity = existingItem.quantity + quantity;
-      const updatedItem = await updateCartItemQty(existingItem.id, newQuantity);
 
-      if (!updatedItem) {
-        throw new Error('Could not update product quantity');
-      }
+      console.log('------------existingItem newQuantity  --------------------');
+      console.log('existingItem.id', existingItem.id);
+      console.log('newQuantity', newQuantity);
+      console.log('------------existingItem newQuantity  --------------------');
 
-      return updatedItem;
+      await updateCartItemQty(existingItem.id, newQuantity);
     } else {
       await insertCartItem(cartId, productId, quantity);
-
-      const newItem = await getCartItem(cartId, productId);
-
-      if (!newItem) {
-        throw new Error('Could not insert product into cart');
-      }
-
-      return newItem;
     }
+    const getItem = await getCartItem(cartId, productId);
+
+    if (!getItem) {
+      throw new Error('Could not insert product into cart');
+    }
+
+    return getItem;
   } catch (error) {
     console.error('Error adding item to cart:', error);
     throw error;

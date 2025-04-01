@@ -37,12 +37,13 @@ export const addToCart = createAsyncThunk(
 
       const result = await addItemToCart(state.cart.cart.id, productId, quantity);
 
-      if (!result) return rejectWithValue('Could not add product to cart');
+      if (!result) {
+        return rejectWithValue('No se pudo añadir el producto al carrito');
+      }
 
-      console.log('Producto añadido al carrito:', result);
       return result;
     } catch (error: any) {
-      const errorMessage = error.message || error.error_description || 'Error adding item to cart';
+      const errorMessage = error.message || error.error_description || 'Error al añadir el producto al carrito';
 
       console.error('Error en addToCart thunk:', errorMessage);
       return rejectWithValue(errorMessage);
@@ -54,7 +55,10 @@ export const updateItemQuantity = createAsyncThunk(
   'cart/updateItemQuantity',
   async ({ itemId, quantity }: UpdateCartItemPayload) => {
     const result = await updateCartItemQuantity(itemId, quantity);
-    if (!result) throw new Error('No se pudo actualizar la cantidad');
+
+    if (!result) {
+      throw new Error('No se pudo actualizar la cantidad');
+    }
 
     return result;
   }

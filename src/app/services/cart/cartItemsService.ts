@@ -118,30 +118,18 @@ export const getCartItem = async (cartId: string, productId: string): Promise<Ca
  */
 export const updateCartItemQuantity = async (itemId: string, quantity: number): Promise<CartItem | null> => {
   try {
-    const { data, error } = await supabase
-      .from('cart_items')
-      .update({ quantity })
-      .eq('id', itemId)
-      .select(
-        `
-        *,
-        product:products(
-          id,
-          name,
-          price,
-          image_url,
-          stock
-        )
-      `
-      )
-      .single();
+    const { data, error } = await supabase.from('cart_items').update({ quantity }).eq('id', itemId).select();
 
     if (error) {
       console.error('Error al actualizar cantidad del item:', error);
       throw error;
     }
 
-    return data;
+    if (!data || data.length === 0) {
+      return null;
+    }
+
+    return data[0] || null;
   } catch (error) {
     console.error('Error en updateCartItemQuantity:', error);
     return null;

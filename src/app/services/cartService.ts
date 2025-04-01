@@ -122,23 +122,18 @@ export const addItemToCart = async (
   quantity: number = 1
 ): Promise<CartItem | null> => {
   try {
-    // 1. Verificamos si el item ya existe en el carrito
     const existingItem = await getCartItemByProductId(cartId, productId);
 
-    // 2. Actualizamos o insertamos según corresponda
     if (existingItem) {
-      // Actualizamos la cantidad
       const newQuantity = existingItem.quantity + quantity;
       return await updateCartItemQty(existingItem.id, newQuantity);
     } else {
-      // Insertamos un nuevo item
       const newItem = await insertCartItem(cartId, productId, quantity);
 
       if (!newItem) {
         throw new Error('No se pudo insertar el item en el carrito');
       }
 
-      // Obtenemos el item completo con su producto relacionado
       return await getCartItemById(newItem.id);
     }
   } catch (error) {
