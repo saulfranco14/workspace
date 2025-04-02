@@ -45,7 +45,6 @@ describe('AuthSlice reducers', () => {
       isAuthenticated: true,
     });
 
-    // Probar estableciendo null
     const stateWithUser = {
       ...initialState,
       user: mockUser,

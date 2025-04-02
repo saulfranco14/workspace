@@ -1,21 +1,17 @@
 import { getFingerprint } from '@/services/deviceService';
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
-// Mock global console methods
 console.warn = jest.fn();
 console.error = jest.fn();
 
-// Mock the FingerprintJS library
 jest.mock('@fingerprintjs/fingerprintjs', () => ({
   load: jest.fn(),
 }));
 
-// Variables to control test state
 let mockWindowValue: any;
 let mockVisitorId: string | null | undefined;
 let mockLoadError: Error | null;
 
-// Mock the implementation of the actual module
 jest.mock('@/services/deviceService', () => {
   return {
     getFingerprint: jest.fn().mockImplementation(async () => {
@@ -44,7 +40,6 @@ describe('Device Service', () => {
     (console.warn as jest.Mock).mockClear();
     (console.error as jest.Mock).mockClear();
 
-    // Reset test variables
     mockWindowValue = {};
     mockVisitorId = 'visitor-fingerprint-123';
     mockLoadError = null;

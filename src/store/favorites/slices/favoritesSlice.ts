@@ -68,14 +68,12 @@ const favoritesSlice = createSlice({
 
           const { item, collectionId, isExisting } = action.payload;
 
-          // Si es un producto existente, no necesitamos actualizar el estado
           if (isExisting || !item) {
             const collectionName = state.collections.find((c) => c.id === collectionId)?.name || 'favoritos';
             state.duplicateError = `Este producto ya está en la colección "${collectionName}"`;
             return;
           }
 
-          // Si es un nuevo producto, lo añadimos a la colección
           state.duplicateError = null;
           const collectionIndex = state.collections.findIndex((col) => col.id === collectionId);
 

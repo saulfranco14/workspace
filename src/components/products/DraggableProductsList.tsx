@@ -11,39 +11,33 @@ import { AppDispatch } from '@/store/store';
 import { selectAllProducts, selectProductsLoading, selectProductsError } from '@/selectors/productSelectors';
 import { selectActiveCollection } from '@/selectors/favoriteSelectors';
 
-// Definiendo item types para DnD
 export const ItemTypes = {
   PRODUCT: 'product',
 };
 
-// Componente para un producto individual que puede ser arrastrado
 const DraggableProduct: React.FC<{ product: Product }> = ({ product }) => {
   const ref = useRef<HTMLDivElement>(null);
   const activeCollection = useSelector(selectActiveCollection);
-
-  // Usar una referencia para mantener el id de la colección activa para el objeto arrastrado
   const collectionIdRef = useRef<string | undefined>(activeCollection?.id);
 
-  // Actualizar la referencia cuando cambia la colección activa
   useEffect(() => {
     collectionIdRef.current = activeCollection?.id;
   }, [activeCollection]);
 
-  const [{ isDragging }, drag, dragPreview] = useDrag(
+  const [{ isDragging }, drag] = useDrag(
     () => ({
       type: ItemTypes.PRODUCT,
       item: () => ({
         product,
-        targetCollectionId: collectionIdRef.current, // Usar la referencia actual
+        targetCollectionId: collectionIdRef.current,
       }),
       collect: (monitor) => ({
         isDragging: !!monitor.isDragging(),
       }),
     }),
     [product, collectionIdRef.current]
-  ); // Re-crear cuando cambia la colección activa
+  );
 
-  // Conectar el drag al ref
   drag(ref);
 
   return (

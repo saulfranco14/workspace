@@ -29,20 +29,15 @@ import ProductCard from '@/components/products/ProductCard';
 import EmptyResults from '@/components/shared/EmptyResults';
 import { AppDispatch } from '@/store/store';
 import { Product } from '@/interfaces/product.interface';
-import { FavoriteCollection } from '@/interfaces/favorites.interface';
 
-// Componente para recibir productos arrastrados en el grid
 const DroppableProductGrid: React.FC<{
   children?: React.ReactNode;
 }> = ({ children }) => {
   const dispatch = useDispatch<AppDispatch>();
   const activeCollection = useSelector(selectActiveCollection);
   const ref = useRef<HTMLDivElement>(null);
-
-  // Solo proceder si hay una colección activa
   const collectionIdRef = useRef<string | undefined>(activeCollection?.id);
 
-  // Mantener actualizada la referencia al ID de la colección
   useEffect(() => {
     collectionIdRef.current = activeCollection?.id;
   }, [activeCollection]);
@@ -52,14 +47,12 @@ const DroppableProductGrid: React.FC<{
       accept: ItemTypes.PRODUCT,
       drop: async (item: { product: Product; targetCollectionId?: string }) => {
         try {
-          // Asegurarse de que hay una colección activa
           if (!collectionIdRef.current) return;
 
           const targetId = collectionIdRef.current;
 
           console.log('Dropping to grid of collection:', activeCollection?.name, 'ID:', targetId);
 
-          // Agregar el producto a favoritos
           await dispatch(
             addToFavorites({
               productId: item.product.id,
@@ -67,14 +60,11 @@ const DroppableProductGrid: React.FC<{
             })
           );
 
-          // Esperar un momento y luego forzar una actualización de las colecciones
-          // para asegurar que los cambios se reflejen en la interfaz
           setTimeout(async () => {
             await dispatch(fetchUserFavoriteCollections());
           }, 500);
         } catch (error) {
           console.error('Error al añadir producto a favoritos:', error);
-          // En caso de error, intentar actualizar las colecciones de todos modos
           dispatch(fetchUserFavoriteCollections());
         }
       },
@@ -87,7 +77,6 @@ const DroppableProductGrid: React.FC<{
     [collectionIdRef.current]
   );
 
-  // Conectar el drop al ref
   drop(ref);
 
   const isActive = isOver && canDrop;
@@ -107,14 +96,12 @@ const DroppableProductGrid: React.FC<{
   );
 };
 
-// Componente para mostrar notificaciones
 const DuplicateNotification: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const duplicateError = useSelector(selectDuplicateError);
 
   useEffect(() => {
     if (duplicateError) {
-      // Limpiar el error después de 3 segundos
       const timer = setTimeout(() => {
         dispatch(clearDuplicateError());
       }, 3000);
@@ -200,7 +187,6 @@ export default function FavoritosPage() {
         </ContentContainer>
       </div>
 
-      {/* Notificación de productos duplicados */}
       <DuplicateNotification />
     </DndProvider>
   );
