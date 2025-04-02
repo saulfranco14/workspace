@@ -40,6 +40,10 @@ export default function ProductDetailPage() {
     dispatch(fetchProductById(params.id as string));
   }, [dispatch, params.id]);
 
+  useEffect(() => {
+    console.log('Parámetros recibidos:', params);
+  }, [params]);
+
   const relatedProducts =
     product && allProducts
       ? allProducts.filter((p: Product) => p.id !== product.id && p.category?.id === product.category?.id).slice(0, 4)
