@@ -7,7 +7,7 @@ import {
   removeCartItem,
   clearCart,
 } from '@/services/cart/cartService';
-import { getCartItemById } from '@/app/services/cart/cartItemsService';
+import { getCartItemById } from '@/services/cart/cartItemsService';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId: string | undefined) => {

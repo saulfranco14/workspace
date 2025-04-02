@@ -1,6 +1,6 @@
 import { Category, CategoriesResponse, Product, ProductsResponse } from '@/interfaces/product.interface';
-import { formatProduct, handleError } from '../helpers/productHelpers';
-import { formatCategory } from '../helpers/productHelpers';
+import { formatProduct, handleError } from '@/helpers/productHelpers';
+import { formatCategory } from '@/helpers/productHelpers';
 import { supabase } from '@/config/supabaseClient';
 
 export const getCategories = async (): Promise<CategoriesResponse> => {

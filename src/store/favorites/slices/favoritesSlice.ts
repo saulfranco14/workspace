@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { initialState } from '@/app/store/favorites/initialState';
+
+import { initialState } from '@/store/favorites/initialState';
 import { FavoriteCollection, FavoriteItem } from '@/interfaces/favorites.interface';
 import {
   fetchUserFavoriteCollections,
@@ -7,7 +8,7 @@ import {
   addToFavorites,
   removeFromFavorites,
   removeFavoriteCollection,
-} from '@/app/store/favorites/thunk/favoritesThunk';
+} from '@/store/favorites/thunk/favoritesThunk';
 
 const favoritesSlice = createSlice({
   name: 'favorites',

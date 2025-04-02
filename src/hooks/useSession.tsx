@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { supabase } from '@/config/supabaseClient';
-import { RootState } from '@/app/store/store';
+import { RootState } from '@/store/store';
 import { migrateCart } from '@/services/cart/cartService';
 import { getFingerprint } from '@/services/deviceService';
 

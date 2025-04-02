@@ -6,15 +6,15 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { LoginFormData } from '@/validations/authValidation';
-import { resetAuthState } from '@/app/store/auth/slices/authSlice';
+import { resetAuthState } from '@/store/auth/slices/authSlice';
 import { selectAuthLoading, selectAuthError, selectAuthSuccess } from '@/selectors/authSelectors';
-import { AppDispatch } from '@/app/store/store';
-import { loginUserThunk } from '@/app/store/auth/thunk/authThunk';
+import { AppDispatch } from '@/store/store';
+import { loginUserThunk } from '@/store/auth/thunk/authThunk';
 import { FormContainer, FormTitle, FormLink } from '@/styles/components/FormStyles';
 
-import AuthFormStatus from '@/app/components/shared/FormStatus';
+import AuthFormStatus from '@/components/shared/FormStatus';
 import useAuthRedirect from '@/hooks/useAuthRedirect';
-import LoginFormFields from '@/app/components/login/LoginFormFields';
+import LoginFormFields from '@/components/login/LoginFormFields';
 
 export default function LoginForm() {
   const dispatch = useDispatch<AppDispatch>();

@@ -1,4 +1,4 @@
-import { RootState } from '@/app/store/store';
+import { RootState } from '@/store/store';
 import { createSelector } from '@reduxjs/toolkit';
 
 export const selectFavoritesState = (state: RootState) => state.favorites;

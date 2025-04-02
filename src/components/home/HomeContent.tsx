@@ -1,15 +1,15 @@
 'use client';
 
-import PlantCharacteristics from '@/app/components/products/PlantCharacteristics';
+import PlantCharacteristics from '@/components/products/PlantCharacteristics';
 import { HomeContentProps } from '@/interfaces/home.interface';
-import { LoadingSpinner } from '@/app/components/shared/loading/Spinner';
-import { PlantCategoriesSection } from '@/app/components/products/section/PlantCategoriesSection';
-import { PlantProductsSection } from '@/app/components/products/section/PlantProductsSection';
-import { FeaturedKitSection } from '@/app/components/products/features/FeaturedKitSection';
-import { FeaturedProductsSection } from '@/app/components/products/features/FeaturedProductsSection';
-import { ErrorMessage } from '@/app/components/shared/status/ErrorMessage';
-import { AccessoryProductsSection } from '@/app/components/products/AccessoryProductsSection';
-import { CategoryAccesory } from '@/app/components/filters/CategoryAccesory';
+import { LoadingSpinner } from '@/components/shared/loading/Spinner';
+import { PlantCategoriesSection } from '@/components/products/section/PlantCategoriesSection';
+import { PlantProductsSection } from '@/components/products/section/PlantProductsSection';
+import { FeaturedKitSection } from '@/components/products/features/FeaturedKitSection';
+import { FeaturedProductsSection } from '@/components/products/features/FeaturedProductsSection';
+import { ErrorMessage } from '@/components/shared/status/ErrorMessage';
+import { AccessoryProductsSection } from '@/components/products/AccessoryProductsSection';
+import { CategoryAccesory } from '@/components/filters/CategoryAccesory';
 
 const HomeContent = ({
   searchTerm,

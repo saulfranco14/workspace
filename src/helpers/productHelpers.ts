@@ -1,4 +1,4 @@
-import { Category, Product } from '../interfaces/product.interface';
+import { Category, Product } from '@/interfaces/product.interface';
 
 export const filterProductsByCategory = (products: Product[], categoryIds: string[]) => {
   if (!products.length) return [];

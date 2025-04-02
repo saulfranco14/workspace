@@ -5,7 +5,7 @@ import { User, Session } from '@supabase/supabase-js';
 
 import { SupabaseContextType } from '@/types/provider.type';
 import { supabase } from '@/config/supabaseClient';
-import { getSession } from '@/app/services/authService';
+import { getSession } from '@/services/authService';
 
 const defaultContextValue: SupabaseContextType = {
   user: null,

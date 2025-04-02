@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/app/store/store';
-import { setSelectedCategory } from '@/app/store/products/slices/productsSlice';
+import { RootState } from '@/store/store';
+import { setSelectedCategory } from '@/store/products/slices/productsSlice';
 
 const CategoryTags = () => {
   const dispatch = useDispatch();

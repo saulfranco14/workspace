@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '@/app/store/auth/slices/authSlice';
-import productsReducer from '@/app/store/products/slices/productsSlice';
-import cartReducer from '@/app/store/cart/slices/cartSlice';
-import favoritesReducer from '@/app/store/favorites/slices/favoritesSlice';
+
+import authReducer from '@/store/auth/slices/authSlice';
+import productsReducer from '@/store/products/slices/productsSlice';
+import cartReducer from '@/store/cart/slices/cartSlice';
+import favoritesReducer from '@/store/favorites/slices/favoritesSlice';
 
 export const store = configureStore({
   reducer: {

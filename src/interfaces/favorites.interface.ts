@@ -1,4 +1,4 @@
-import { Product } from './product.interface';
+import { Product } from '@/interfaces/product.interface';
 
 export interface FavoriteItem {
   id: string;

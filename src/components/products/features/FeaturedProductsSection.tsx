@@ -1,4 +1,4 @@
-import ProductSection from '@/app/components/products/ProductSection';
+import ProductSection from '@/components/products/ProductSection';
 import { FeaturedProductsSectionProps } from '@/interfaces/product.interface';
 
 export const FeaturedProductsSection = ({ products, selectedCategory }: FeaturedProductsSectionProps) => {

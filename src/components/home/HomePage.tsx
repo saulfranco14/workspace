@@ -1,8 +1,8 @@
 'use client';
 
-import Banner from '@/app/components/home/Banner';
-import SearchBar from '@/app/components/search/SearchBar';
-import CategoryTags from '@/app/components/filters/CategoryTags';
+import Banner from '@/components/home/Banner';
+import SearchBar from '@/components/search/SearchBar';
+import CategoryTags from '@/components/filters/CategoryTags';
 import SearchResults from '../search/SearchResults';
 import Navbar from '../navigation/Navbar';
 import MainContainer from '../shared/MainContainer';

@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '@/app/store/store';
+import { AppDispatch } from '@/store/store';
 
 import {
   selectPlantCategories,
@@ -22,11 +22,12 @@ import {
   fetchCategoriesByType,
   fetchFeaturedProducts,
   fetchProducts,
-} from '@/app/store/products/thunk/productThunk';
+} from '@/store/products/thunk/productThunk';
 
-import { filterProductsByCategory, getCategoryType, getFilteredProductsByType } from '@/app/helpers/productHelpers';
+import { filterProductsByCategory, getCategoryType, getFilteredProductsByType } from '@/helpers/productHelpers';
 import { useSingleEffect } from './useSingleEffect';
 import { Product } from '@/interfaces/product.interface';
+
 export const useHomeData = () => {
   const dispatch = useDispatch<AppDispatch>();
 

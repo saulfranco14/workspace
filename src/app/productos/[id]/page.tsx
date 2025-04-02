@@ -8,9 +8,9 @@ import { useParams, useRouter } from 'next/navigation';
 import { FiShare2, FiArrowLeft, FiShoppingBag } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 
-import AddToCartButton from '@/app/components/cart/AddToCartButton';
-import AddToFavoritesButton from '@/app/components/favorites/AddToFavoritesButton';
-import EmptyResults from '@/app/components/shared/EmptyResults';
+import AddToCartButton from '@/components/cart/AddToCartButton';
+import AddToFavoritesButton from '@/components/favorites/AddToFavoritesButton';
+import EmptyResults from '@/components/shared/EmptyResults';
 
 import {
   selectProductsError,
@@ -18,9 +18,9 @@ import {
   selectSelectedProduct,
   selectProducts,
 } from '@/selectors/productSelectors';
-import ProductSkeleton from '@/app/components/shared/skeletons/ProductSkeleton';
-import WarningIcon from '@/app/components/shared/icons/WarningIcon';
-import ProductCard from '@/app/components/products/ProductCard';
+import ProductSkeleton from '@/components/shared/skeletons/ProductSkeleton';
+import WarningIcon from '@/components/shared/icons/WarningIcon';
+import ProductCard from '@/components/products/ProductCard';
 import { fetchProductById } from '@/store/products/thunk/productThunk';
 import { AppDispatch } from '@/store/store';
 import { Product } from '@/interfaces/product.interface';

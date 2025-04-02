@@ -7,8 +7,8 @@ import {
   fetchProductsByCategory,
   searchProductsThunk,
   fetchProductById,
-} from '../thunk/productThunk';
-import { initialState } from '../initialState';
+} from '@/store/products/thunk/productThunk';
+import { initialState } from '@/store/products/initialState';
 
 const productsSlice = createSlice({
   name: 'products',

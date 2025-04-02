@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Product } from '@/interfaces/product.interface';
-import ProductCard from '@/app/components/products/ProductCard';
-import EmptyResults from '@/app/components/shared/EmptyResults';
+import ProductCard from '@/components/products/ProductCard';
+import EmptyResults from '@/components/shared/EmptyResults';
 
 interface ProductSectionProps {
   title: string;

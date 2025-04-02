@@ -1,4 +1,4 @@
-import PlantCareKit from '@/app/components/products/PlantCareKit';
+import PlantCareKit from '@/components/products/PlantCareKit';
 import { FeaturedKitSectionProps } from '@/interfaces/product.interface';
 
 export const FeaturedKitSection = ({ kitProduct, selectedCategory }: FeaturedKitSectionProps) => {

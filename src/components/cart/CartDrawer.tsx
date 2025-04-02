@@ -6,7 +6,7 @@ import { FiX, FiTrash2, FiShoppingBag } from 'react-icons/fi';
 
 import { useCart } from '@/hooks/useCart';
 import { CartStyle } from '@/styles/components/CartStyle';
-import CartItem from '@/app/components/cart/CartItem';
+import CartItem from '@/components/cart/CartItem';
 
 const CartDrawer = () => {
   const { items, isOpen, hideCart, totalItems, totalPrice, clearCart } = useCart();

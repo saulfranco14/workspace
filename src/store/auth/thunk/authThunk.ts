@@ -1,4 +1,4 @@
-import { registerUser, loginUser, logoutUser } from '@/app/services/authService';
+import { registerUser, loginUser, logoutUser } from '@/services/authService';
 import { RegisterFormData, LoginFormData } from '@/validations/authValidation';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 

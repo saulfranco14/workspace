@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { initialState } from '../initialState';
-import { fetchCart, addToCart, updateItemQuantity, removeFromCart, emptyCart } from '../thunk/cartThunk';
+import { initialState } from '@/store/cart/initialState';
+import { fetchCart, addToCart, updateItemQuantity, removeFromCart, emptyCart } from '@/store/cart/thunk/cartThunk';
 
 const cartSlice = createSlice({
   name: 'cart',

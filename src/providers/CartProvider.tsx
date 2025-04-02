@@ -3,9 +3,9 @@
 import { ReactNode, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSession } from '@/hooks/useSession';
-import { fetchCart } from '@/app/store/cart/thunk/cartThunk';
-import { fetchUserFavoriteCollections } from '../store/favorites/thunk/favoritesThunk';
-import { AppDispatch } from '@/app/store/store';
+import { fetchCart } from '@/store/cart/thunk/cartThunk';
+import { fetchUserFavoriteCollections } from '@/store/favorites/thunk/favoritesThunk';
+import { AppDispatch } from '@/store/store';
 
 type CartProviderProps = {
   children: ReactNode;

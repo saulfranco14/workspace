@@ -1,6 +1,6 @@
-import { shouldShowSection } from '@/app/helpers/productHelpers';
+import { shouldShowSection } from '@/helpers/productHelpers';
 import { PlantProductsSectionProps } from '@/interfaces/product.interface';
-import ProductSection from '@/app/components/products/ProductSection';
+import ProductSection from '@/components/products/ProductSection';
 
 export const PlantProductsSection = ({
   products,

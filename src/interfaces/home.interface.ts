@@ -1,5 +1,5 @@
-import { Category } from './product.interface';
-import { Product } from './product.interface';
+import { Category } from '@/interfaces/product.interface';
+import { Product } from '@/interfaces/product.interface';
 
 export interface HomeContentProps {
   searchTerm: string;

@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiHeart, FiTrash2, FiPlus } from 'react-icons/fi';
 import styled from 'styled-components';
-import { AppDispatch } from '@/app/store/store';
-import { createFavoriteCollection, removeFavoriteCollection } from '@/app/store/favorites/thunk/favoritesThunk';
-import { setActiveCollection } from '@/app/store/favorites/slices/favoritesSlice';
+import { AppDispatch } from '@/store/store';
+import { createFavoriteCollection, removeFavoriteCollection } from '@/store/favorites/thunk/favoritesThunk';
+import { setActiveCollection } from '@/store/favorites/slices/favoritesSlice';
 import {
   selectFavoriteCollections,
   selectActiveCollection,

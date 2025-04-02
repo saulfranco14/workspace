@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { FiUser, FiLogOut, FiMenu } from 'react-icons/fi';
 
 import { useSession } from '@/hooks/useSession';
-import CartButton from '@/app/components/cart/CartButton';
+import CartButton from '@/components/cart/CartButton';
 import { HeaderStyle } from '@/styles/components/HeaderStyle';
 
 const Header = () => {

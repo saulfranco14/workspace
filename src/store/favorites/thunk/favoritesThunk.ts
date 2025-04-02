@@ -5,7 +5,7 @@ import {
   addProductToFavorites,
   removeProductFromFavorites,
   deleteCollection,
-} from '@/app/services/favoritesService';
+} from '@/services/favoritesService';
 
 export const fetchUserFavoriteCollections = createAsyncThunk(
   'favorites/fetchUserFavoriteCollections',

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Category } from '@/interfaces/product.interface';
-import { setSelectedCategory } from '@/app/store/products/slices/productsSlice';
-import { RootState } from '@/app/store/store';
+import { setSelectedCategory } from '@/store/products/slices/productsSlice';
+import { RootState } from '@/store/store';
 
 const CategoryFilter: React.FC<{
   title: string;

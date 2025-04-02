@@ -4,12 +4,12 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { AppDispatch, RootState } from '@/app/store/store';
-import { fetchProducts, fetchCategories } from '@/app/store/products/thunk/productThunk';
-import { PlantProductsSection } from '@/app/components/products/section/PlantProductsSection';
-import { AccessoryProductsSection } from '@/app/components/products/AccessoryProductsSection';
-import { FeaturedProductsSection } from '@/app/components/products/features/FeaturedProductsSection';
-import PlantCharacteristics from '@/app/components/products/PlantCharacteristics';
+import { AppDispatch, RootState } from '@/store/store';
+import { fetchProducts, fetchCategories } from '@/store/products/thunk/productThunk';
+import { PlantProductsSection } from '@/components/products/section/PlantProductsSection';
+import { AccessoryProductsSection } from '@/components/products/AccessoryProductsSection';
+import { FeaturedProductsSection } from '@/components/products/features/FeaturedProductsSection';
+import PlantCharacteristics from '@/components/products/PlantCharacteristics';
 
 export default function ProductsPage() {
   const dispatch = useDispatch<AppDispatch>();

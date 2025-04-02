@@ -1,3 +1,5 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import {
   getCategories,
   getCategoriesByType,
@@ -7,7 +9,6 @@ import {
   searchProducts,
   getProductById,
 } from '@/productService';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const fetchCategories = createAsyncThunk('products/fetchCategories', async (_, { rejectWithValue }) => {
   try {

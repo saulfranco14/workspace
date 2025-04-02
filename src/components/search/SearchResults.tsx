@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
-import { RootState } from '@/app/store/store';
-import ProductCard from '@/app/components/products/ProductCard';
-import PlantCareKit from '@/app/components/products/PlantCareKit';
+import { RootState } from '@/store/store';
+import ProductCard from '@/components/products/ProductCard';
+import PlantCareKit from '@/components/products/PlantCareKit';
 
 const SearchResults = () => {
   const { searchTerm, filteredProducts, loading, error, selectedCategory, categories } = useSelector(

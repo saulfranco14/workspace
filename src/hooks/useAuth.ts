@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { selectAuthUser, selectAuthLoading, selectAuthError, selectAuthSuccess } from '@/selectors/authSelectors';
-import { AppDispatch } from '@/app/store/store';
-import { logoutUserThunk } from '@/app/store/auth/thunk/authThunk';
-import { resetAuthState } from '@/app/store/auth/slices/authSlice';
+import { AppDispatch } from '@/store/store';
+import { logoutUserThunk } from '@/store/auth/thunk/authThunk';
+import { resetAuthState } from '@/store/auth/slices/authSlice';
 
 export const useAuth = () => {
   const dispatch = useDispatch<AppDispatch>();

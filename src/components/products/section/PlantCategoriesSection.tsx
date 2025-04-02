@@ -1,5 +1,5 @@
-import { shouldShowSection } from '@/app/helpers/productHelpers';
-import CategoryFilter from '@/app/components/filters/CategoryFilter';
+import { shouldShowSection } from '@/helpers/productHelpers';
+import CategoryFilter from '@/components/filters/CategoryFilter';
 import { PlantCategoriesSectionProps } from '@/interfaces/product.interface';
 
 export const PlantCategoriesSection = ({

@@ -2,12 +2,12 @@
 
 import { createContext, useContext, useEffect, ReactNode } from 'react';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '@/app/store/store';
+import { AppDispatch } from '@/store/store';
 
 import { useAuth } from '@/hooks/useAuth';
-import { getSession } from '@/app/services/authService';
-import { setUser } from '@/app/store/auth/slices/authSlice';
-import { AuthContextType } from '../interfaces/auth.interface';
+import { getSession } from '@/services/authService';
+import { setUser } from '@/store/auth/slices/authSlice';
+import { AuthContextType } from '@/interfaces/auth.interface';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

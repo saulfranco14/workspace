@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/interfaces/product.interface';
-import AddToCartButton from '@/app/components/cart/AddToCartButton';
-import AddToFavoritesButton from '@/app/components/favorites/AddToFavoritesButton';
-import ViewMoreButton from '@/app/components/cart/ViewMoreButton';
+import AddToCartButton from '@/components/cart/AddToCartButton';
+import AddToFavoritesButton from '@/components/favorites/AddToFavoritesButton';
+import ViewMoreButton from '@/components/cart/ViewMoreButton';
 import styled from 'styled-components';
 
 interface ProductCardProps {

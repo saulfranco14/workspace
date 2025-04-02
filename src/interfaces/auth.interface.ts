@@ -1,5 +1,5 @@
 import { Session, User } from '@supabase/supabase-js';
-import { RegisterFormData, LoginFormData } from '../validations/authValidation';
+import { RegisterFormData, LoginFormData } from '@/validations/authValidation';
 
 export interface BaseCredentials {
   email: string;

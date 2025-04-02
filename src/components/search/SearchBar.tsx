@@ -1,8 +1,8 @@
 import { useState, FormEvent, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/app/store/store';
-import { searchProductsThunk } from '@/app/store/products/thunk/productThunk';
-import { setSelectedCategory, clearFilters } from '@/app/store/products/slices/productsSlice';
+import { AppDispatch, RootState } from '@/store/store';
+import { searchProductsThunk } from '@/store/products/thunk/productThunk';
+import { setSelectedCategory, clearFilters } from '@/store/products/slices/productsSlice';
 
 const SearchBar = () => {
   const [inputValue, setInputValue] = useState('');

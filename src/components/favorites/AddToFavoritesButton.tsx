@@ -4,19 +4,15 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiHeart } from 'react-icons/fi';
 import styled from 'styled-components';
-import { AppDispatch } from '@/app/store/store';
-import {
-  addToFavorites,
-  removeFromFavorites,
-  createFavoriteCollection,
-} from '@/app/store/favorites/thunk/favoritesThunk';
+import { AppDispatch } from '@/store/store';
+import { addToFavorites, removeFromFavorites, createFavoriteCollection } from '@/store/favorites/thunk/favoritesThunk';
 import {
   selectFavoriteCollections,
   selectActiveCollection,
   makeSelectIsProductInActiveCollection,
   makeSelectFavoriteItemByProductId,
 } from '@/selectors/favoriteSelectors';
-import { setActiveCollection } from '@/app/store/favorites/slices/favoritesSlice';
+import { setActiveCollection } from '@/store/favorites/slices/favoritesSlice';
 
 interface AddToFavoritesButtonProps {
   productId: string;

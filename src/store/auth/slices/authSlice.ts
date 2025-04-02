@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AuthData } from '@/interfaces/auth.interface';
-import { registerUserThunk, loginUserThunk, logoutUserThunk } from '@/app/store/auth/thunk/authThunk';
+import { registerUserThunk, loginUserThunk, logoutUserThunk } from '@/store/auth/thunk/authThunk';
 import { User } from '@supabase/supabase-js';
-import { initialState } from '@/app/store/auth/initialState';
+import { initialState } from '@/store/auth/initialState';
 
 const authSlice = createSlice({
   name: 'auth',

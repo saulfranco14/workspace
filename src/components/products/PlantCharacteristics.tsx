@@ -1,4 +1,4 @@
-import { characteristics } from '@/app/helpers/PlanCharacteristics';
+import { characteristics } from '@/helpers/PlanCharacteristics';
 
 const PlantCharacteristics = () => {
   return (
