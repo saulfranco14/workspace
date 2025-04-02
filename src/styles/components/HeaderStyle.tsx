@@ -27,6 +27,10 @@ export const HeaderStyle = {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--primary);
+
+    @media (max-width: 425px) {
+      display: none;
+    }
   `,
 
   LogoLink: styled(Link)`

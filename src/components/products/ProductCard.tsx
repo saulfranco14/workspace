@@ -158,7 +158,6 @@ const StockBadge = styled.div<{ stock: number }>`
 
 const ButtonContainer = styled.div`
   width: 100%;
-  height: 50px;
   margin-top: auto;
   display: flex;
   gap: 10px;
