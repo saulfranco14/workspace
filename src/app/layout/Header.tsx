@@ -8,10 +8,15 @@ import { FiUser, FiLogOut, FiMenu } from 'react-icons/fi';
 import { useSession } from '@/hooks/useSession';
 import CartButton from '@/components/cart/CartButton';
 import { HeaderStyle } from '@/styles/components/HeaderStyle';
+import { useClientReady } from '@/hooks/useClientReady';
 
 const Header = () => {
+  const clientReady = useClientReady();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const { user } = useSession();
+
+  if (!clientReady) return null;
 
   return (
     <HeaderStyle.HeaderContainer>

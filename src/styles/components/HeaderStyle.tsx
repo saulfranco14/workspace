@@ -8,6 +8,12 @@ export const HeaderStyle = {
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: all 0.3s ease;
+
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
 
     .container {
       max-width: 1200px;
@@ -21,6 +27,7 @@ export const HeaderStyle = {
     align-items: center;
     justify-content: space-between;
     height: 70px;
+    pointer-events: auto;
   `,
 
   Logo: styled.div`
@@ -43,6 +50,7 @@ export const HeaderStyle = {
   NavLinks: styled.nav`
     display: flex;
     gap: 20px;
+    pointer-events: auto;
 
     @media (max-width: 768px) {
       position: fixed;
