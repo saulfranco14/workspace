@@ -5,6 +5,7 @@ export const initialState: FavoritesState = {
   activeCollection: null,
   loading: false,
   error: null,
+  duplicateError: null,
   isAddingToFavorites: false,
   isRemovingFromFavorites: false,
 };

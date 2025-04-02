@@ -6,6 +6,7 @@ export const selectFavoriteCollections = (state: RootState) => state.favorites.c
 export const selectActiveCollection = (state: RootState) => state.favorites.activeCollection;
 export const selectFavoritesLoading = (state: RootState) => state.favorites.loading;
 export const selectFavoritesError = (state: RootState) => state.favorites.error;
+export const selectDuplicateError = (state: RootState) => state.favorites.duplicateError;
 export const selectIsAddingToFavorites = (state: RootState) => state.favorites.isAddingToFavorites;
 export const selectIsRemovingFromFavorites = (state: RootState) => state.favorites.isRemovingFromFavorites;
 
@@ -48,3 +49,15 @@ export const makeSelectFavoriteItemByProductId = () => {
     }
   );
 };
+
+export const selectActiveCollectionDebugInfo = createSelector([selectActiveCollection], (activeCollection) => {
+  if (!activeCollection) {
+    return 'No hay colección activa';
+  }
+
+  return {
+    id: activeCollection.id,
+    name: activeCollection.name,
+    itemCount: activeCollection.items?.length || 0,
+  };
+});

@@ -85,8 +85,23 @@ export const createCollection = async (name: string): Promise<FavoriteCollection
   }
 };
 
-export const addProductToFavorites = async (productId: string, collectionId: string): Promise<FavoriteItem> => {
+export const addProductToFavorites = async (
+  productId: string,
+  collectionId: string
+): Promise<{ item: FavoriteItem | null; isExisting: boolean }> => {
   try {
+    const { data: existingItem, error: checkError } = await supabase
+      .from('favorite_items')
+      .select('*, product:products(*)')
+      .eq('product_id', productId)
+      .eq('collection_id', collectionId)
+      .maybeSingle();
+
+    if (checkError) throw checkError;
+
+    if (existingItem) {
+      return { item: existingItem as FavoriteItem, isExisting: true };
+    }
     const favoriteItem = {
       collection_id: collectionId,
       product_id: productId,
@@ -96,9 +111,18 @@ export const addProductToFavorites = async (productId: string, collectionId: str
 
     if (error) throw error;
 
-    const fullFavoriteItem = await getFavoriteByProductId();
+    const fullFavoriteItem = await getFavoriteByProductId(productId, collectionId);
+    if (!fullFavoriteItem) throw new Error('Error al obtener el item de favoritos');
 
-    return fullFavoriteItem as FavoriteItem;
+    const { data: itemWithProduct, error: productError } = await supabase
+      .from('favorite_items')
+      .select('*, product:products(*)')
+      .eq('id', fullFavoriteItem.id)
+      .single();
+
+    if (productError) throw productError;
+
+    return { item: itemWithProduct as FavoriteItem, isExisting: false };
   } catch (error) {
     console.error('Error al añadir producto a favoritos:', error);
     throw error;
@@ -134,25 +158,23 @@ export const deleteCollection = async (collectionId: string): Promise<string> =>
   }
 };
 
-export const getFavoriteByProductId = async (): Promise<FavoriteItem | null> => {
+export const getFavoriteByProductId = async (productId: string, collectionId: string): Promise<FavoriteItem | null> => {
   try {
     const { data, error } = await supabase
       .from('favorite_items')
-      .select('*')
-      .order('added_at', { ascending: false })
-      .limit(1)
+      .select('*, product:products(*)')
+      .eq('product_id', productId)
+      .eq('collection_id', collectionId)
       .maybeSingle();
 
     if (error) {
-      console.error('Error al obtener colección de favoritos:', error);
+      console.error('Error al obtener item de favoritos:', error);
       throw error;
     }
 
-    console.log('getFavoriteByProductId', data);
-
     return data as FavoriteItem;
   } catch (error) {
-    console.error('Error en getCollection:', error);
+    console.error('Error en getFavoriteByProductId:', error);
     return null;
   }
 };

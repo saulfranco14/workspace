@@ -20,6 +20,9 @@ const favoritesSlice = createSlice({
     clearFavoritesError: (state) => {
       state.error = null;
     },
+    clearDuplicateError: (state) => {
+      state.duplicateError = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -60,13 +63,23 @@ const favoritesSlice = createSlice({
       })
       .addCase(
         addToFavorites.fulfilled,
-        (state, action: PayloadAction<{ item: FavoriteItem; collectionId: string }>) => {
+        (state, action: PayloadAction<{ item: FavoriteItem | null; collectionId: string; isExisting: boolean }>) => {
           state.isAddingToFavorites = false;
 
-          const { item, collectionId } = action.payload;
+          const { item, collectionId, isExisting } = action.payload;
+
+          // Si es un producto existente, no necesitamos actualizar el estado
+          if (isExisting || !item) {
+            const collectionName = state.collections.find((c) => c.id === collectionId)?.name || 'favoritos';
+            state.duplicateError = `Este producto ya está en la colección "${collectionName}"`;
+            return;
+          }
+
+          // Si es un nuevo producto, lo añadimos a la colección
+          state.duplicateError = null;
           const collectionIndex = state.collections.findIndex((col) => col.id === collectionId);
 
-          if (collectionIndex !== -1) {
+          if (collectionIndex !== -1 && item) {
             if (!state.collections[collectionIndex].items) {
               state.collections[collectionIndex].items = [];
             }
@@ -135,5 +148,5 @@ const favoritesSlice = createSlice({
   },
 });
 
-export const { setActiveCollection, clearFavoritesError } = favoritesSlice.actions;
+export const { setActiveCollection, clearFavoritesError, clearDuplicateError } = favoritesSlice.actions;
 export default favoritesSlice.reducer;

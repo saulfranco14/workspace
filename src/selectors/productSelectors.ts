@@ -5,6 +5,7 @@ export const selectPlantCategories = (state: RootState) => state.products.plantC
 export const selectAccessoryCategories = (state: RootState) => state.products.accessoryCategories;
 export const selectKitCategories = (state: RootState) => state.products.kitCategories;
 export const selectProducts = (state: RootState) => state.products.products;
+export const selectAllProducts = (state: RootState) => state.products.products || [];
 export const selectFeaturedProducts = (state: RootState) => state.products.featuredProducts;
 export const selectSelectedCategory = (state: RootState) => state.products.selectedCategory;
 export const selectSearchTerm = (state: RootState) => state.products.searchTerm;

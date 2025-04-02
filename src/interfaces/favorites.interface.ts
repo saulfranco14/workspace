@@ -23,6 +23,7 @@ export interface FavoritesState {
   activeCollection: FavoriteCollection | null;
   loading: boolean;
   error: string | null;
+  duplicateError: string | null;
   isAddingToFavorites: boolean;
   isRemovingFromFavorites: boolean;
 }

@@ -12,6 +12,7 @@ import {
   selectActiveCollection,
   selectFavoritesLoading,
 } from '@/selectors/favoriteSelectors';
+import DroppableCollection from './DroppableCollection';
 
 const FavoriteCollections: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -51,9 +52,9 @@ const FavoriteCollections: React.FC = () => {
     <CollectionsContainer>
       <CollectionsHeader>
         <h2>Mis Colecciones</h2>
-        <AddButton onClick={() => setShowCreateForm(!showCreateForm)}>
+        <AddButton onClick={() => setShowCreateForm(true)}>
           <FiPlus />
-          <span>Nueva colección</span>
+          <span>Nueva</span>
         </AddButton>
       </CollectionsHeader>
 
@@ -61,18 +62,13 @@ const FavoriteCollections: React.FC = () => {
         <CreateForm>
           <input
             type="text"
+            placeholder="Nombre de la colección"
             value={newCollectionName}
             onChange={(e) => setNewCollectionName(e.target.value)}
-            placeholder="Nombre de la colección"
+            autoFocus
           />
           <CreateFormButtons>
-            <button
-              className="cancel"
-              onClick={() => {
-                setShowCreateForm(false);
-                setNewCollectionName('');
-              }}
-            >
+            <button className="cancel" onClick={() => setShowCreateForm(false)}>
               Cancelar
             </button>
             <button className="create" onClick={handleCreateCollection} disabled={!newCollectionName.trim()}>
@@ -84,69 +80,60 @@ const FavoriteCollections: React.FC = () => {
 
       {collections.length === 0 ? (
         <EmptyCollections>
-          <FiHeart size={24} />
-          <p>No tienes colecciones de favoritos</p>
-          <button onClick={() => setShowCreateForm(true)}>Crear mi primera colección</button>
+          <FiHeart size={48} />
+          <p>No tienes colecciones de favoritos todavía</p>
+          <button onClick={() => setShowCreateForm(true)}>Crear colección</button>
         </EmptyCollections>
       ) : (
-        <>
-          <CollectionsList>
-            {collections.map((collection) => (
-              <CollectionItem
-                key={collection.id}
-                onClick={() => handleSelectCollection(collection.id)}
-                $isActive={activeCollection?.id === collection.id}
+        <CollectionsList>
+          {collections.map((collection) => (
+            <div key={collection.id} style={{ position: 'relative' }}>
+              <DroppableCollection
+                collectionId={collection.id}
+                name={collection.name}
+                itemCount={collection.items?.length || 0}
+                isActive={activeCollection?.id === collection.id}
+                onSelect={() => handleSelectCollection(collection.id)}
+              />
+
+              <DeleteButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowConfirmDelete(collection.id);
+                }}
+                aria-label="Eliminar colección"
               >
-                <CollectionInfo>
-                  <HeartIcon $isActive={activeCollection?.id === collection.id}>
-                    <FiHeart />
-                  </HeartIcon>
-                  <div>
-                    <CollectionName>{collection.name}</CollectionName>
-                    <ItemCount>
-                      {collection.items?.length || 0} {collection.items?.length === 1 ? 'producto' : 'productos'}
-                    </ItemCount>
-                  </div>
-                </CollectionInfo>
+                <FiTrash2 size={16} />
+              </DeleteButton>
 
-                <DeleteButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowConfirmDelete(collection.id);
-                  }}
-                >
-                  <FiTrash2 />
-                </DeleteButton>
-
-                {showConfirmDelete === collection.id && (
-                  <ConfirmDelete onClick={(e) => e.stopPropagation()}>
-                    <p>¿Eliminar esta colección?</p>
-                    <ConfirmButtons>
-                      <button
-                        className="cancel"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowConfirmDelete(null);
-                        }}
-                      >
-                        Cancelar
-                      </button>
-                      <button
-                        className="delete"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteCollection(collection.id);
-                        }}
-                      >
-                        Eliminar
-                      </button>
-                    </ConfirmButtons>
-                  </ConfirmDelete>
-                )}
-              </CollectionItem>
-            ))}
-          </CollectionsList>
-        </>
+              {showConfirmDelete === collection.id && (
+                <ConfirmDelete>
+                  <p>¿Eliminar esta colección?</p>
+                  <ConfirmButtons>
+                    <button
+                      className="cancel"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowConfirmDelete(null);
+                      }}
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      className="delete"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteCollection(collection.id);
+                      }}
+                    >
+                      Eliminar
+                    </button>
+                  </ConfirmButtons>
+                </ConfirmDelete>
+              )}
+            </div>
+          ))}
+        </CollectionsList>
       )}
     </CollectionsContainer>
   );
@@ -287,47 +274,6 @@ const CollectionsList = styled.div`
   overflow-y: auto;
 `;
 
-const CollectionItem = styled.div<{ $isActive: boolean }>`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.875rem 1rem;
-  border-bottom: 1px solid #e5e7eb;
-  background-color: ${(props) => (props.$isActive ? 'var(--primary-light)' : 'transparent')};
-  cursor: pointer;
-  position: relative;
-  transition: all 0.2s ease;
-  border-left: ${(props) => (props.$isActive ? '4px solid var(--primary)' : '4px solid transparent')};
-
-  &:hover {
-    background-color: ${(props) => (props.$isActive ? 'var(--primary-light)' : '#f9fafb')};
-  }
-
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-const CollectionInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  svg {
-    color: var(--primary);
-  }
-`;
-
-const CollectionName = styled.div`
-  font-weight: 500;
-  color: #1f2937;
-`;
-
-const ItemCount = styled.div`
-  font-size: 0.75rem;
-  color: #6b7280;
-`;
-
 const DeleteButton = styled.button`
   background: none;
   border: none;
@@ -338,6 +284,11 @@ const DeleteButton = styled.button`
   align-items: center;
   justify-content: center;
   transition: color 0.2s;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
 
   &:hover {
     color: #ef4444;
@@ -402,22 +353,6 @@ const LoadingMessage = styled.div`
   padding: 2rem;
   text-align: center;
   color: #6b7280;
-`;
-
-const HeartIcon = styled.div<{ $isActive: boolean }>`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  svg {
-    color: var(--primary);
-    fill: ${(props) => (props.$isActive ? 'var(--primary)' : 'transparent')};
-    stroke-width: ${(props) => (props.$isActive ? '2.5' : '2')};
-    transition:
-      fill 0.2s ease,
-      stroke-width 0.2s ease;
-  }
 `;
 
 export default FavoriteCollections;

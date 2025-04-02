@@ -41,11 +41,12 @@ export const addToFavorites = createAsyncThunk(
   'favorites/addToFavorites',
   async ({ productId, collectionId }: { productId: string; collectionId: string }, { rejectWithValue }) => {
     try {
-      const item = await addProductToFavorites(productId, collectionId);
+      const result = await addProductToFavorites(productId, collectionId);
 
       return {
-        item,
+        item: result.item,
         collectionId,
+        isExisting: result.isExisting,
       };
     } catch (error) {
       if (error instanceof Error) {

@@ -9,6 +9,7 @@ import {
   fetchProductById,
 } from '@/store/products/thunk/productThunk';
 import { initialState } from '@/store/products/initialState';
+import { Product } from '@/interfaces/product.interface';
 
 const productsSlice = createSlice({
   name: 'products',
@@ -51,6 +52,9 @@ const productsSlice = createSlice({
       state.searchTerm = '';
       state.filteredProducts = state.products;
     },
+    clearProductsError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -84,11 +88,12 @@ const productsSlice = createSlice({
 
       .addCase(fetchProducts.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
+      .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
         state.loading = false;
-        state.products = action.payload || [];
-        state.filteredProducts = action.payload || [];
+        state.products = action.payload;
+        state.filteredProducts = action.payload;
         state.error = null;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
@@ -166,5 +171,5 @@ const productsSlice = createSlice({
   },
 });
 
-export const { setSelectedCategory, setSearchTerm, clearFilters } = productsSlice.actions;
+export const { setSelectedCategory, setSearchTerm, clearFilters, clearProductsError } = productsSlice.actions;
 export default productsSlice.reducer;
