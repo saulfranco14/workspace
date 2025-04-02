@@ -47,6 +47,7 @@ const DroppableCollection: React.FC<DroppableCollectionProps> = ({
 
           console.log('Dropping to specific collection:', name, 'ID:', targetId);
 
+          // Agregar el producto a favoritos
           await dispatch(
             addToFavorites({
               productId: item.product.id,
@@ -54,9 +55,13 @@ const DroppableCollection: React.FC<DroppableCollectionProps> = ({
             })
           );
 
-          // Recargar las colecciones para actualizar el contenido con los productos completos
-          await dispatch(fetchUserFavoriteCollections());
+          // Esperar un momento para asegurar que la base de datos se haya actualizado
+          setTimeout(async () => {
+            // Recargar las colecciones para actualizar el contenido con los productos completos
+            await dispatch(fetchUserFavoriteCollections());
+          }, 500);
         } catch (error) {
+          console.error('Error al añadir a favoritos:', error);
           // En caso de error, simplemente actualizar las colecciones para reflejar el estado actual
           await dispatch(fetchUserFavoriteCollections());
         }

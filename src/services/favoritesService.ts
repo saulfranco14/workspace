@@ -85,6 +85,29 @@ export const createCollection = async (name: string): Promise<FavoriteCollection
   }
 };
 
+export const getFavoriteItem = async (): Promise<FavoriteItem | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('favorite_items')
+      .select('*, product:products(*)')
+      .order('added_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error al obtener colección de favoritos:', error);
+      throw error;
+    }
+
+    console.log('getFavoriteItem', data);
+
+    return data as FavoriteItem;
+  } catch (error) {
+    console.error('Error en getFavoriteItem:', error);
+    return null;
+  }
+};
+
 export const addProductToFavorites = async (
   productId: string,
   collectionId: string
@@ -100,29 +123,21 @@ export const addProductToFavorites = async (
     if (checkError) throw checkError;
 
     if (existingItem) {
+      console.log('Producto ya existe en favoritos:', existingItem);
       return { item: existingItem as FavoriteItem, isExisting: true };
     }
+
     const favoriteItem = {
       collection_id: collectionId,
       product_id: productId,
     };
 
-    const { error } = await supabase.from('favorite_items').insert(favoriteItem);
+    const { error: insertError } = await supabase.from('favorite_items').insert(favoriteItem);
 
-    if (error) throw error;
+    if (insertError) throw insertError;
+    const insertedItem = await getFavoriteItem();
 
-    const fullFavoriteItem = await getFavoriteByProductId(productId, collectionId);
-    if (!fullFavoriteItem) throw new Error('Error al obtener el item de favoritos');
-
-    const { data: itemWithProduct, error: productError } = await supabase
-      .from('favorite_items')
-      .select('*, product:products(*)')
-      .eq('id', fullFavoriteItem.id)
-      .single();
-
-    if (productError) throw productError;
-
-    return { item: itemWithProduct as FavoriteItem, isExisting: false };
+    return { item: insertedItem as FavoriteItem, isExisting: false };
   } catch (error) {
     console.error('Error al añadir producto a favoritos:', error);
     throw error;

@@ -16,7 +16,11 @@ import {
   selectDuplicateError,
 } from '@/selectors/favoriteSelectors';
 import { ItemTypes } from '@/components/products/DraggableProductsList';
-import { addToFavorites, fetchUserFavoriteCollections } from '@/store/favorites/thunk/favoritesThunk';
+import {
+  addToFavorites,
+  fetchUserFavoriteCollections,
+  removeFromFavorites,
+} from '@/store/favorites/thunk/favoritesThunk';
 import { clearDuplicateError } from '@/store/favorites/slices/favoritesSlice';
 
 import FavoriteCollections from '@/components/favorites/FavoriteCollections';
@@ -25,62 +29,63 @@ import ProductCard from '@/components/products/ProductCard';
 import EmptyResults from '@/components/shared/EmptyResults';
 import { AppDispatch } from '@/store/store';
 import { Product } from '@/interfaces/product.interface';
+import { FavoriteCollection } from '@/interfaces/favorites.interface';
 
 // Componente para recibir productos arrastrados en el grid
-const DroppableProductGrid: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const DroppableProductGrid: React.FC<{
+  children?: React.ReactNode;
+}> = ({ children }) => {
   const dispatch = useDispatch<AppDispatch>();
   const activeCollection = useSelector(selectActiveCollection);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Mantener una referencia a la colección activa actual
-  const activeCollectionRef = useRef(activeCollection);
+  // Solo proceder si hay una colección activa
+  const collectionIdRef = useRef<string | undefined>(activeCollection?.id);
 
+  // Mantener actualizada la referencia al ID de la colección
   useEffect(() => {
-    activeCollectionRef.current = activeCollection;
+    collectionIdRef.current = activeCollection?.id;
   }, [activeCollection]);
 
   const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
       accept: ItemTypes.PRODUCT,
       drop: async (item: { product: Product; targetCollectionId?: string }) => {
-        if (activeCollectionRef.current) {
-          try {
-            // Usar el targetCollectionId si está disponible, o el id de la colección activa como respaldo
-            const targetId = item.targetCollectionId || activeCollectionRef.current.id;
+        try {
+          // Asegurarse de que hay una colección activa
+          if (!collectionIdRef.current) return;
 
-            console.log(
-              'Dropping product to collection:',
-              targetId,
-              'Active collection:',
-              activeCollectionRef.current?.name
-            );
+          const targetId = collectionIdRef.current;
 
-            await dispatch(
-              addToFavorites({
-                productId: item.product.id,
-                collectionId: targetId,
-              })
-            );
+          console.log('Dropping to grid of collection:', activeCollection?.name, 'ID:', targetId);
 
-            // Recargar las colecciones para actualizar el contenido con los productos completos
+          // Agregar el producto a favoritos
+          await dispatch(
+            addToFavorites({
+              productId: item.product.id,
+              collectionId: targetId,
+            })
+          );
+
+          // Esperar un momento y luego forzar una actualización de las colecciones
+          // para asegurar que los cambios se reflejen en la interfaz
+          setTimeout(async () => {
             await dispatch(fetchUserFavoriteCollections());
-          } catch (error) {
-            // En caso de error, simplemente actualizar las colecciones para reflejar el estado actual
-            await dispatch(fetchUserFavoriteCollections());
-          }
-
-          return { addedToGrid: true, collectionId: activeCollectionRef.current.id };
+          }, 500);
+        } catch (error) {
+          console.error('Error al añadir producto a favoritos:', error);
+          // En caso de error, intentar actualizar las colecciones de todos modos
+          dispatch(fetchUserFavoriteCollections());
         }
-        return undefined;
       },
-      canDrop: () => !!activeCollectionRef.current,
+      canDrop: () => !!collectionIdRef.current,
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
         canDrop: !!monitor.canDrop(),
       }),
     }),
-    [activeCollectionRef.current]
-  ); // Dependencia: solo recrear cuando cambie la colección activa
+    [collectionIdRef.current]
+  );
 
   // Conectar el drop al ref
   drop(ref);
@@ -134,10 +139,15 @@ const DuplicateNotification: React.FC = () => {
 };
 
 export default function FavoritosPage() {
+  const dispatch = useDispatch<AppDispatch>();
   const activeCollection = useSelector(selectActiveCollection);
   const productsInCollection = useSelector(selectActiveCollectionProducts);
   const loading = useSelector(selectFavoritesLoading);
   const error = useSelector(selectFavoritesError);
+
+  const handleRemoveFromFavorites = (itemId: string, collectionId: string) => {
+    dispatch(removeFromFavorites({ itemId, collectionId }));
+  };
 
   return (
     <DndProvider backend={HTML5Backend}>
