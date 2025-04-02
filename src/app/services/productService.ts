@@ -45,7 +45,6 @@ export const getCategoriesByType = async (typePatterns: string[]): Promise<Categ
   }
 };
 
-// Base function for product queries
 const queryProducts = async (queryFn: (query: any) => any, operation: string): Promise<ProductsResponse> => {
   try {
     const baseQuery = supabase.from('products').select(`

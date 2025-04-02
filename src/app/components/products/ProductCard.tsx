@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/app/interfaces/product.interface';
 import AddToCartButton from '@/app/components/cart/AddToCartButton';
+import AddToFavoritesButton from '@/app/components/favorites/AddToFavoritesButton';
 import styled from 'styled-components';
 
 interface ProductCardProps {
@@ -45,6 +46,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               </svg>
             </PlaceholderImage>
           )}
+          <FavoriteButtonWrapper>
+            <AddToFavoritesButton productId={product.id} size="sm" />
+          </FavoriteButtonWrapper>
         </ImageContainer>
       </Link>
 
@@ -89,6 +93,13 @@ const ImageContainer = styled.div`
   height: 200px;
   width: 100%;
   background-color: #f9f9f9;
+`;
+
+const FavoriteButtonWrapper = styled.div`
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 10;
 `;
 
 const PlaceholderImage = styled.div`

@@ -187,24 +187,27 @@ export interface Database {
       favorite_collections: {
         Row: {
           id: string;
-          user_id: string;
+          user_id: string | null;
           name: string;
           created_at: string;
           updated_at: string;
+          device_fingerprint: string | null;
         };
         Insert: {
           id?: string;
-          user_id: string;
+          user_id?: string | null;
           name: string;
           created_at?: string;
           updated_at?: string;
+          device_fingerprint?: string | null;
         };
         Update: {
           id?: string;
-          user_id?: string;
+          user_id?: string | null;
           name?: string;
           created_at?: string;
           updated_at?: string;
+          device_fingerprint?: string | null;
         };
         Relationships: [
           {

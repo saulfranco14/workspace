@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AddToCartButton from '@/app/components/cart/AddToCartButton';
+import AddToFavoritesButton from '@/app/components/favorites/AddToFavoritesButton';
 import EmptyResults from '@/app/components/shared/EmptyResults';
 import styled from 'styled-components';
 import { fetchProductById } from '@/app/store/products/thunk/productThunk';
@@ -129,10 +130,7 @@ export default function ProductDetailPage() {
           <ActionsContainer>
             <AddToCartButton productId={product.id} stock={product.stock} />
             <ActionButtonGroup>
-              <ActionButton aria-label="Añadir a favoritos">
-                <FiHeart />
-                <span className="action-text">Favoritos</span>
-              </ActionButton>
+              <AddToFavoritesButton productId={product.id} showText={true} size="lg" />
               <ActionButton aria-label="Compartir producto">
                 <FiShare2 />
                 <span className="action-text">Compartir</span>

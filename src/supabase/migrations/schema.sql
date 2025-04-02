@@ -79,10 +79,11 @@ CREATE TABLE IF NOT EXISTS cart_items (
 -- Tabla de Colecciones de Favoritos
 CREATE TABLE IF NOT EXISTS favorite_collections (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
   name VARCHAR(100) NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  device_fingerprint VARCHAR(100), -- Para colecciones de usuarios no autenticados
   UNIQUE(user_id, name)
 );
 
@@ -173,16 +174,16 @@ CREATE POLICY "Usuarios pueden eliminar elementos de su propio carrito" ON cart_
 
 -- Políticas para colecciones de favoritos
 CREATE POLICY "Usuarios pueden ver sus propias colecciones de favoritos" ON favorite_collections
-  FOR SELECT USING (auth.uid() = user_id);
+  FOR SELECT USING (auth.uid() = user_id OR device_fingerprint = current_setting('request.headers')::json->>'x-device-fingerprint');
 
 CREATE POLICY "Usuarios pueden crear colecciones de favoritos" ON favorite_collections
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
+  FOR INSERT WITH CHECK (auth.uid() = user_id OR device_fingerprint = current_setting('request.headers')::json->>'x-device-fingerprint');
 
 CREATE POLICY "Usuarios pueden actualizar sus propias colecciones de favoritos" ON favorite_collections
-  FOR UPDATE USING (auth.uid() = user_id);
+  FOR UPDATE USING (auth.uid() = user_id OR device_fingerprint = current_setting('request.headers')::json->>'x-device-fingerprint');
 
 CREATE POLICY "Usuarios pueden eliminar sus propias colecciones de favoritos" ON favorite_collections
-  FOR DELETE USING (auth.uid() = user_id);
+  FOR DELETE USING (auth.uid() = user_id OR device_fingerprint = current_setting('request.headers')::json->>'x-device-fingerprint');
 
 -- Políticas para elementos favoritos
 CREATE POLICY "Usuarios pueden ver elementos de sus colecciones de favoritos" ON favorite_items
