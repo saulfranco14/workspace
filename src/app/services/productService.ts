@@ -9,7 +9,14 @@ export const getCategories = async (): Promise<CategoriesResponse> => {
 
     if (error) throw error;
 
-    const categories = data?.map(formatCategory) || null;
+    const categories =
+      data?.map((item) =>
+        formatCategory({
+          ...item,
+          type: item.type as 'plant' | 'accessory' | 'kit',
+          description: item.description || undefined,
+        })
+      ) || null;
     return { data: categories, error: null };
   } catch (error) {
     return handleError<Category[]>(error, 'obtener categorías');
@@ -38,14 +45,27 @@ export const getCategoriesByType = async (typePatterns: string[]): Promise<Categ
 
     if (error) throw error;
 
-    const categories = data?.map(formatCategory) || null;
+    const categories =
+      data?.map((item) =>
+        formatCategory({
+          ...item,
+          type: item.type as 'plant' | 'accessory' | 'kit',
+          description: item.description || undefined,
+        })
+      ) || null;
     return { data: categories, error: null };
   } catch (error) {
     return handleError<Category[]>(error, 'obtener categorías por tipo');
   }
 };
 
-const queryProducts = async (queryFn: (query: any) => any, operation: string): Promise<ProductsResponse> => {
+const queryProducts = async (
+  queryFn: (query: ReturnType<typeof supabase.from>) => Promise<{
+    data: Record<string, any>[] | null;
+    error: Error | null;
+  }>,
+  operation: string
+): Promise<ProductsResponse> => {
   try {
     const baseQuery = supabase.from('products').select(`
       *,
@@ -126,7 +146,24 @@ export const getProductById = async (id: string): Promise<{ data: Product | null
 
     if (error) throw error;
 
-    return { data: formatProduct(data), error: null };
+    return {
+      data: data
+        ? formatProduct({
+            ...data,
+            description: data.description || '',
+            category_id: data.category_id || '',
+            image_url: data.image_url || undefined,
+            category: data.category
+              ? {
+                  ...data.category,
+                  type: 'plant' as 'plant' | 'accessory' | 'kit',
+                  description: data.category.description || undefined,
+                }
+              : undefined,
+          })
+        : null,
+      error: null,
+    };
   } catch (error) {
     return handleError<Product>(error, `obtener el producto con ID ${id}`);
   }

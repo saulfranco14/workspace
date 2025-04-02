@@ -13,8 +13,11 @@ export const fetchUserFavoriteCollections = createAsyncThunk(
     try {
       const collections = await getUserFavoriteCollections();
       return collections;
-    } catch (error: any) {
-      return rejectWithValue(error.message || 'Error al obtener las colecciones de favoritos');
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Error al obtener las colecciones de favoritos');
     }
   }
 );
@@ -25,8 +28,11 @@ export const createFavoriteCollection = createAsyncThunk(
     try {
       const newCollection = await createCollection(name);
       return newCollection;
-    } catch (error: any) {
-      return rejectWithValue(error.message || 'Error al crear la colección de favoritos');
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Error al crear la colección de favoritos');
     }
   }
 );
@@ -41,8 +47,11 @@ export const addToFavorites = createAsyncThunk(
         item,
         collectionId,
       };
-    } catch (error: any) {
-      return rejectWithValue(error.message || 'Error al añadir el producto a favoritos');
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Error al añadir el producto a favoritos');
     }
   }
 );
@@ -53,8 +62,11 @@ export const removeFromFavorites = createAsyncThunk(
     try {
       const result = await removeProductFromFavorites(itemId, collectionId);
       return result;
-    } catch (error: any) {
-      return rejectWithValue(error.message || 'Error al eliminar el producto de favoritos');
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Error al eliminar el producto de favoritos');
     }
   }
 );
@@ -65,8 +77,11 @@ export const removeFavoriteCollection = createAsyncThunk(
     try {
       const result = await deleteCollection(collectionId);
       return result;
-    } catch (error: any) {
-      return rejectWithValue(error.message || 'Error al eliminar la colección de favoritos');
+    } catch (error) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('Error al eliminar la colección de favoritos');
     }
   }
 );

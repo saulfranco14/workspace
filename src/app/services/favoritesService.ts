@@ -25,7 +25,7 @@ export const getUserFavoriteCollections = async (): Promise<FavoriteCollection[]
     if (error) throw error;
 
     return data as FavoriteCollection[];
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error al obtener colecciones de favoritos:', error);
     throw error;
   }
@@ -115,7 +115,7 @@ export const removeProductFromFavorites = async (
     if (error) throw error;
 
     return { itemId, collectionId };
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error al eliminar producto de favoritos:', error);
     throw error;
   }
@@ -128,7 +128,7 @@ export const deleteCollection = async (collectionId: string): Promise<string> =>
     if (error) throw error;
 
     return collectionId;
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error al eliminar colección de favoritos:', error);
     throw error;
   }

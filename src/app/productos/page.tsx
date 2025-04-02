@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { RootState } from '@/app/store/store';
+import { AppDispatch, RootState } from '@/app/store/store';
 import { fetchProducts, fetchCategories } from '@/app/store/products/thunk/productThunk';
 import { PlantProductsSection } from '@/app/components/products/section/PlantProductsSection';
 import { AccessoryProductsSection } from '@/app/components/products/AccessoryProductsSection';
@@ -13,14 +13,14 @@ import { setSelectedCategory } from '@/app/store/products/slices/productsSlice';
 import PlantCharacteristics from '@/app/components/products/PlantCharacteristics';
 
 export default function ProductsPage() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const { products, selectedCategory, selectedCategoryType, selectedCategoryName } = useSelector(
     (state: RootState) => state.products
   );
 
   useEffect(() => {
-    dispatch(fetchProducts() as any);
-    dispatch(fetchCategories() as any);
+    dispatch(fetchProducts());
+    dispatch(fetchCategories());
   }, [dispatch]);
 
   const handleCategorySelect = (categoryId: string | null) => {
