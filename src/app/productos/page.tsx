@@ -9,7 +9,6 @@ import { fetchProducts, fetchCategories } from '@/app/store/products/thunk/produ
 import { PlantProductsSection } from '@/app/components/products/section/PlantProductsSection';
 import { AccessoryProductsSection } from '@/app/components/products/AccessoryProductsSection';
 import { FeaturedProductsSection } from '@/app/components/products/features/FeaturedProductsSection';
-import { setSelectedCategory } from '@/app/store/products/slices/productsSlice';
 import PlantCharacteristics from '@/app/components/products/PlantCharacteristics';
 
 export default function ProductsPage() {
@@ -22,10 +21,6 @@ export default function ProductsPage() {
     dispatch(fetchProducts());
     dispatch(fetchCategories());
   }, [dispatch]);
-
-  const handleCategorySelect = (categoryId: string | null) => {
-    dispatch(setSelectedCategory(categoryId));
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -76,29 +71,6 @@ const MainContent = styled.div`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-  }
-`;
-
-const FilterSection = styled.div`
-  background-color: white;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  border: 1px solid #e5e7eb;
-  height: fit-content;
-
-  @media (max-width: 768px) {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 50;
-    overflow-y: auto;
-
-    &.open {
-      display: block;
-    }
   }
 `;
 

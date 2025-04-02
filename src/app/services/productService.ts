@@ -61,7 +61,7 @@ export const getCategoriesByType = async (typePatterns: string[]): Promise<Categ
 
 const queryProducts = async (
   queryFn: (query: ReturnType<typeof supabase.from>) => Promise<{
-    data: Record<string, any>[] | null;
+    data: Product[] | null;
     error: Error | null;
   }>,
   operation: string

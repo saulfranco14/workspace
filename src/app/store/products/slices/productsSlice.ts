@@ -9,7 +9,6 @@ import {
   fetchProductById,
 } from '../thunk/productThunk';
 import { initialState } from '../initialState';
-import { Category } from '@/app/interfaces/product.interface';
 
 const productsSlice = createSlice({
   name: 'products',

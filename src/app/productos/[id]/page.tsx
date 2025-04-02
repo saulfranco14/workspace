@@ -1,16 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import Image from 'next/image';
-import { useParams, useRouter } from 'next/navigation';
-import { FiHeart, FiShare2, FiArrowLeft, FiShoppingBag, FiInfo } from 'react-icons/fi';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { FiShare2, FiArrowLeft, FiShoppingBag } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AddToCartButton from '@/app/components/cart/AddToCartButton';
 import AddToFavoritesButton from '@/app/components/favorites/AddToFavoritesButton';
 import EmptyResults from '@/app/components/shared/EmptyResults';
-import styled from 'styled-components';
 import { fetchProductById } from '@/app/store/products/thunk/productThunk';
 import { AppDispatch } from '@/app/store/store';
 import {

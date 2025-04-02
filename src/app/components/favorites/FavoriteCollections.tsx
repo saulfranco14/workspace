@@ -1,15 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiHeart, FiTrash2, FiPlus } from 'react-icons/fi';
 import styled from 'styled-components';
 import { AppDispatch } from '@/app/store/store';
-import {
-  fetchUserFavoriteCollections,
-  createFavoriteCollection,
-  removeFavoriteCollection,
-} from '@/app/store/favorites/thunk/favoritesThunk';
+import { createFavoriteCollection, removeFavoriteCollection } from '@/app/store/favorites/thunk/favoritesThunk';
 import { setActiveCollection } from '@/app/store/favorites/slices/favoritesSlice';
 import {
   selectFavoriteCollections,
@@ -28,7 +24,6 @@ const FavoriteCollections: React.FC = () => {
   const [showConfirmDelete, setShowConfirmDelete] = useState<string | null>(null);
 
   const handleSelectCollection = (collectionId: string) => {
-    console.log('collectionId', collectionId);
     const collection = collections.find((col) => col.id === collectionId);
     if (collection) {
       dispatch(setActiveCollection(collection));
@@ -409,22 +404,6 @@ const LoadingMessage = styled.div`
   color: #6b7280;
 `;
 
-const ActiveCollectionNote = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background-color: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
-  font-size: 0.875rem;
-  color: #4b5563;
-
-  svg {
-    color: var(--primary);
-    flex-shrink: 0;
-  }
-`;
-
 const HeartIcon = styled.div<{ $isActive: boolean }>`
   position: relative;
   display: flex;
@@ -439,20 +418,6 @@ const HeartIcon = styled.div<{ $isActive: boolean }>`
       fill 0.2s ease,
       stroke-width 0.2s ease;
   }
-`;
-
-const ActiveBadge = styled.span`
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: var(--primary);
-  color: white;
-  font-size: 0.6rem;
-  font-weight: 500;
-  padding: 0.15rem 0.3rem;
-  border-radius: 0.25rem;
-  white-space: nowrap;
 `;
 
 export default FavoriteCollections;
