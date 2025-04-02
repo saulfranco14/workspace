@@ -9,11 +9,11 @@ import {
   selectActiveCollectionProducts,
   selectFavoritesLoading,
   selectFavoritesError,
-} from '@/app/selectors/favoriteSelectors';
+} from '@/selectors/favoriteSelectors';
 
-import FavoriteCollections from '@/app/components/favorites/FavoriteCollections';
-import ProductCard from '@/app/components/products/ProductCard';
-import EmptyResults from '@/app/components/shared/EmptyResults';
+import FavoriteCollections from '@/components/favorites/FavoriteCollections';
+import ProductCard from '@/components/products/ProductCard';
+import EmptyResults from '@/components/shared/EmptyResults';
 
 export default function FavoritosPage() {
   const activeCollection = useSelector(selectActiveCollection);

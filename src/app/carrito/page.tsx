@@ -3,10 +3,11 @@
 import Link from 'next/link';
 import { FiTrash2, FiArrowLeft } from 'react-icons/fi';
 
-import CartPageItem from '@/app/components/cart/CartPageItem';
-import CartEmpty from '@/app/components/cart/CartEmpty';
-import { useCart } from '@/app/hooks/useCart';
-import { CartStyle } from '@/app/styles/components/CartStyle';
+import CartPageItem from '@/components/cart/CartPageItem';
+import CartEmpty from '@/components/cart/CartEmpty';
+import { useCart } from '@/hooks/useCart';
+import { CartStyle } from '@/styles/components/CartStyle';
+import { CartItem } from '@/interfaces/cart.interface';
 
 export default function CartPage() {
   const { items, totalItems, totalPrice, clearCart } = useCart();
@@ -25,7 +26,7 @@ export default function CartPage() {
 
       <CartStyle.CartContainer>
         <CartStyle.CartItemsSection>
-          {items.map((item) => (
+          {items.map((item: CartItem) => (
             <CartPageItem key={item.id} item={item} />
           ))}
         </CartStyle.CartItemsSection>
