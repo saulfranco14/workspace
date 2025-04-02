@@ -8,9 +8,10 @@ import styled from 'styled-components';
 
 type ProductCardProps = {
   product: Product;
+  inFavorites?: boolean;
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, inFavorites = false }) => {
   return (
     <CardContainer>
       <ImageContainer>
@@ -46,28 +47,29 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </svg>
           </PlaceholderImage>
         )}
-        <FavoriteButtonWrapper>
-          <AddToFavoritesButton productId={product.id} size="sm" />
-        </FavoriteButtonWrapper>
+        {!inFavorites && (
+          <FavoriteButtonWrapper>
+            <AddToFavoritesButton productId={product.id} size="sm" />
+          </FavoriteButtonWrapper>
+        )}
       </ImageContainer>
 
       <ContentContainer>
         <Link href={`/productos/${product.id}`}>
           <ProductName>{product.name}</ProductName>
-
-          {product.category?.name && <CategoryName>{product.category.name}</CategoryName>}
-
-          <ProductDetails>
-            <Price>${product.price.toFixed(2)}</Price>
-            <StockBadge stock={product.stock}>
-              {product.stock > 10 ? 'Disponible' : product.stock > 0 ? 'Pocas unidades' : 'Agotado'}
-            </StockBadge>
-          </ProductDetails>
         </Link>
+        {product.category && <CategoryName>{product.category.name}</CategoryName>}
+
+        <ProductDetails>
+          <Price>${product.price.toFixed(2)}</Price>
+          <StockBadge stock={product.stock}>
+            {product.stock > 10 ? 'En stock' : product.stock > 0 ? 'Stock bajo' : 'Agotado'}
+          </StockBadge>
+        </ProductDetails>
 
         <ButtonContainer>
           <ViewMoreButton productId={product.id} />
-          <AddToCartButton productId={product.id} stock={product.stock} />
+          {product.stock > 0 && <AddToCartButton productId={product.id} stock={product.stock} />}
         </ButtonContainer>
       </ContentContainer>
     </CardContainer>
@@ -158,7 +160,6 @@ const StockBadge = styled.div<{ stock: number }>`
 
 const ButtonContainer = styled.div`
   width: 100%;
-  height: 50px;
   margin-top: auto;
   display: flex;
   gap: 10px;

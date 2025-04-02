@@ -89,10 +89,8 @@ export const mockSupabase = {
   },
 };
 
-// Resetear los mocks
 resetMocks();
 
-// Exportar funciones útiles para los tests
 export {
   resetMocks,
   mockFrom,

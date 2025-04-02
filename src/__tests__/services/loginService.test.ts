@@ -1,10 +1,8 @@
 import { mockSupabase, resetMocks } from '../__mocks__/supabaseMock';
 import { AuthError } from '@supabase/supabase-js';
 
-// Mock de console.error
 console.error = jest.fn();
 
-// Mock para window.location.origin
 const originalWindow = { ...window };
 Object.defineProperty(window, 'location', {
   value: {

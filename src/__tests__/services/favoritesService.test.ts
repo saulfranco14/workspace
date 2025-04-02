@@ -12,21 +12,17 @@ import {
 } from '../__mocks__/supabaseMock';
 import { FavoriteCollection, FavoriteItem } from '@/interfaces/favorites.interface';
 
-// Mockear getFingerprint desde deviceService
 jest.mock('@/services/deviceService', () => ({
   getFingerprint: jest.fn(),
 }));
 
-// Mockear console
 console.warn = jest.fn();
 console.error = jest.fn();
 
-// Mockear supabase client
 jest.mock('@/config/supabaseClient', () => ({
   supabase: mockSupabase,
 }));
 
-// Importamos después de los mocks
 import * as deviceService from '@/services/deviceService';
 import * as favoritesServiceModule from '@/services/favoritesService';
 
@@ -61,7 +57,6 @@ describe('Favorites Service', () => {
 
       (deviceService.getFingerprint as jest.Mock).mockResolvedValue(null);
 
-      // Configurar el mock para simular el comportamiento de query y await query
       const mockQuery = {
         eq: jest.fn().mockReturnThis(),
         then: jest.fn().mockImplementation((callback) => {
@@ -98,7 +93,6 @@ describe('Favorites Service', () => {
 
       (deviceService.getFingerprint as jest.Mock).mockResolvedValue(mockFingerprint);
 
-      // Configurar el mock para simular el comportamiento de query y await query
       const mockQuery = {
         eq: jest.fn().mockReturnThis(),
         then: jest.fn().mockImplementation((callback) => {
@@ -143,7 +137,6 @@ describe('Favorites Service', () => {
 
       (deviceService.getFingerprint as jest.Mock).mockResolvedValue(null);
 
-      // Configurar el mock para simular un error
       const mockQuery = {
         eq: jest.fn().mockReturnThis(),
         then: jest.fn().mockImplementation((callback) => {
@@ -169,7 +162,6 @@ describe('Favorites Service', () => {
         items: [{ id: 'item1', product: { id: 'prod1', name: 'Producto 1' } }],
       };
 
-      // Configurar mock para que getCollection obtenga datos
       mockMaybeSingle.mockResolvedValueOnce({
         data: mockCollection,
         error: null,
@@ -184,7 +176,6 @@ describe('Favorites Service', () => {
     it('debe manejar errores al obtener una colección', async () => {
       const mockError = new Error('Error de base de datos');
 
-      // Configurar mock para simular error
       mockMaybeSingle.mockResolvedValueOnce({
         data: null,
         error: mockError,
@@ -220,13 +211,11 @@ describe('Favorites Service', () => {
 
       (deviceService.getFingerprint as jest.Mock).mockResolvedValue(null);
 
-      // Habilitar la creación de colección
       mockInsert.mockReturnValueOnce({
         data: null,
         error: null,
       });
 
-      // Configurar respuesta para getCollection (usada internamente por createCollection)
       mockSelect.mockReturnValueOnce({ order: mockOrder });
       mockOrder.mockReturnValueOnce({ limit: mockLimit });
       mockLimit.mockReturnValueOnce({ maybeSingle: mockMaybeSingle });
@@ -261,13 +250,11 @@ describe('Favorites Service', () => {
 
       (deviceService.getFingerprint as jest.Mock).mockResolvedValue(mockFingerprint);
 
-      // Habilitar la creación de colección
       mockInsert.mockReturnValueOnce({
         data: null,
         error: null,
       });
 
-      // Configurar respuesta para getCollection (usada internamente por createCollection)
       mockSelect.mockReturnValueOnce({ order: mockOrder });
       mockOrder.mockReturnValueOnce({ limit: mockLimit });
       mockLimit.mockReturnValueOnce({ maybeSingle: mockMaybeSingle });
@@ -316,13 +303,11 @@ describe('Favorites Service', () => {
         product_id: mockProductId,
       };
 
-      // Habilitar la inserción del ítem
       mockInsert.mockReturnValueOnce({
         data: null,
         error: null,
       });
 
-      // Configurar respuesta para getFavoriteByProductId (usada internamente)
       mockSelect.mockReturnValueOnce({ order: mockOrder });
       mockOrder.mockReturnValueOnce({ limit: mockLimit });
       mockLimit.mockReturnValueOnce({ maybeSingle: mockMaybeSingle });
@@ -426,11 +411,13 @@ describe('Favorites Service', () => {
 
       mockSupabase.from.mockImplementationOnce(() => ({
         delete: () => ({
-          eq: () =>
-            Promise.resolve({
-              data: null,
-              error: mockError,
-            }),
+          eq: () => ({
+            eq: () =>
+              Promise.resolve({
+                data: null,
+                error: mockError,
+              }),
+          }),
         }),
       }));
 
@@ -446,6 +433,8 @@ describe('Favorites Service', () => {
         collection_id: 'col123',
         product_id: 'prod123',
       };
+      const mockProductId = 'prod123';
+      const mockCollectionId = 'col123';
 
       mockSupabase.from.mockImplementationOnce(() => ({
         select: () => ({
@@ -461,13 +450,15 @@ describe('Favorites Service', () => {
         }),
       }));
 
-      const result = await favoritesServiceModule.getFavoriteByProductId();
+      const result = await favoritesServiceModule.getFavoriteByProductId(mockProductId, mockCollectionId);
 
       expect(result).toEqual(mockFavoriteItem);
     });
 
     it('debe manejar errores al obtener un item favorito', async () => {
       const mockError = new Error('Error de base de datos');
+      const mockProductId = 'prod123';
+      const mockCollectionId = 'col123';
 
       mockSupabase.from.mockImplementationOnce(() => ({
         select: () => ({
@@ -483,7 +474,7 @@ describe('Favorites Service', () => {
         }),
       }));
 
-      const result = await favoritesServiceModule.getFavoriteByProductId();
+      const result = await favoritesServiceModule.getFavoriteByProductId(mockProductId, mockCollectionId);
 
       expect(console.error).toHaveBeenCalledWith('Error al obtener colección de favoritos:', mockError);
       expect(console.error).toHaveBeenCalledWith('Error en getCollection:', mockError);

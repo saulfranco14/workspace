@@ -51,6 +51,9 @@ const productsSlice = createSlice({
       state.searchTerm = '';
       state.filteredProducts = state.products;
     },
+    clearProductsError: (state) => {
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -84,12 +87,18 @@ const productsSlice = createSlice({
 
       .addCase(fetchProducts.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.loading = false;
-        state.products = action.payload || [];
-        state.filteredProducts = action.payload || [];
-        state.error = null;
+        if (action.payload) {
+          state.loading = false;
+          state.products = action.payload;
+          state.filteredProducts = action.payload;
+          state.error = null;
+        } else {
+          state.loading = false;
+          state.error = 'No se pudieron obtener los productos';
+        }
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
@@ -166,5 +175,5 @@ const productsSlice = createSlice({
   },
 });
 
-export const { setSelectedCategory, setSearchTerm, clearFilters } = productsSlice.actions;
+export const { setSelectedCategory, setSearchTerm, clearFilters, clearProductsError } = productsSlice.actions;
 export default productsSlice.reducer;

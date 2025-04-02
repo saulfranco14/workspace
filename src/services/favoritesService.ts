@@ -85,20 +85,59 @@ export const createCollection = async (name: string): Promise<FavoriteCollection
   }
 };
 
-export const addProductToFavorites = async (productId: string, collectionId: string): Promise<FavoriteItem> => {
+export const getFavoriteItem = async (): Promise<FavoriteItem | null> => {
   try {
+    const { data, error } = await supabase
+      .from('favorite_items')
+      .select('*, product:products(*)')
+      .order('added_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error al obtener colección de favoritos:', error);
+      throw error;
+    }
+
+    console.log('getFavoriteItem', data);
+
+    return data as FavoriteItem;
+  } catch (error) {
+    console.error('Error en getFavoriteItem:', error);
+    return null;
+  }
+};
+
+export const addProductToFavorites = async (
+  productId: string,
+  collectionId: string
+): Promise<{ item: FavoriteItem | null; isExisting: boolean }> => {
+  try {
+    const { data: existingItem, error: checkError } = await supabase
+      .from('favorite_items')
+      .select('*, product:products(*)')
+      .eq('product_id', productId)
+      .eq('collection_id', collectionId)
+      .maybeSingle();
+
+    if (checkError) throw checkError;
+
+    if (existingItem) {
+      console.log('Producto ya existe en favoritos:', existingItem);
+      return { item: existingItem as FavoriteItem, isExisting: true };
+    }
+
     const favoriteItem = {
       collection_id: collectionId,
       product_id: productId,
     };
 
-    const { error } = await supabase.from('favorite_items').insert(favoriteItem);
+    const { error: insertError } = await supabase.from('favorite_items').insert(favoriteItem);
 
-    if (error) throw error;
+    if (insertError) throw insertError;
+    const insertedItem = await getFavoriteItem();
 
-    const fullFavoriteItem = await getFavoriteByProductId();
-
-    return fullFavoriteItem as FavoriteItem;
+    return { item: insertedItem as FavoriteItem, isExisting: false };
   } catch (error) {
     console.error('Error al añadir producto a favoritos:', error);
     throw error;
@@ -134,25 +173,23 @@ export const deleteCollection = async (collectionId: string): Promise<string> =>
   }
 };
 
-export const getFavoriteByProductId = async (): Promise<FavoriteItem | null> => {
+export const getFavoriteByProductId = async (productId: string, collectionId: string): Promise<FavoriteItem | null> => {
   try {
     const { data, error } = await supabase
       .from('favorite_items')
-      .select('*')
-      .order('added_at', { ascending: false })
-      .limit(1)
+      .select('*, product:products(*)')
+      .eq('product_id', productId)
+      .eq('collection_id', collectionId)
       .maybeSingle();
 
     if (error) {
-      console.error('Error al obtener colección de favoritos:', error);
+      console.error('Error al obtener item de favoritos:', error);
       throw error;
     }
 
-    console.log('getFavoriteByProductId', data);
-
     return data as FavoriteItem;
   } catch (error) {
-    console.error('Error en getCollection:', error);
+    console.error('Error en getFavoriteByProductId:', error);
     return null;
   }
 };

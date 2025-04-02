@@ -1,19 +1,138 @@
 'use client';
 
-import styled from 'styled-components';
-import { useSelector } from 'react-redux';
-import { FiHeart } from 'react-icons/fi';
+import { useSelector, useDispatch } from 'react-redux';
+import { FiHeart, FiInfo, FiX } from 'react-icons/fi';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDrop } from 'react-dnd';
+import { useRef, useEffect } from 'react';
 
 import {
   selectActiveCollection,
   selectActiveCollectionProducts,
   selectFavoritesLoading,
   selectFavoritesError,
+  selectDuplicateError,
 } from '@/selectors/favoriteSelectors';
+import { ItemTypes } from '@/components/products/DraggableProductsList';
+import { addToFavorites, fetchUserFavoriteCollections } from '@/store/favorites/thunk/favoritesThunk';
+import { clearDuplicateError } from '@/store/favorites/slices/favoritesSlice';
 
 import FavoriteCollections from '@/components/favorites/FavoriteCollections';
+import DraggableProductsList from '@/components/products/DraggableProductsList';
 import ProductCard from '@/components/products/ProductCard';
 import EmptyResults from '@/components/shared/EmptyResults';
+import { AppDispatch } from '@/store/store';
+import { Product } from '@/interfaces/product.interface';
+
+import {
+  CloseButton,
+  CollectionInfo,
+  CollectionHeader,
+  ContentContainer,
+  DropOverlay,
+  DuplicateErrorContainer,
+  MainContent,
+  PageHeader,
+  SidebarContainer,
+  StyledProductGrid,
+  LoadingMessage,
+} from '@/styles/components/FavoritePageStyle';
+
+const DroppableProductGrid: React.FC<{
+  children?: React.ReactNode;
+}> = ({ children }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const activeCollection = useSelector(selectActiveCollection);
+  const ref = useRef<HTMLDivElement>(null);
+  const collectionIdRef = useRef<string | undefined>(activeCollection?.id);
+
+  useEffect(() => {
+    collectionIdRef.current = activeCollection?.id;
+  }, [activeCollection]);
+
+  const [{ isOver, canDrop }, drop] = useDrop(
+    () => ({
+      accept: ItemTypes.PRODUCT,
+      drop: async (item: { product: Product; targetCollectionId?: string }) => {
+        try {
+          if (!collectionIdRef.current) return;
+
+          const targetId = collectionIdRef.current;
+
+          console.log('Dropping to grid of collection:', activeCollection?.name, 'ID:', targetId);
+
+          await dispatch(
+            addToFavorites({
+              productId: item.product.id,
+              collectionId: targetId,
+            })
+          );
+
+          setTimeout(async () => {
+            await dispatch(fetchUserFavoriteCollections());
+          }, 500);
+        } catch (error) {
+          console.error('Error al añadir producto a favoritos:', error);
+          dispatch(fetchUserFavoriteCollections());
+        }
+      },
+      canDrop: () => !!collectionIdRef.current,
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+        canDrop: !!monitor.canDrop(),
+      }),
+    }),
+    [collectionIdRef.current]
+  );
+
+  drop(ref);
+
+  const isActive = isOver && canDrop;
+
+  return (
+    <div ref={ref} style={{ width: '100%', height: '100%' }}>
+      <StyledProductGrid $isDragActive={isActive}>
+        {isActive && (
+          <DropOverlay>
+            <FiHeart size={48} />
+            <span>Soltar para agregar a &quot;{activeCollection?.name}&quot;</span>
+          </DropOverlay>
+        )}
+        {children}
+      </StyledProductGrid>
+    </div>
+  );
+};
+
+const DuplicateNotification: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const duplicateError = useSelector(selectDuplicateError);
+
+  useEffect(() => {
+    if (duplicateError) {
+      const timer = setTimeout(() => {
+        dispatch(clearDuplicateError());
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [duplicateError, dispatch]);
+
+  if (!duplicateError) return null;
+
+  return (
+    <DuplicateErrorContainer>
+      <div>
+        <FiInfo size={20} />
+        <span>{duplicateError}</span>
+      </div>
+      <CloseButton onClick={() => dispatch(clearDuplicateError())}>
+        <FiX size={18} />
+      </CloseButton>
+    </DuplicateErrorContainer>
+  );
+};
 
 export default function FavoritosPage() {
   const activeCollection = useSelector(selectActiveCollection);
@@ -22,124 +141,57 @@ export default function FavoritosPage() {
   const error = useSelector(selectFavoritesError);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <PageHeader>
-        <h1>Mis Favoritos</h1>
-      </PageHeader>
+    <DndProvider backend={HTML5Backend}>
+      <div className="container mx-auto px-4 py-8">
+        <PageHeader>
+          <h1>Mis Favoritos</h1>
+        </PageHeader>
 
-      <ContentContainer>
-        <SidebarContainer>
-          <FavoriteCollections />
-        </SidebarContainer>
+        <ContentContainer>
+          <SidebarContainer>
+            <FavoriteCollections />
+          </SidebarContainer>
 
-        <MainContent>
-          {activeCollection && (
-            <CollectionHeader>
-              <h2>{activeCollection.name}</h2>
-              <CollectionInfo>
-                {activeCollection.items?.length || 0} {activeCollection.items?.length === 1 ? 'producto' : 'productos'}
-              </CollectionInfo>
-            </CollectionHeader>
-          )}
+          <MainContent>
+            <DraggableProductsList />
+            {activeCollection && (
+              <CollectionHeader>
+                <h2>{activeCollection.name}</h2>
+                <CollectionInfo>
+                  {activeCollection.items?.length || 0}{' '}
+                  {activeCollection.items?.length === 1 ? 'producto' : 'productos'}
+                </CollectionInfo>
+              </CollectionHeader>
+            )}
 
-          {loading && !productsInCollection.length ? (
-            <LoadingMessage>Cargando productos...</LoadingMessage>
-          ) : error ? (
-            <EmptyResults title="Error al cargar favoritos" message={error} icon={<FiHeart size={48} />} />
-          ) : !activeCollection ? (
-            <EmptyResults
-              title="Selecciona una colección"
-              message="Selecciona una colección de favoritos para ver sus productos"
-              icon={<FiHeart size={48} />}
-            />
-          ) : productsInCollection.length === 0 ? (
-            <EmptyResults
-              title="No hay productos en esta colección"
-              message="Agrega productos a esta colección desde las páginas de productos"
-              icon={<FiHeart size={48} />}
-            />
-          ) : (
-            <ProductGrid>
-              {productsInCollection.map((product) => product && <ProductCard key={product.id} product={product} />)}
-            </ProductGrid>
-          )}
-        </MainContent>
-      </ContentContainer>
-    </div>
+            {loading && !productsInCollection.length ? (
+              <LoadingMessage>Cargando productos...</LoadingMessage>
+            ) : error ? (
+              <EmptyResults title="Error al cargar favoritos" message={error} icon={<FiHeart size={48} />} />
+            ) : !activeCollection ? (
+              <EmptyResults
+                title="Selecciona una colección"
+                message="Selecciona una colección de favoritos para ver sus productos"
+                icon={<FiHeart size={48} />}
+              />
+            ) : productsInCollection.length === 0 ? (
+              <EmptyResults
+                title="No hay productos en esta colección"
+                message="Arrastra productos desde arriba a esta colección para agregarlos a favoritos"
+                icon={<FiHeart size={48} />}
+              />
+            ) : (
+              <DroppableProductGrid>
+                {productsInCollection.map(
+                  (product) => product && <ProductCard key={product.id} product={product} inFavorites={true} />
+                )}
+              </DroppableProductGrid>
+            )}
+          </MainContent>
+        </ContentContainer>
+      </div>
+
+      <DuplicateNotification />
+    </DndProvider>
   );
 }
-
-const PageHeader = styled.div`
-  margin-bottom: 2rem;
-
-  h1 {
-    font-size: 1.875rem;
-    font-weight: 700;
-    color: #1f2937;
-    margin: 0;
-  }
-`;
-
-const ContentContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-
-  @media (min-width: 768px) {
-    grid-template-columns: 350px 1fr;
-  }
-`;
-
-const SidebarContainer = styled.div`
-  @media (max-width: 767px) {
-    order: 2;
-  }
-`;
-
-const MainContent = styled.div`
-  @media (max-width: 767px) {
-    order: 1;
-  }
-`;
-
-const CollectionHeader = styled.div`
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
-
-  h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1f2937;
-    margin: 0 0 0.5rem 0;
-  }
-`;
-
-const CollectionInfo = styled.div`
-  font-size: 0.875rem;
-  color: #6b7280;
-`;
-
-const ProductGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 1rem;
-
-  @media (min-width: 640px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-  }
-`;
-
-const LoadingMessage = styled.div`
-  padding: 3rem;
-  text-align: center;
-  color: #6b7280;
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-`;

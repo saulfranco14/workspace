@@ -4,7 +4,6 @@ import Banner from '@/components/home/Banner';
 import SearchBar from '@/components/search/SearchBar';
 import CategoryTags from '@/components/filters/CategoryTags';
 import SearchResults from '../search/SearchResults';
-import Navbar from '../navigation/Navbar';
 import MainContainer from '../shared/MainContainer';
 import HomeContent from './HomeContent';
 import { useHomeData } from '@/hooks/useHome';
@@ -28,7 +27,6 @@ const HomePage = () => {
 
   return (
     <MainContainer>
-      <Navbar />
       <div className="container mx-auto px-4 py-8">
         <Banner />
         <SearchBar />
