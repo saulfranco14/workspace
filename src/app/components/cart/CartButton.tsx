@@ -1,6 +1,6 @@
 import { FiShoppingCart } from 'react-icons/fi';
-import { useCart } from '@/app/hooks/useCart';
-import { CartStyle } from '@/app/styles/components/CartStyle';
+import { useCart } from '@/hooks/useCart';
+import { CartStyle } from '@/styles/components/CartStyle';
 
 const CartButton = () => {
   const { showCart, totalItems } = useCart();

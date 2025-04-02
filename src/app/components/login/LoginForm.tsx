@@ -5,15 +5,15 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { LoginFormData } from '@/app/validations/authValidation';
+import { LoginFormData } from '@/validations/authValidation';
 import { resetAuthState } from '@/app/store/auth/slices/authSlice';
-import { selectAuthLoading, selectAuthError, selectAuthSuccess } from '@/app/selectors/authSelectors';
+import { selectAuthLoading, selectAuthError, selectAuthSuccess } from '@/selectors/authSelectors';
 import { AppDispatch } from '@/app/store/store';
 import { loginUserThunk } from '@/app/store/auth/thunk/authThunk';
-import { FormContainer, FormTitle, FormLink } from '@/app/styles/components/FormStyles';
+import { FormContainer, FormTitle, FormLink } from '@/styles/components/FormStyles';
 
 import AuthFormStatus from '@/app/components/shared/FormStatus';
-import useAuthRedirect from '@/app/hooks/useAuthRedirect';
+import useAuthRedirect from '@/hooks/useAuthRedirect';
 import LoginFormFields from '@/app/components/login/LoginFormFields';
 
 export default function LoginForm() {

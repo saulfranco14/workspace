@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Product } from '@/app/interfaces/product.interface';
+import { Product } from '@/interfaces/product.interface';
 import AddToCartButton from '@/app/components/cart/AddToCartButton';
 import AddToFavoritesButton from '@/app/components/favorites/AddToFavoritesButton';
 import ViewMoreButton from '@/app/components/cart/ViewMoreButton';

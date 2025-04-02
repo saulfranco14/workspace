@@ -4,8 +4,8 @@ import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiX, FiTrash2, FiShoppingBag } from 'react-icons/fi';
 
-import { useCart } from '@/app/hooks/useCart';
-import { CartStyle } from '@/app/styles/components/CartStyle';
+import { useCart } from '@/hooks/useCart';
+import { CartStyle } from '@/styles/components/CartStyle';
 import CartItem from '@/app/components/cart/CartItem';
 
 const CartDrawer = () => {

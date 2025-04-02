@@ -15,7 +15,7 @@ import {
   selectActiveCollection,
   makeSelectIsProductInActiveCollection,
   makeSelectFavoriteItemByProductId,
-} from '@/app/selectors/favoriteSelectors';
+} from '@/selectors/favoriteSelectors';
 import { setActiveCollection } from '@/app/store/favorites/slices/favoritesSlice';
 
 interface AddToFavoritesButtonProps {

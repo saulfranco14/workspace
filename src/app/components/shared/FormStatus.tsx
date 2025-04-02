@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertMessage } from '@/app/styles/components/AlertStyle';
+import { AlertMessage } from '@/styles/components/AlertStyle';
 
 type FormStatusProps = {
   error: string | null;

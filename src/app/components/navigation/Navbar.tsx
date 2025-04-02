@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { NavSection, Logo, Nav, NavLink, CartIcon } from '@/app/styles';
+import { NavSection, Logo, Nav, NavLink, CartIcon } from '@/styles';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

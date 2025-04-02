@@ -1,7 +1,7 @@
 'use client';
 
 import PlantCharacteristics from '@/app/components/products/PlantCharacteristics';
-import { HomeContentProps } from '@/app/interfaces/home.interface';
+import { HomeContentProps } from '@/interfaces/home.interface';
 import { LoadingSpinner } from '@/app/components/shared/loading/Spinner';
 import { PlantCategoriesSection } from '@/app/components/products/section/PlantCategoriesSection';
 import { PlantProductsSection } from '@/app/components/products/section/PlantProductsSection';

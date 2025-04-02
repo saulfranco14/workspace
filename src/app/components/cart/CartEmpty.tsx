@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { FiShoppingBag, FiArrowLeft } from 'react-icons/fi';
-import { CartStyle } from '@/app/styles/components/CartStyle';
+import { CartStyle } from '@/styles/components/CartStyle';
 
 export default function CartEmpty() {
   return (

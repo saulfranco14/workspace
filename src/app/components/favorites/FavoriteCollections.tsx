@@ -11,7 +11,7 @@ import {
   selectFavoriteCollections,
   selectActiveCollection,
   selectFavoritesLoading,
-} from '@/app/selectors/favoriteSelectors';
+} from '@/selectors/favoriteSelectors';
 
 const FavoriteCollections: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

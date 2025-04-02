@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ButtonViewMore } from '@/app/styles/components/ButtonStyle';
+import { ButtonViewMore } from '@/styles/components/ButtonStyle';
 
 type ViewMoreButtonProps = {
   productId: string;

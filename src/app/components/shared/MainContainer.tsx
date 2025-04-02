@@ -1,7 +1,7 @@
 import { ReactNode, FC } from 'react';
 
-import { useClientReady } from '@/app/hooks/useClientReady';
-import { PageContainer } from '@/app/styles';
+import { useClientReady } from '@/hooks/useClientReady';
+import { PageContainer } from '@/styles';
 
 type MainContainerProps = {
   children: ReactNode;

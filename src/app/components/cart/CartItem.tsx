@@ -2,9 +2,9 @@ import Image from 'next/image';
 import { useCallback } from 'react';
 import { FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi';
 
-import { useCart } from '@/app/hooks/useCart';
-import { CartItem as CartItemType } from '@/app/interfaces/cart.interface';
-import { CartStyle } from '@/app/styles/components/CartStyle';
+import { useCart } from '@/hooks/useCart';
+import { CartItem as CartItemType } from '@/interfaces/cart.interface';
+import { CartStyle } from '@/styles/components/CartStyle';
 
 type CartItemProps = {
   item: CartItemType;

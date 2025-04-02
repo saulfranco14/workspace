@@ -1,5 +1,5 @@
 import { shouldShowSection } from '@/app/helpers/productHelpers';
-import { CategoryAccesoryProps } from '@/app/interfaces/product.interface';
+import { CategoryAccesoryProps } from '@/interfaces/product.interface';
 import CategoryFilter from '@/app/components/filters/CategoryFilter';
 
 export const CategoryAccesory = ({ categories, selectedCategory, selectedCategoryType }: CategoryAccesoryProps) => {

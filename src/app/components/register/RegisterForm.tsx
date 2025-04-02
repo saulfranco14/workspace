@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RegisterFormData } from '@/app/validations/authValidation';
+import { RegisterFormData } from '@/validations/authValidation';
 import { resetAuthState } from '@/app/store/auth/slices/authSlice';
-import { selectAuthLoading, selectAuthError, selectAuthSuccess } from '@/app/selectors/authSelectors';
+import { selectAuthLoading, selectAuthError, selectAuthSuccess } from '@/selectors/authSelectors';
 import { AppDispatch } from '@/app/store/store';
 import { registerUserThunk } from '@/app/store/auth/thunk/authThunk';
-import { FormContainer, FormTitle, FormLink } from '@/app/styles/components/FormStyles';
-import useAuthRedirect from '@/app/hooks/useAuthRedirect';
+import { FormContainer, FormTitle, FormLink } from '@/styles/components/FormStyles';
+import useAuthRedirect from '@/hooks/useAuthRedirect';
 import AuthFormStatus from '../shared/FormStatus';
 import RegisterFormFields from '@/app/components/register/RegisterFormFields';
 export default function RegisterForm() {

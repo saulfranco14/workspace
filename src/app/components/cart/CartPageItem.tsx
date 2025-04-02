@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi';
 
-import { CartItem as CartItemType } from '@/app/interfaces/cart.interface';
-import { useCart } from '@/app/hooks/useCart';
-import { CartStyle } from '@/app/styles/components/CartStyle';
+import { CartItem as CartItemType } from '@/interfaces/cart.interface';
+import { useCart } from '@/hooks/useCart';
+import { CartStyle } from '@/styles/components/CartStyle';
 
 type CartPageItemProps = {
   item: CartItemType;

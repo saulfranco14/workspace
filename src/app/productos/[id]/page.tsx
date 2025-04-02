@@ -11,17 +11,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import AddToCartButton from '@/app/components/cart/AddToCartButton';
 import AddToFavoritesButton from '@/app/components/favorites/AddToFavoritesButton';
 import EmptyResults from '@/app/components/shared/EmptyResults';
-import { fetchProductById } from '@/app/store/products/thunk/productThunk';
-import { AppDispatch } from '@/app/store/store';
+
 import {
   selectProductsError,
   selectProductsLoading,
   selectSelectedProduct,
   selectProducts,
-} from '@/app/selectors/productSelectors';
+} from '@/selectors/productSelectors';
 import ProductSkeleton from '@/app/components/shared/skeletons/ProductSkeleton';
 import WarningIcon from '@/app/components/shared/icons/WarningIcon';
 import ProductCard from '@/app/components/products/ProductCard';
+import { fetchProductById } from '@/store/products/thunk/productThunk';
+import { AppDispatch } from '@/store/store';
+import { Product } from '@/interfaces/product.interface';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -40,7 +42,7 @@ export default function ProductDetailPage() {
 
   const relatedProducts =
     product && allProducts
-      ? allProducts.filter((p) => p.id !== product.id && p.category?.id === product.category?.id).slice(0, 4)
+      ? allProducts.filter((p: Product) => p.id !== product.id && p.category?.id === product.category?.id).slice(0, 4)
       : [];
 
   if (loading) return <ProductSkeleton />;
@@ -151,7 +153,7 @@ export default function ProductDetailPage() {
         <RelatedProductsSection>
           <SectionTitle>Productos similares</SectionTitle>
           <RelatedProductsGrid>
-            {relatedProducts.map((product) => (
+            {relatedProducts.map((product: Product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </RelatedProductsGrid>

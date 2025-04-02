@@ -7,8 +7,8 @@ import SearchResults from '../search/SearchResults';
 import Navbar from '../navigation/Navbar';
 import MainContainer from '../shared/MainContainer';
 import HomeContent from './HomeContent';
-import { useHomeData } from '@/app/hooks/useHome';
-import { Product } from '@/app/interfaces/product.interface';
+import { useHomeData } from '@/hooks/useHome';
+import { Product } from '@/interfaces/product.interface';
 
 const HomePage = () => {
   const {

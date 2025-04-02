@@ -2,7 +2,7 @@
 
 import LoginForm from './LoginForm';
 import Navbar from '../navigation/Navbar';
-import { ContentContainer, FormSection, ImageSection } from '@/app/styles';
+import { ContentContainer, FormSection, ImageSection } from '@/styles';
 import Image from 'next/image';
 import MainContainer from '../shared/MainContainer';
 

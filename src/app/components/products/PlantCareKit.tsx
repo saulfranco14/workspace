@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Product } from '@/app/interfaces/product.interface';
+import { Product } from '@/interfaces/product.interface';
 
 type PlantCareKitProps = {
   kitProduct?: Product;

@@ -2,10 +2,10 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema, LoginFormData } from '@/app/validations/authValidation';
-import { InputGroup, InputLabel, TextInput, ErrorMessage } from '@/app/styles/components/InputStyle';
-import { SubmitButton } from '@/app/styles/components/ButtonStyle';
-import { LoginFormFieldsProps } from '@/app/interfaces/auth.interface';
+import { loginSchema, LoginFormData } from '@/validations/authValidation';
+import { InputGroup, InputLabel, TextInput, ErrorMessage } from '@/styles/components/InputStyle';
+import { SubmitButton } from '@/styles/components/ButtonStyle';
+import { LoginFormFieldsProps } from '@/interfaces/auth.interface';
 
 export default function LoginFormFields({ onSubmit, loading, success }: LoginFormFieldsProps) {
   const {

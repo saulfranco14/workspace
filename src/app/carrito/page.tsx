@@ -5,8 +5,8 @@ import { FiTrash2, FiArrowLeft } from 'react-icons/fi';
 
 import CartPageItem from '@/app/components/cart/CartPageItem';
 import CartEmpty from '@/app/components/cart/CartEmpty';
-import { useCart } from '@/app/hooks/useCart';
-import { CartStyle } from '@/app/styles/components/CartStyle';
+import { useCart } from '@/hooks/useCart';
+import { CartStyle } from '@/styles/components/CartStyle';
 
 export default function CartPage() {
   const { items, totalItems, totalPrice, clearCart } = useCart();

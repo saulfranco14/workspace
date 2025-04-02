@@ -2,11 +2,11 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { registerSchema, RegisterFormData } from '@/app/validations/authValidation';
-import { InputGroup, InputLabel, TextInput, ErrorMessage } from '@/app/styles/components/InputStyle';
-import { SubmitButton } from '@/app/styles/components/ButtonStyle';
-import { FormFooter } from '@/app/styles/components/FormStyles';
-import { RegisterFormFieldsProps } from '@/app/interfaces/auth.interface';
+import { registerSchema, RegisterFormData } from '@/validations/authValidation';
+import { InputGroup, InputLabel, TextInput, ErrorMessage } from '@/styles/components/InputStyle';
+import { SubmitButton } from '@/styles/components/ButtonStyle';
+import { FormFooter } from '@/styles/components/FormStyles';
+import { RegisterFormFieldsProps } from '@/interfaces/auth.interface';
 
 export default function RegisterFormFields({ onSubmit, loading, success }: RegisterFormFieldsProps) {
   const {

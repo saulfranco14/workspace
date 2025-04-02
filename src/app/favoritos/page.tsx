@@ -9,7 +9,7 @@ import {
   selectActiveCollectionProducts,
   selectFavoritesLoading,
   selectFavoritesError,
-} from '@/app/selectors/favoriteSelectors';
+} from '@/selectors/favoriteSelectors';
 
 import FavoriteCollections from '@/app/components/favorites/FavoriteCollections';
 import ProductCard from '@/app/components/products/ProductCard';

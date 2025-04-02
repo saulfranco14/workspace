@@ -1,6 +1,6 @@
 'use client';
 
-import { PageContainer, ContentContainer, FormSection, ImageSection } from '@/app/styles';
+import { PageContainer, ContentContainer, FormSection, ImageSection } from '@/styles';
 
 const RegisterSkeleton = () => {
   return (

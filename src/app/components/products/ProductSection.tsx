@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Product } from '@/app/interfaces/product.interface';
+import { Product } from '@/interfaces/product.interface';
 import ProductCard from '@/app/components/products/ProductCard';
 import EmptyResults from '@/app/components/shared/EmptyResults';
 
