@@ -27,10 +27,6 @@ const FavoriteCollections: React.FC = () => {
   const [newCollectionName, setNewCollectionName] = useState('');
   const [showConfirmDelete, setShowConfirmDelete] = useState<string | null>(null);
 
-  useEffect(() => {
-    dispatch(fetchUserFavoriteCollections());
-  }, [dispatch]);
-
   const handleSelectCollection = (collectionId: string) => {
     console.log('collectionId', collectionId);
     const collection = collections.find((col) => col.id === collectionId);

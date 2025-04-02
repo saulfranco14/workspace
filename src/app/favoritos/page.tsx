@@ -1,11 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import { FiHeart } from 'react-icons/fi';
-import { AppDispatch } from '@/app/store/store';
-import { fetchUserFavoriteCollections } from '@/app/store/favorites/thunk/favoritesThunk';
+
 import {
   selectActiveCollection,
   selectActiveCollectionProducts,
@@ -18,15 +16,10 @@ import ProductCard from '@/app/components/products/ProductCard';
 import EmptyResults from '@/app/components/shared/EmptyResults';
 
 export default function FavoritosPage() {
-  const dispatch = useDispatch<AppDispatch>();
   const activeCollection = useSelector(selectActiveCollection);
   const productsInCollection = useSelector(selectActiveCollectionProducts);
   const loading = useSelector(selectFavoritesLoading);
   const error = useSelector(selectFavoritesError);
-
-  useEffect(() => {
-    dispatch(fetchUserFavoriteCollections());
-  }, [dispatch]);
 
   return (
     <div className="container mx-auto px-4 py-8">

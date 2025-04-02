@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FiHeart } from 'react-icons/fi';
 import styled from 'styled-components';
@@ -8,7 +8,6 @@ import { AppDispatch } from '@/app/store/store';
 import {
   addToFavorites,
   removeFromFavorites,
-  fetchUserFavoriteCollections,
   createFavoriteCollection,
 } from '@/app/store/favorites/thunk/favoritesThunk';
 import {
@@ -39,12 +38,6 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
   const [showCollectionSelector, setShowCollectionSelector] = useState(false);
   const [newCollectionName, setNewCollectionName] = useState('');
   const [isCreatingCollection, setIsCreatingCollection] = useState(false);
-
-  useEffect(() => {
-    if (collections.length === 0) {
-      dispatch(fetchUserFavoriteCollections());
-    }
-  }, [dispatch, collections.length]);
 
   const handleToggleFavorite = () => {
     if (!activeCollection) {

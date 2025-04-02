@@ -24,7 +24,6 @@ const Header = () => {
 
           <HeaderStyle.NavLinks className={menuOpen ? 'open' : ''}>
             <HeaderStyle.NavLink href="/productos">Productos</HeaderStyle.NavLink>
-            <HeaderStyle.NavLink href="/categorias">Categorías</HeaderStyle.NavLink>
             <HeaderStyle.NavLink href="/favoritos">Favoritos</HeaderStyle.NavLink>
           </HeaderStyle.NavLinks>
 
