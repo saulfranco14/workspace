@@ -13,4 +13,18 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     'jsx-a11y/anchor-is-valid': 'warn',
   },
+  overrides: [
+    {
+      files: ['**/__tests__/**/*'],
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-require-imports': 'off',
+        'react/display-name': 'off',
+        'jsx-a11y/alt-text': 'off',
+        '@next/next/no-img-element': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
+        'react-hooks/exhaustive-deps': 'off',
+      },
+    },
+  ],
 };
