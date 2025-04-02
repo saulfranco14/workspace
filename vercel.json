@@ -5,10 +5,17 @@
     "devCommand": "npm run dev",
     "installCommand": "npm install",
     "framework": "nextjs",
-    "rewrites": [
+    "routes": [
         {
-            "source": "/(.*)",
-            "destination": "/"
+            "handle": "filesystem"
+        },
+        {
+            "src": "/productos/(?<id>[^/]+)",
+            "dest": "/productos/$id"
+        },
+        {
+            "src": "/categoria/(?<id>[^/]+)",
+            "dest": "/categoria/$id"
         }
     ]
 }

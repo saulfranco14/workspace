@@ -2,7 +2,6 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  //trailingSlash: true,
   images: {
     unoptimized: true,
     domains: ['images.pexels.com', 'cdn.pixabay.com'],
@@ -10,6 +9,8 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
+  allowedDevOrigins: ['http://localhost:3000', 'https://planta-shop.vercel.app'],
+  trailingSlash: false,
 };
 
 export default nextConfig;

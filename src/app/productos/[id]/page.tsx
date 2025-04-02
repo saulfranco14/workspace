@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { FiShare2, FiArrowLeft, FiShoppingBag } from 'react-icons/fi';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -27,6 +27,7 @@ import { Product } from '@/interfaces/product.interface';
 
 export default function ProductDetailPage() {
   const params = useParams();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -36,13 +37,18 @@ export default function ProductDetailPage() {
   const loading = useSelector(selectProductsLoading);
   const error = useSelector(selectProductsError);
 
+  const productId = params.id && params.id !== '[id]' ? (params.id as string) : searchParams.get('id') || '';
+
   useEffect(() => {
-    dispatch(fetchProductById(params.id as string));
-  }, [dispatch, params.id]);
+    if (productId) {
+      dispatch(fetchProductById(productId));
+    }
+  }, [dispatch, productId]);
 
   useEffect(() => {
     console.log('Parámetros recibidos:', params);
-  }, [params]);
+    console.log('ID real del producto:', productId);
+  }, [params, productId]);
 
   const relatedProducts =
     product && allProducts
@@ -51,7 +57,7 @@ export default function ProductDetailPage() {
 
   if (loading) return <ProductSkeleton />;
 
-  if (error || !product) {
+  if (!productId || error || !product) {
     return (
       <EmptyResults
         title="Producto no encontrado"
