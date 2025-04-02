@@ -446,6 +446,8 @@ describe('Favorites Service', () => {
         collection_id: 'col123',
         product_id: 'prod123',
       };
+      const mockProductId = 'prod123';
+      const mockCollectionId = 'col123';
 
       mockSupabase.from.mockImplementationOnce(() => ({
         select: () => ({
@@ -461,13 +463,15 @@ describe('Favorites Service', () => {
         }),
       }));
 
-      const result = await favoritesServiceModule.getFavoriteByProductId();
+      const result = await favoritesServiceModule.getFavoriteByProductId(mockProductId, mockCollectionId);
 
       expect(result).toEqual(mockFavoriteItem);
     });
 
     it('debe manejar errores al obtener un item favorito', async () => {
       const mockError = new Error('Error de base de datos');
+      const mockProductId = 'prod123';
+      const mockCollectionId = 'col123';
 
       mockSupabase.from.mockImplementationOnce(() => ({
         select: () => ({
@@ -483,7 +487,7 @@ describe('Favorites Service', () => {
         }),
       }));
 
-      const result = await favoritesServiceModule.getFavoriteByProductId();
+      const result = await favoritesServiceModule.getFavoriteByProductId(mockProductId, mockCollectionId);
 
       expect(console.error).toHaveBeenCalledWith('Error al obtener colección de favoritos:', mockError);
       expect(console.error).toHaveBeenCalledWith('Error en getCollection:', mockError);
