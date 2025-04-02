@@ -6,6 +6,7 @@ import {
   fetchFeaturedProducts,
   fetchProductsByCategory,
   searchProductsThunk,
+  fetchProductById,
 } from '../thunk/productThunk';
 import { initialState } from '../initialState';
 
@@ -15,6 +16,16 @@ const productsSlice = createSlice({
   reducers: {
     setSelectedCategory(state, action: PayloadAction<string | null>) {
       state.selectedCategory = action.payload;
+      state.selectedCategoryType = null;
+      state.selectedCategoryName = null;
+
+      if (action.payload) {
+        const category = state.categories.find((cat) => cat.id === action.payload);
+        if (category) {
+          state.selectedCategoryType = category.type;
+          state.selectedCategoryName = category.name;
+        }
+      }
 
       if (action.payload === null) {
         if (state.searchTerm) {
@@ -35,6 +46,8 @@ const productsSlice = createSlice({
     },
     clearFilters(state) {
       state.selectedCategory = null;
+      state.selectedCategoryType = null;
+      state.selectedCategoryName = null;
       state.searchTerm = '';
       state.filteredProducts = state.products;
     },
@@ -133,6 +146,20 @@ const productsSlice = createSlice({
         }
       })
       .addCase(searchProductsThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      .addCase(fetchProductById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedProduct = action.payload;
+        state.error = null;
+      })
+      .addCase(fetchProductById.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

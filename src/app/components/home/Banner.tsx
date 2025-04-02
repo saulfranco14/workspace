@@ -10,7 +10,7 @@ export const Banner = () => {
           Descubre nuestra colección de plantas y accesorios para transformar tu espacio y conectar con la naturaleza.
         </p>
         <Link
-          href="/products"
+          href="/productos"
           className="bg-emerald-600 hover:bg-emerald-700 transition-colors text-white py-2 px-4 md:px-6 rounded-full inline-flex items-center w-fit text-sm md:text-base"
         >
           <span className="text-white">Ver nuevos productos</span>

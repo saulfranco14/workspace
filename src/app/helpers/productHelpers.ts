@@ -58,3 +58,26 @@ export const shouldShowSection = (
 ): boolean => {
   return !selectedCategory || selectedCategoryType === type;
 };
+
+export const formatCategory = (category: Partial<Category>): Category => ({
+  id: category.id || '',
+  name: category.name || '',
+  ...category,
+  type: 'plant' as 'plant' | 'accessory' | 'kit',
+});
+
+export const formatProduct = (product: Partial<Product>): Product => ({
+  id: product.id || '',
+  name: product.name || '',
+  price: product.price || 0,
+  stock: product.stock || 0,
+  category_id: product.category_id || '',
+  ...product,
+  description: product.description || '',
+  category: product.category ? formatCategory(product.category as Partial<Category>) : undefined,
+});
+
+export const handleError = <T>(error: unknown, operation: string): { data: T | null; error: Error } => {
+  console.error(`Error al ${operation}:`, error);
+  return { data: null, error: error as Error };
+};
