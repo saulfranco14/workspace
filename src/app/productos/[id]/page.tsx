@@ -24,6 +24,7 @@ import ProductCard from '@/components/products/ProductCard';
 import { fetchProductById } from '@/store/products/thunk/productThunk';
 import { AppDispatch } from '@/store/store';
 import { Product } from '@/interfaces/product.interface';
+import { ProductIdStyles } from '@/styles/components/ProductIdStyle';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -45,11 +46,6 @@ export default function ProductDetailPage() {
     }
   }, [dispatch, productId]);
 
-  useEffect(() => {
-    console.log('Parámetros recibidos:', params);
-    console.log('ID real del producto:', productId);
-  }, [params, productId]);
-
   const relatedProducts =
     product && allProducts
       ? allProducts.filter((p: Product) => p.id !== product.id && p.category?.id === product.category?.id).slice(0, 4)
@@ -69,7 +65,7 @@ export default function ProductDetailPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <BackLink
+      <ProductIdStyles.BackLink
         href="/productos"
         onClick={(e) => {
           e.preventDefault();
@@ -78,10 +74,10 @@ export default function ProductDetailPage() {
       >
         <FiArrowLeft />
         <span>Volver</span>
-      </BackLink>
+      </ProductIdStyles.BackLink>
 
-      <ProductContainer>
-        <ImageSection>
+      <ProductIdStyles.ProductContainer>
+        <ProductIdStyles.ImageSection>
           {product.image_url ? (
             <Image
               src={product.image_url}
@@ -92,7 +88,7 @@ export default function ProductDetailPage() {
               priority
             />
           ) : (
-            <PlaceholderImage>
+            <ProductIdStyles.PlaceholderImage>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -112,291 +108,65 @@ export default function ProductDetailPage() {
                   d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
                 />
               </svg>
-            </PlaceholderImage>
+            </ProductIdStyles.PlaceholderImage>
           )}
-        </ImageSection>
+        </ProductIdStyles.ImageSection>
 
-        <InfoSection>
-          <CategoryBadge>
+        <ProductIdStyles.InfoSection>
+          <ProductIdStyles.CategoryBadge>
             <Link href={`/categoria/${product.category?.id}`}>{product.category?.name}</Link>
-          </CategoryBadge>
+          </ProductIdStyles.CategoryBadge>
 
-          <ProductName>{product.name}</ProductName>
+          <ProductIdStyles.ProductName>{product.name}</ProductIdStyles.ProductName>
 
-          <PriceContainer>
-            <Price>${product.price}</Price>
-            <StockBadge stock={product.stock}>
+          <ProductIdStyles.PriceContainer>
+            <ProductIdStyles.Price>${product.price}</ProductIdStyles.Price>
+            <ProductIdStyles.StockBadge stock={product.stock}>
               {product.stock > 10 ? 'Disponible' : product.stock > 0 ? 'Pocas unidades' : 'Agotado'}
-            </StockBadge>
-          </PriceContainer>
+            </ProductIdStyles.StockBadge>
+          </ProductIdStyles.PriceContainer>
 
-          <DescriptionContainer>
-            <Description $expanded={showFullDescription}>{product.description}</Description>
+          <ProductIdStyles.DescriptionContainer>
+            <ProductIdStyles.Description $expanded={showFullDescription}>
+              {product.description}
+            </ProductIdStyles.Description>
             {product.description && product.description.length > 120 && (
-              <DescriptionToggle onClick={() => setShowFullDescription(!showFullDescription)}>
+              <ProductIdStyles.DescriptionToggle onClick={() => setShowFullDescription(!showFullDescription)}>
                 {showFullDescription ? 'Mostrar menos' : 'Leer más'}
-              </DescriptionToggle>
+              </ProductIdStyles.DescriptionToggle>
             )}
-          </DescriptionContainer>
+          </ProductIdStyles.DescriptionContainer>
 
-          <ActionsContainer>
+          <ProductIdStyles.ActionsContainer>
             <AddToCartButton productId={product.id} stock={product.stock} />
-            <ActionButtonGroup>
+            <ProductIdStyles.ActionButtonGroup>
               <AddToFavoritesButton productId={product.id} showText={true} size="lg" />
-              <ActionButton aria-label="Compartir producto">
+              <ProductIdStyles.ActionButton aria-label="Compartir producto">
                 <FiShare2 />
                 <span className="action-text">Compartir</span>
-              </ActionButton>
-            </ActionButtonGroup>
-          </ActionsContainer>
+              </ProductIdStyles.ActionButton>
+            </ProductIdStyles.ActionButtonGroup>
+          </ProductIdStyles.ActionsContainer>
 
           {product.stock > 0 && (
-            <DeliveryInfo>
+            <ProductIdStyles.DeliveryInfo>
               <FiShoppingBag />
               <span>Envío gratuito en pedidos superiores a $500</span>
-            </DeliveryInfo>
+            </ProductIdStyles.DeliveryInfo>
           )}
-        </InfoSection>
-      </ProductContainer>
+        </ProductIdStyles.InfoSection>
+      </ProductIdStyles.ProductContainer>
 
       {relatedProducts.length > 0 && (
-        <RelatedProductsSection>
-          <SectionTitle>Productos similares</SectionTitle>
-          <RelatedProductsGrid>
+        <ProductIdStyles.RelatedProductsSection>
+          <ProductIdStyles.SectionTitle>Productos similares</ProductIdStyles.SectionTitle>
+          <ProductIdStyles.RelatedProductsGrid>
             {relatedProducts.map((product: Product) => (
               <ProductCard key={product.id} product={product} />
             ))}
-          </RelatedProductsGrid>
-        </RelatedProductsSection>
+          </ProductIdStyles.RelatedProductsGrid>
+        </ProductIdStyles.RelatedProductsSection>
       )}
     </div>
   );
 }
-
-const BackLink = styled.a`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--primary);
-  text-decoration: none;
-  margin-bottom: 1.5rem;
-  font-weight: 500;
-  transition: color 0.2s;
-  cursor: pointer;
-
-  &:hover {
-    color: var(--primary-dark);
-  }
-`;
-
-const ProductContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  margin-bottom: 3rem;
-
-  @media (min-width: 768px) {
-    grid-template-columns: 1fr 1fr;
-  }
-`;
-
-const ImageSection = styled.div`
-  position: relative;
-  height: 350px;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-
-  @media (min-width: 768px) {
-    height: 500px;
-  }
-`;
-
-const PlaceholderImage = styled.div`
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f0f0f0;
-`;
-
-const InfoSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const CategoryBadge = styled.span`
-  display: inline-block;
-  background-color: var(--primary-light);
-  color: var(--primary);
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 500;
-
-  a {
-    color: inherit;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
-
-const ProductName = styled.h1`
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0;
-
-  @media (min-width: 768px) {
-    font-size: 2rem;
-  }
-`;
-
-const PriceContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-`;
-
-const Price = styled.span`
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--primary);
-`;
-
-const StockBadge = styled.div<{ stock: number }>`
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  background-color: ${({ stock }) => (stock > 10 ? '#e8f5e9' : stock > 0 ? '#fff8e1' : '#ffebee')};
-  color: ${({ stock }) => (stock > 10 ? '#388e3c' : stock > 0 ? '#ff8f00' : '#d32f2f')};
-`;
-
-const DescriptionContainer = styled.div`
-  margin: 0.5rem 0;
-`;
-
-const Description = styled.p<{ $expanded: boolean }>`
-  color: #4b5563;
-  line-height: 1.6;
-  margin: 0;
-  overflow: hidden;
-  max-height: ${(props) => (props.$expanded ? 'none' : '4.8em')};
-  position: relative;
-`;
-
-const DescriptionToggle = styled.button`
-  background: none;
-  border: none;
-  color: var(--primary);
-  font-weight: 500;
-  padding: 0.5rem 0;
-  cursor: pointer;
-  font-size: 0.875rem;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const ActionsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 0.5rem;
-
-  @media (min-width: 768px) {
-    align-items: center;
-  }
-`;
-
-const ActionButtonGroup = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  width: 100%;
-`;
-
-const ActionButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  background-color: white;
-  color: #4b5563;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  flex: 1;
-
-  &:hover {
-    background-color: #f9fafb;
-    border-color: #d1d5db;
-  }
-
-  .action-text {
-    display: none;
-  }
-
-  @media (min-width: 768px) {
-    padding: 0.75rem 1rem;
-
-    .action-text {
-      display: inline;
-    }
-  }
-`;
-
-const DeliveryInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  background-color: #f8f9fa;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  color: #4b5563;
-  margin-top: 0.5rem;
-`;
-
-const RelatedProductsSection = styled.section`
-  margin-top: 3rem;
-  padding-top: 2rem;
-  border-top: 1px solid #e5e7eb;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0 0 1.5rem 0;
-`;
-
-const RelatedProductsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 1rem;
-
-  @media (min-width: 640px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-  }
-`;
