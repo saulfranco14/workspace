@@ -6,9 +6,9 @@ import AddToFavoritesButton from '@/components/favorites/AddToFavoritesButton';
 import ViewMoreButton from '@/components/cart/ViewMoreButton';
 import styled from 'styled-components';
 
-interface ProductCardProps {
+type ProductCardProps = {
   product: Product;
-}
+};
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (

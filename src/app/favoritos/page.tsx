@@ -14,7 +14,7 @@ import {
 import FavoriteCollections from '@/components/favorites/FavoriteCollections';
 import ProductCard from '@/components/products/ProductCard';
 import EmptyResults from '@/components/shared/EmptyResults';
-import { Product } from '@/interfaces/product.interface';
+
 export default function FavoritosPage() {
   const activeCollection = useSelector(selectActiveCollection);
   const productsInCollection = useSelector(selectActiveCollectionProducts);
@@ -60,9 +60,7 @@ export default function FavoritosPage() {
             />
           ) : (
             <ProductGrid>
-              {productsInCollection.map(
-                (product: Product) => product && <ProductCard key={product.id} product={product} />
-              )}
+              {productsInCollection.map((product) => product && <ProductCard key={product.id} product={product} />)}
             </ProductGrid>
           )}
         </MainContent>
