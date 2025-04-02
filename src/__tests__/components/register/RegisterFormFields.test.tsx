@@ -3,7 +3,6 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import RegisterFormFields from '@/components/register/RegisterFormFields';
 
-// Mock de styled-components para los componentes de estilos
 jest.mock('@/styles/components/InputStyle', () => ({
   InputGroup: ({ children }: { children: React.ReactNode }) => <div data-testid="input-group">{children}</div>,
   InputLabel: ({ children, htmlFor }: { children: React.ReactNode; htmlFor?: string }) => (
@@ -46,19 +45,12 @@ describe('RegisterFormFields', () => {
   test('debe renderizar todos los campos del formulario', () => {
     const { container } = render(<RegisterFormFields onSubmit={mockOnSubmit} loading={false} success={false} />);
 
-    // Verificar que se renderizan los campos de entrada por sus placeholders
     expect(screen.getByPlaceholderText('Escribe tu correo electrónico')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Escribe tu contraseña')).toBeInTheDocument();
-
-    // Verificar las etiquetas
     expect(screen.getByText('Correo electrónico')).toBeInTheDocument();
     expect(screen.getByText('Contraseña')).toBeInTheDocument();
-
-    // Verificar botón de envío
     expect(screen.getByTestId('submit-button')).toBeInTheDocument();
     expect(screen.getByTestId('submit-button')).toHaveTextContent('Crear mi cuenta gratis');
-
-    // Verificar pie de formulario
     expect(screen.getByTestId('form-footer')).toBeInTheDocument();
   });
 
@@ -80,65 +72,50 @@ describe('RegisterFormFields', () => {
   test('debe mostrar errores de validación cuando el email es inválido', async () => {
     const { container } = render(<RegisterFormFields onSubmit={mockOnSubmit} loading={false} success={false} />);
 
-    // Ingresar un email inválido
     fireEvent.change(screen.getByTestId('email'), { target: { value: 'emailinvalido' } });
 
-    // Obtener el formulario y enviarlo
     const form = container.querySelector('form');
     fireEvent.submit(form!);
 
-    // Esperar a que aparezcan los mensajes de error
     await waitFor(() => {
       const errorMessages = screen.getAllByTestId('error-message');
-      // Debe haber al menos un mensaje de error (email inválido)
       expect(errorMessages.length).toBeGreaterThan(0);
     });
 
-    // Verificar que no se llamó a onSubmit
     expect(mockOnSubmit).not.toHaveBeenCalled();
   });
 
   test('debe mostrar errores de validación cuando la contraseña es muy corta', async () => {
     const { container } = render(<RegisterFormFields onSubmit={mockOnSubmit} loading={false} success={false} />);
 
-    // Ingresar un email válido pero contraseña corta
     fireEvent.change(screen.getByTestId('email'), { target: { value: 'usuario@ejemplo.com' } });
     fireEvent.change(screen.getByTestId('password'), { target: { value: '123' } });
 
-    // Obtener el formulario y enviarlo
     const form = container.querySelector('form');
     fireEvent.submit(form!);
 
-    // Esperar a que aparezcan los mensajes de error
     await waitFor(() => {
       const errorMessages = screen.getAllByTestId('error-message');
-      // Debe haber al menos un mensaje de error (contraseña muy corta)
       expect(errorMessages.length).toBeGreaterThan(0);
     });
 
-    // Verificar que no se llamó a onSubmit
     expect(mockOnSubmit).not.toHaveBeenCalled();
   });
 
   test('debe llamar a onSubmit con los datos correctos cuando el formulario es válido', async () => {
     const { container } = render(<RegisterFormFields onSubmit={mockOnSubmit} loading={false} success={false} />);
 
-    // Datos válidos
     const validEmail = 'usuario@ejemplo.com';
     const validPassword = 'contraseña123';
 
-    // Ingresar datos válidos
     fireEvent.change(screen.getByTestId('email'), { target: { value: validEmail } });
     fireEvent.change(screen.getByTestId('password'), { target: { value: validPassword } });
 
-    // Obtener el formulario y enviarlo
     const form = container.querySelector('form');
     fireEvent.submit(form!);
 
-    // Esperar a que se llame a onSubmit
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalled();
-      // Verificar que el primer argumento contiene los datos del formulario
       const firstArg = mockOnSubmit.mock.calls[0][0];
       expect(firstArg).toEqual({
         email: validEmail,

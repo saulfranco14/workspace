@@ -6,7 +6,6 @@ import configureStore from 'redux-mock-store';
 import CategoryTags from '@/components/filters/CategoryTags';
 import { setSelectedCategory } from '@/store/products/slices/productsSlice';
 
-// Mock del store de Redux
 const mockStore = configureStore([]);
 
 describe('CategoryTags', () => {

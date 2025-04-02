@@ -6,11 +6,7 @@ import { LoadingSpinner } from '@/components/shared/loading/Spinner';
 describe('LoadingSpinner', () => {
   test('debe renderizar el spinner con el mensaje de carga', () => {
     render(<LoadingSpinner />);
-
-    // Verificar el mensaje de carga
     expect(screen.getByText('Cargando, por favor espera...')).toBeInTheDocument();
-
-    // Verificar el elemento spinner
     const spinner = document.querySelector('.animate-spin');
     expect(spinner).toBeInTheDocument();
     expect(spinner).toHaveClass('h-16', 'w-16', 'border-t-4', 'border-b-4', 'border-emerald-600');
@@ -18,14 +14,12 @@ describe('LoadingSpinner', () => {
 
   test('debe tener la clase animate-pulse en el texto de carga', () => {
     render(<LoadingSpinner />);
-
     const loadingText = screen.getByText('Cargando, por favor espera...');
     expect(loadingText).toHaveClass('animate-pulse', 'text-gray-600');
   });
 
   test('debe estar centrado en el contenedor', () => {
     render(<LoadingSpinner />);
-
     const container = document.querySelector('.flex');
     expect(container).toHaveClass('flex', 'flex-col', 'justify-center', 'items-center');
   });

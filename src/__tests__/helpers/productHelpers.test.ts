@@ -10,7 +10,6 @@ import {
 import { Category, Product } from '@/interfaces/product.interface';
 
 describe('productHelpers', () => {
-  // Mock data
   const mockProducts: Product[] = [
     { id: '1', name: 'Planta 1', category_id: 'cat1', price: 100, stock: 10, description: 'Desc 1' },
     { id: '2', name: 'Planta 2', category_id: 'cat2', price: 200, stock: 5, description: 'Desc 2' },

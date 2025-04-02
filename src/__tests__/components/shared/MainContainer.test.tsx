@@ -3,12 +3,10 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MainContainer from '@/components/shared/MainContainer';
 
-// Mock del hook useClientReady
 jest.mock('@/hooks/useClientReady', () => ({
   useClientReady: jest.fn(),
 }));
 
-// Mock del estilo PageContainer
 jest.mock('@/styles', () => ({
   PageContainer: ({ children, className }: { children: React.ReactNode; className: string }) => (
     <div data-testid="page-container" className={className}>
@@ -23,7 +21,6 @@ describe('MainContainer', () => {
   });
 
   test('debe renderizar los children dentro del contenedor', () => {
-    // Configurar mock para simular que el cliente está listo
     require('@/hooks/useClientReady').useClientReady.mockReturnValue(true);
 
     render(
@@ -37,7 +34,6 @@ describe('MainContainer', () => {
   });
 
   test('debe tener la clase de opacidad 0 cuando el cliente no está listo', () => {
-    // Configurar mock para simular que el cliente no está listo
     require('@/hooks/useClientReady').useClientReady.mockReturnValue(false);
 
     render(
@@ -52,7 +48,6 @@ describe('MainContainer', () => {
   });
 
   test('debe tener la clase de opacidad 100 cuando el cliente está listo', () => {
-    // Configurar mock para simular que el cliente está listo
     require('@/hooks/useClientReady').useClientReady.mockReturnValue(true);
 
     render(
@@ -67,7 +62,6 @@ describe('MainContainer', () => {
   });
 
   test('debe respetar la prop isClient cuando se proporciona (true)', () => {
-    // Configurar mock para simular que el cliente no está listo
     require('@/hooks/useClientReady').useClientReady.mockReturnValue(false);
 
     render(
@@ -82,7 +76,6 @@ describe('MainContainer', () => {
   });
 
   test('debe respetar la prop isClient cuando se proporciona (false)', () => {
-    // Configurar mock para simular que el cliente está listo
     require('@/hooks/useClientReady').useClientReady.mockReturnValue(true);
 
     render(
@@ -97,7 +90,6 @@ describe('MainContainer', () => {
   });
 
   test('debe tener clases de transición adecuadas', () => {
-    // Configurar mock para simular que el cliente está listo
     require('@/hooks/useClientReady').useClientReady.mockReturnValue(true);
 
     render(

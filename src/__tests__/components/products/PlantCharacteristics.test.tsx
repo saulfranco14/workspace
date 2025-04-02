@@ -4,7 +4,6 @@ import '@testing-library/jest-dom';
 import PlantCharacteristics from '@/components/products/PlantCharacteristics';
 import { characteristics } from '@/helpers/PlanCharacteristics';
 
-// Mockear la importación de las características
 jest.mock('@/helpers/PlanCharacteristics', () => ({
   characteristics: [
     {
@@ -33,13 +32,11 @@ jest.mock('@/helpers/PlanCharacteristics', () => ({
 describe('PlantCharacteristics', () => {
   test('debe renderizar el título principal', () => {
     render(<PlantCharacteristics />);
-
     expect(screen.getByText('¿Por qué tener plantas en casa?')).toBeInTheDocument();
   });
 
   test('debe renderizar la descripción principal', () => {
     render(<PlantCharacteristics />);
-
     expect(
       screen.getByText(
         'Las plantas no son solo decoración, son compañeras que transforman nuestro espacio y bienestar.'
@@ -49,8 +46,6 @@ describe('PlantCharacteristics', () => {
 
   test('debe renderizar las 4 características', () => {
     render(<PlantCharacteristics />);
-
-    // Verificar que todas las características están presentes
     characteristics.forEach((item) => {
       expect(screen.getByText(item.title)).toBeInTheDocument();
       expect(screen.getByText(item.description)).toBeInTheDocument();
@@ -59,8 +54,6 @@ describe('PlantCharacteristics', () => {
 
   test('debe renderizar los iconos de cada característica', () => {
     render(<PlantCharacteristics />);
-
-    // Verificar la presencia de los iconos
     expect(screen.getByTestId('icon-purificadoras')).toBeInTheDocument();
     expect(screen.getByTestId('icon-bienestar')).toBeInTheDocument();
     expect(screen.getByTestId('icon-decoracion')).toBeInTheDocument();
@@ -69,11 +62,8 @@ describe('PlantCharacteristics', () => {
 
   test('debe tener la estructura grid correcta', () => {
     render(<PlantCharacteristics />);
-
     const gridContainer = screen.getByText('¿Por qué tener plantas en casa?').parentElement?.querySelector('.grid');
     expect(gridContainer).toHaveClass('grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-4');
-
-    // Verificar que hay 4 tarjetas
     const cards = document.querySelectorAll('.bg-white.p-6.rounded-lg');
     expect(cards.length).toBe(4);
   });

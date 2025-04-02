@@ -6,7 +6,6 @@ import configureStore from 'redux-mock-store';
 import ProductCard from '@/components/products/ProductCard';
 import { Product } from '@/interfaces/product.interface';
 
-// Mocks para los componentes utilizados
 jest.mock('next/image', () => ({
   __esModule: true,
   default: (props: any) => {
@@ -47,7 +46,6 @@ jest.mock('@/components/cart/ViewMoreButton', () => {
   };
 });
 
-// Configuración del store mock
 const mockStore = configureStore([]);
 const initialState = {
   favorites: {
@@ -111,7 +109,6 @@ describe('ProductCard', () => {
       </Provider>
     );
 
-    // Verificar que se muestra el svg de placeholder
     const svgPlaceholder = document.querySelector('svg');
     expect(svgPlaceholder).toBeInTheDocument();
   });

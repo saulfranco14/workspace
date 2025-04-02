@@ -7,23 +7,19 @@ import SearchBar from '@/components/search/SearchBar';
 import * as productThunk from '@/store/products/thunk/productThunk';
 import { setSelectedCategory, clearFilters } from '@/store/products/slices/productsSlice';
 
-// Mock del módulo de redux-thunk
 jest.mock('@/store/products/thunk/productThunk', () => ({
   searchProductsThunk: jest.fn().mockImplementation((term) => ({ type: 'mocked-search-action', payload: term })),
 }));
 
-// Configuración del mock store
 const mockStore = configureStore([]);
 
 describe('SearchBar', () => {
   let store: any;
-  // Utilizamos un cast para acceder al mock
   const mockSearchProductsThunk = productThunk.searchProductsThunk as jest.MockedFunction<
     typeof productThunk.searchProductsThunk
   >;
 
   beforeEach(() => {
-    // Estado inicial para las pruebas
     const initialState = {
       products: {
         categories: [
@@ -40,7 +36,6 @@ describe('SearchBar', () => {
     store = mockStore(initialState);
     store.dispatch = jest.fn();
 
-    // Reset mock de la acción searchProductsThunk
     jest.clearAllMocks();
   });
 
@@ -51,11 +46,9 @@ describe('SearchBar', () => {
       </Provider>
     );
 
-    // Verificar que el campo de búsqueda está presente
     const searchInput = screen.getByPlaceholderText('Buscar plantas, accesorios o kits...');
     expect(searchInput).toBeInTheDocument();
 
-    // Verificar que el botón de categorías está presente
     const categoryButton = screen.getByText('Categorías');
     expect(categoryButton).toBeInTheDocument();
   });
@@ -87,15 +80,12 @@ describe('SearchBar', () => {
       </Provider>
     );
 
-    // Ingresar un término de búsqueda
     const searchInput = screen.getByPlaceholderText('Buscar plantas, accesorios o kits...');
     fireEvent.change(searchInput, { target: { value: 'monstera' } });
 
-    // Enviar el formulario
     const form = searchInput.closest('form');
     fireEvent.submit(form!);
 
-    // Verificar que se llamó a la acción thunk con el término correcto
     expect(store.dispatch).toHaveBeenCalledTimes(1);
     expect(mockSearchProductsThunk).toHaveBeenCalledWith('monstera');
   });
@@ -107,11 +97,9 @@ describe('SearchBar', () => {
       </Provider>
     );
 
-    // Enviar el formulario sin ingresar un término
     const form = screen.getByPlaceholderText('Buscar plantas, accesorios o kits...').closest('form');
     fireEvent.submit(form!);
 
-    // Verificar que no se llamó a la acción thunk
     expect(store.dispatch).not.toHaveBeenCalled();
   });
 
@@ -134,7 +122,6 @@ describe('SearchBar', () => {
       </Provider>
     );
 
-    // Verificar que el botón muestra el nombre de la categoría seleccionada
     const categoryButton = screen.getByText('Plantas');
     expect(categoryButton).toBeInTheDocument();
   });
@@ -146,21 +133,16 @@ describe('SearchBar', () => {
       </Provider>
     );
 
-    // El dropdown no debería estar visible inicialmente
     expect(screen.queryByText('Todas las categorías')).not.toBeInTheDocument();
 
-    // Hacer click en el botón de categorías
     fireEvent.click(screen.getByText('Categorías'));
 
-    // El dropdown ahora debería ser visible
     expect(screen.getByText('Todas las categorías')).toBeInTheDocument();
     expect(screen.getByText('Plantas')).toBeInTheDocument();
     expect(screen.getByText('Macetas')).toBeInTheDocument();
 
-    // Hacer click de nuevo para cerrar
     fireEvent.click(screen.getByText('Categorías'));
 
-    // El dropdown no debería estar visible nuevamente
     expect(screen.queryByText('Todas las categorías')).not.toBeInTheDocument();
   });
 
@@ -171,13 +153,10 @@ describe('SearchBar', () => {
       </Provider>
     );
 
-    // Abrir el dropdown
     fireEvent.click(screen.getByText('Categorías'));
 
-    // Seleccionar una categoría
     fireEvent.click(screen.getByText('Plantas'));
 
-    // Verificar que se llamó a la acción
     expect(store.dispatch).toHaveBeenCalledWith(setSelectedCategory('cat1'));
   });
 
@@ -198,14 +177,10 @@ describe('SearchBar', () => {
       </Provider>
     );
 
-    // Click en el botón de limpiar
     const clearButton = screen.getByLabelText('Limpiar búsqueda');
     fireEvent.click(clearButton);
 
-    // Verificar que se llamó a la acción
     expect(storeWithSearch.dispatch).toHaveBeenCalled();
-    // Debido a que clearFilters es un slice action, es difícil comprobar la acción exacta
-    // ya que cada vez creará un objeto diferente, pero debería haber sido llamado
   });
 
   test('debe mostrar un indicador de carga cuando loading es true', () => {
@@ -224,7 +199,6 @@ describe('SearchBar', () => {
       </Provider>
     );
 
-    // Debería haber un elemento con clase animate-spin
     const spinner = document.querySelector('.animate-spin');
     expect(spinner).toBeInTheDocument();
   });

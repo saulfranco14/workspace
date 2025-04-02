@@ -26,12 +26,10 @@ describe('PlanCharacteristics', () => {
     characteristics.forEach((char) => {
       expect(char.icon).toBeDefined();
 
-      // Renderizar el icono para verificar que es un componente React válido
       const { container } = render(<div>{char.icon}</div>);
       const svg = container.querySelector('svg');
 
       expect(svg).toBeTruthy();
-      // En lugar de verificar el atributo className, verificamos el elemento SVG
       expect(svg?.tagName.toLowerCase()).toBe('svg');
     });
   });
