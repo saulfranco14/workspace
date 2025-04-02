@@ -96,7 +96,7 @@ const DroppableProductGrid: React.FC<{
         {isActive && (
           <DropOverlay>
             <FiHeart size={48} />
-            <span>Soltar para agregar a "{activeCollection?.name}"</span>
+            <span>Soltar para agregar a &quot;{activeCollection?.name}&quot;</span>
           </DropOverlay>
         )}
         {children}

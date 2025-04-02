@@ -9,7 +9,6 @@ import {
   fetchProductById,
 } from '@/store/products/thunk/productThunk';
 import { initialState } from '@/store/products/initialState';
-import { Product } from '@/interfaces/product.interface';
 
 const productsSlice = createSlice({
   name: 'products',
@@ -90,11 +89,16 @@ const productsSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
-        state.loading = false;
-        state.products = action.payload;
-        state.filteredProducts = action.payload;
-        state.error = null;
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.loading = false;
+          state.products = action.payload;
+          state.filteredProducts = action.payload;
+          state.error = null;
+        } else {
+          state.loading = false;
+          state.error = 'No se pudieron obtener los productos';
+        }
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;

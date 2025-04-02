@@ -66,7 +66,6 @@ const FavoriteCollections: React.FC = () => {
             placeholder="Nombre de la colección"
             value={newCollectionName}
             onChange={(e) => setNewCollectionName(e.target.value)}
-            autoFocus
           />
           <FavoriteStyles.CreateFormButtons>
             <button className="cancel" onClick={() => setShowCreateForm(false)}>
