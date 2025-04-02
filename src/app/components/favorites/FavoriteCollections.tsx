@@ -32,6 +32,7 @@ const FavoriteCollections: React.FC = () => {
   }, [dispatch]);
 
   const handleSelectCollection = (collectionId: string) => {
+    console.log('collectionId', collectionId);
     const collection = collections.find((col) => col.id === collectionId);
     if (collection) {
       dispatch(setActiveCollection(collection));
@@ -97,60 +98,64 @@ const FavoriteCollections: React.FC = () => {
           <button onClick={() => setShowCreateForm(true)}>Crear mi primera colección</button>
         </EmptyCollections>
       ) : (
-        <CollectionsList>
-          {collections.map((collection) => (
-            <CollectionItem
-              key={collection.id}
-              onClick={() => handleSelectCollection(collection.id)}
-              $isActive={activeCollection?.id === collection.id}
-            >
-              <CollectionInfo>
-                <FiHeart />
-                <div>
-                  <CollectionName>{collection.name}</CollectionName>
-                  <ItemCount>
-                    {collection.items?.length || 0} {collection.items?.length === 1 ? 'producto' : 'productos'}
-                  </ItemCount>
-                </div>
-              </CollectionInfo>
-
-              <DeleteButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowConfirmDelete(collection.id);
-                }}
+        <>
+          <CollectionsList>
+            {collections.map((collection) => (
+              <CollectionItem
+                key={collection.id}
+                onClick={() => handleSelectCollection(collection.id)}
+                $isActive={activeCollection?.id === collection.id}
               >
-                <FiTrash2 />
-              </DeleteButton>
+                <CollectionInfo>
+                  <HeartIcon $isActive={activeCollection?.id === collection.id}>
+                    <FiHeart />
+                  </HeartIcon>
+                  <div>
+                    <CollectionName>{collection.name}</CollectionName>
+                    <ItemCount>
+                      {collection.items?.length || 0} {collection.items?.length === 1 ? 'producto' : 'productos'}
+                    </ItemCount>
+                  </div>
+                </CollectionInfo>
 
-              {showConfirmDelete === collection.id && (
-                <ConfirmDelete onClick={(e) => e.stopPropagation()}>
-                  <p>¿Eliminar esta colección?</p>
-                  <ConfirmButtons>
-                    <button
-                      className="cancel"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowConfirmDelete(null);
-                      }}
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      className="delete"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteCollection(collection.id);
-                      }}
-                    >
-                      Eliminar
-                    </button>
-                  </ConfirmButtons>
-                </ConfirmDelete>
-              )}
-            </CollectionItem>
-          ))}
-        </CollectionsList>
+                <DeleteButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowConfirmDelete(collection.id);
+                  }}
+                >
+                  <FiTrash2 />
+                </DeleteButton>
+
+                {showConfirmDelete === collection.id && (
+                  <ConfirmDelete onClick={(e) => e.stopPropagation()}>
+                    <p>¿Eliminar esta colección?</p>
+                    <ConfirmButtons>
+                      <button
+                        className="cancel"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowConfirmDelete(null);
+                        }}
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        className="delete"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteCollection(collection.id);
+                        }}
+                      >
+                        Eliminar
+                      </button>
+                    </ConfirmButtons>
+                  </ConfirmDelete>
+                )}
+              </CollectionItem>
+            ))}
+          </CollectionsList>
+        </>
       )}
     </CollectionsContainer>
   );
@@ -300,6 +305,8 @@ const CollectionItem = styled.div<{ $isActive: boolean }>`
   background-color: ${(props) => (props.$isActive ? 'var(--primary-light)' : 'transparent')};
   cursor: pointer;
   position: relative;
+  transition: all 0.2s ease;
+  border-left: ${(props) => (props.$isActive ? '4px solid var(--primary)' : '4px solid transparent')};
 
   &:hover {
     background-color: ${(props) => (props.$isActive ? 'var(--primary-light)' : '#f9fafb')};
@@ -404,6 +411,52 @@ const LoadingMessage = styled.div`
   padding: 2rem;
   text-align: center;
   color: #6b7280;
+`;
+
+const ActiveCollectionNote = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  color: #4b5563;
+
+  svg {
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+`;
+
+const HeartIcon = styled.div<{ $isActive: boolean }>`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    color: var(--primary);
+    fill: ${(props) => (props.$isActive ? 'var(--primary)' : 'transparent')};
+    stroke-width: ${(props) => (props.$isActive ? '2.5' : '2')};
+    transition:
+      fill 0.2s ease,
+      stroke-width 0.2s ease;
+  }
+`;
+
+const ActiveBadge = styled.span`
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--primary);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 500;
+  padding: 0.15rem 0.3rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
 `;
 
 export default FavoriteCollections;

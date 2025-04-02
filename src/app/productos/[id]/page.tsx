@@ -56,7 +56,7 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <Container>
+    <div className="container mx-auto px-4 py-8">
       <BackLink
         href="/productos"
         onClick={(e) => {
@@ -157,19 +157,9 @@ export default function ProductDetailPage() {
           </RelatedProductsGrid>
         </RelatedProductsSection>
       )}
-    </Container>
+    </div>
   );
 }
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1.5rem 1rem;
-
-  @media (min-width: 768px) {
-    padding: 2rem 1rem;
-  }
-`;
 
 const BackLink = styled.a`
   display: inline-flex;

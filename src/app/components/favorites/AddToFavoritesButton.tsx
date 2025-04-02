@@ -17,6 +17,7 @@ import {
   makeSelectIsProductInActiveCollection,
   makeSelectFavoriteItemByProductId,
 } from '@/app/selectors/favoriteSelectors';
+import { setActiveCollection } from '@/app/store/favorites/slices/favoritesSlice';
 
 interface AddToFavoritesButtonProps {
   productId: string;
@@ -53,11 +54,17 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
         dispatch(createFavoriteCollection('Mis Favoritos'))
           .unwrap()
           .then((collection) => {
+            dispatch(setActiveCollection(collection));
             dispatch(addToFavorites({ productId, collectionId: collection.id }));
           });
       } else {
         console.log('collections.length !== 0');
-        setShowCollectionSelector(true);
+        if (collections.length === 1) {
+          dispatch(setActiveCollection(collections[0]));
+          dispatch(addToFavorites({ productId, collectionId: collections[0].id }));
+        } else {
+          setShowCollectionSelector(true);
+        }
       }
     } else {
       console.log('isInFavorites', isInFavorites);
@@ -82,6 +89,10 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
   };
 
   const handleAddToCollection = (collectionId: string) => {
+    const selectedCollection = collections.find((col) => col.id === collectionId);
+    if (selectedCollection) {
+      dispatch(setActiveCollection(selectedCollection));
+    }
     dispatch(addToFavorites({ productId, collectionId }));
     setShowCollectionSelector(false);
   };
@@ -92,6 +103,7 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
       dispatch(createFavoriteCollection(newCollectionName.trim()))
         .unwrap()
         .then((collection) => {
+          dispatch(setActiveCollection(collection));
           dispatch(addToFavorites({ productId, collectionId: collection.id }));
           setShowCollectionSelector(false);
           setNewCollectionName('');

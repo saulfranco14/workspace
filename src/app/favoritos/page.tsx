@@ -29,7 +29,7 @@ export default function FavoritosPage() {
   }, [dispatch]);
 
   return (
-    <PageContainer>
+    <div className="container mx-auto px-4 py-8">
       <PageHeader>
         <h1>Mis Favoritos</h1>
       </PageHeader>
@@ -72,19 +72,9 @@ export default function FavoritosPage() {
           )}
         </MainContent>
       </ContentContainer>
-    </PageContainer>
+    </div>
   );
 }
-
-const PageContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1.5rem 1rem;
-
-  @media (min-width: 768px) {
-    padding: 2rem 1rem;
-  }
-`;
 
 const PageHeader = styled.div`
   margin-bottom: 2rem;

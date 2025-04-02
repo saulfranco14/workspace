@@ -1,14 +1,6 @@
-import styled from 'styled-components';
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-`;
-
 const ProductSkeleton = () => {
   return (
-    <Container>
+    <div className="container mx-auto px-4 py-8">
       <div className="animate-pulse">
         <div className="h-8 w-48 bg-gray-200 rounded mb-4"></div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -20,7 +12,7 @@ const ProductSkeleton = () => {
           </div>
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
 
