@@ -1,28 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FiFilter } from 'react-icons/fi';
+import styled from 'styled-components';
 
 import { RootState } from '@/app/store/store';
 import { fetchProducts, fetchCategories } from '@/app/store/products/thunk/productThunk';
 import { PlantProductsSection } from '@/app/components/products/section/PlantProductsSection';
 import { AccessoryProductsSection } from '@/app/components/products/AccessoryProductsSection';
 import { FeaturedProductsSection } from '@/app/components/products/features/FeaturedProductsSection';
-import { PlantCategoriesSection } from '@/app/components/products/section/PlantCategoriesSection';
-import { CategoryAccesory } from '@/app/components/filters/CategoryAccesory';
-import styled from 'styled-components';
-import { setSearchTerm } from '../store/products/slices/productsSlice';
-import { setSelectedCategory } from '../store/products/slices/productsSlice';
-import PlantCharacteristics from '../components/products/PlantCharacteristics';
+import { setSelectedCategory } from '@/app/store/products/slices/productsSlice';
+import PlantCharacteristics from '@/app/components/products/PlantCharacteristics';
 
 export default function ProductsPage() {
   const dispatch = useDispatch();
-  const { products, categories, selectedCategory, selectedCategoryType, selectedCategoryName } = useSelector(
+  const { products, selectedCategory, selectedCategoryType, selectedCategoryName } = useSelector(
     (state: RootState) => state.products
   );
-
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProducts() as any);
@@ -33,12 +27,8 @@ export default function ProductsPage() {
     dispatch(setSelectedCategory(categoryId));
   };
 
-  const handleSearch = (term: string) => {
-    dispatch(setSearchTerm(term));
-  };
-
   return (
-    <Container>
+    <div className="container mx-auto px-4 py-8">
       <Header>
         <Title>Nuestros Productos</Title>
       </Header>
@@ -62,15 +52,9 @@ export default function ProductsPage() {
       </MainContent>
 
       <PlantCharacteristics />
-    </Container>
+    </div>
   );
 }
-
-const Container = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-`;
 
 const Header = styled.div`
   display: flex;
@@ -84,25 +68,6 @@ const Title = styled.h1`
   font-weight: 600;
   color: #1f2937;
   margin: 0;
-`;
-
-const FilterButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  color: #4b5563;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    background-color: #f9fafb;
-    border-color: #d1d5db;
-  }
 `;
 
 const MainContent = styled.div`

@@ -47,17 +47,22 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
 
   const handleToggleFavorite = () => {
     if (!activeCollection) {
+      console.log('!activeCollection', activeCollection);
       if (collections.length === 0) {
+        console.log('collections.length === 0');
         dispatch(createFavoriteCollection('Mis Favoritos'))
           .unwrap()
           .then((collection) => {
             dispatch(addToFavorites({ productId, collectionId: collection.id }));
           });
       } else {
+        console.log('collections.length !== 0');
         setShowCollectionSelector(true);
       }
     } else {
+      console.log('isInFavorites', isInFavorites);
       if (isInFavorites && favoriteItem) {
+        console.log('isInFavorites favoriteItem', favoriteItem.id, activeCollection.id);
         dispatch(
           removeFromFavorites({
             itemId: favoriteItem.id,
@@ -65,6 +70,7 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
           })
         );
       } else {
+        console.log('addToFavorites', productId, activeCollection.id);
         dispatch(
           addToFavorites({
             productId,

@@ -20,14 +20,12 @@ export const getOrCreateCart = async (userId?: string) => {
       return null;
     }
 
-    // Buscar carrito existente
     const existingCart = await findCart(userId, fingerprint || undefined);
 
     if (existingCart) {
       return existingCart;
     }
 
-    // Crear nuevo carrito
     return await createCart(userId, fingerprint || undefined);
   } catch (error) {
     console.error('Error al obtener o crear carrito:', error);
@@ -37,17 +35,14 @@ export const getOrCreateCart = async (userId?: string) => {
 
 export async function migrateCart(userId: string, fingerprint: string) {
   try {
-    // Buscar carrito anónimo
     const anonCart = await findCart(undefined, fingerprint);
     if (!anonCart) return { success: true };
 
-    // Buscar carrito de usuario
     const userCart = await findCart(userId);
 
     let targetCartId: string;
 
     if (!userCart) {
-      // Crear carrito de usuario si no existe
       const newCart = await createCart(userId);
       if (!newCart) throw new Error('Error al crear carrito de usuario');
       targetCartId = newCart.id;
@@ -55,16 +50,13 @@ export async function migrateCart(userId: string, fingerprint: string) {
       targetCartId = userCart.id;
     }
 
-    // Obtener items del carrito anónimo
     const anonItems = await getCartItems(anonCart.id);
 
     if (!anonItems?.length) {
-      // Eliminar carrito anónimo vacío
       await deleteCart(anonCart.id);
       return { success: true };
     }
 
-    // Migrar items al carrito de usuario
     const itemsToInsert = anonItems.map((item) => ({
       cart_id: targetCartId,
       product_id: item.product_id,
@@ -75,15 +67,12 @@ export async function migrateCart(userId: string, fingerprint: string) {
       const existingItem = await getCartItemByProductId(targetCartId, item.product_id);
 
       if (existingItem) {
-        // Actualizar cantidad si ya existe
         await updateCartItemQty(existingItem.id, existingItem.quantity + item.quantity);
       } else {
-        // Insertar nuevo item
         await insertCartItem(targetCartId, item.product_id, item.quantity);
       }
     }
 
-    // Eliminar carrito anónimo
     await deleteCart(anonCart.id);
 
     return { success: true };

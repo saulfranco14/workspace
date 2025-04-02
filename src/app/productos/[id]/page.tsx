@@ -312,7 +312,6 @@ const ActionsContainer = styled.div`
   margin-top: 0.5rem;
 
   @media (min-width: 768px) {
-    flex-direction: row;
     align-items: center;
   }
 `;
@@ -320,6 +319,7 @@ const ActionsContainer = styled.div`
 const ActionButtonGroup = styled.div`
   display: flex;
   gap: 0.5rem;
+  width: 100%;
 `;
 
 const ActionButton = styled.button`

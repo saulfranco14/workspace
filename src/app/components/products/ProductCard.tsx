@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Product } from '@/app/interfaces/product.interface';
 import AddToCartButton from '@/app/components/cart/AddToCartButton';
 import AddToFavoritesButton from '@/app/components/favorites/AddToFavoritesButton';
+import ViewMoreButton from '@/app/components/cart/ViewMoreButton';
 import styled from 'styled-components';
 
 interface ProductCardProps {
@@ -12,48 +13,46 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <CardContainer>
-      <Link href={`/products/${product.id}`}>
-        <ImageContainer>
-          {product.image_url ? (
-            <Image
-              src={product.image_url}
-              alt={product.name}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              style={{ objectFit: 'cover' }}
-              className="transition-transform hover:scale-105"
-            />
-          ) : (
-            <PlaceholderImage>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1}
-                stroke="currentColor"
-                className="w-12 h-12 text-gray-400"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.25 2.25 0 0 0-1.872-1.034H9.25a2.25 2.25 0 0 0-1.872 1.034l-.822 1.316Z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
-                />
-              </svg>
-            </PlaceholderImage>
-          )}
-          <FavoriteButtonWrapper>
-            <AddToFavoritesButton productId={product.id} size="sm" />
-          </FavoriteButtonWrapper>
-        </ImageContainer>
-      </Link>
+      <ImageContainer>
+        {product.image_url ? (
+          <Image
+            src={product.image_url}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            style={{ objectFit: 'cover' }}
+            className="transition-transform hover:scale-105"
+          />
+        ) : (
+          <PlaceholderImage>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1}
+              stroke="currentColor"
+              className="w-12 h-12 text-gray-400"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.25 2.25 0 0 0-1.872-1.034H9.25a2.25 2.25 0 0 0-1.872 1.034l-.822 1.316Z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
+              />
+            </svg>
+          </PlaceholderImage>
+        )}
+        <FavoriteButtonWrapper>
+          <AddToFavoritesButton productId={product.id} size="sm" />
+        </FavoriteButtonWrapper>
+      </ImageContainer>
 
       <ContentContainer>
-        <Link href={`/products/${product.id}`}>
+        <Link href={`/productos/${product.id}`}>
           <ProductName>{product.name}</ProductName>
 
           {product.category?.name && <CategoryName>{product.category.name}</CategoryName>}
@@ -67,6 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </Link>
 
         <ButtonContainer>
+          <ViewMoreButton productId={product.id} />
           <AddToCartButton productId={product.id} stock={product.stock} />
         </ButtonContainer>
       </ContentContainer>
@@ -85,6 +85,10 @@ const CardContainer = styled.div`
 
   &:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    height: 48vh;
   }
 `;
 
@@ -153,7 +157,15 @@ const StockBadge = styled.div<{ stock: number }>`
 `;
 
 const ButtonContainer = styled.div`
+  width: 100%;
+  height: 50px;
   margin-top: auto;
+  display: flex;
+  gap: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 export default ProductCard;

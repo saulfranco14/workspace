@@ -13,11 +13,7 @@ const SearchBar = () => {
   const { selectedCategory, categories, loading, searchTerm } = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
-    // This code does not execute if inputValue is empty
-    if (searchTerm && !inputValue) {
-      setInputValue(searchTerm);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (searchTerm && !inputValue) setInputValue(searchTerm);
   }, [searchTerm]);
 
   useEffect(() => {

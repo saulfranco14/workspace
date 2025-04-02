@@ -50,7 +50,6 @@ export const CartStyle = {
     cursor: pointer;
     transition: all 0.2s ease;
     width: 100%;
-    max-width: 200px;
 
     &:hover {
       background-color: #388e3c;

@@ -21,7 +21,7 @@ const PlantCareKit: React.FC<PlantCareKitProps> = ({ kitProduct }) => {
           <p className="text-emerald-600 font-medium text-lg mb-4">${kitProduct.price}</p>
 
           <Link
-            href={`/products/${kitProduct.id}`}
+            href={`/productos/${kitProduct.id}`}
             className="inline-block bg-emerald-600 py-2 px-6 rounded-lg transition-colors"
           >
             <span className="text-white">Ver detalles</span>

@@ -2,9 +2,6 @@ import { FavoriteCollection, FavoriteItem } from '@/app/interfaces/favorites.int
 import { getFingerprint } from '@/app/services/deviceService';
 import { supabase } from '@/app/config/supabaseClient';
 
-/**
- * Obtiene todas las colecciones de favoritos del usuario
- */
 export const getUserFavoriteCollections = async (): Promise<FavoriteCollection[]> => {
   try {
     const fingerprint = await getFingerprint();
@@ -34,11 +31,6 @@ export const getUserFavoriteCollections = async (): Promise<FavoriteCollection[]
   }
 };
 
-/**
- * Obtiene una colección de favoritos por su ID
- * @param collectionId - ID de la colección
- * @returns La colección con sus items o null si hay un error
- */
 export const getCollection = async (): Promise<FavoriteCollection | null> => {
   try {
     const { data, error } = await supabase
@@ -70,9 +62,6 @@ export const getCollection = async (): Promise<FavoriteCollection | null> => {
   }
 };
 
-/**
- * Crea una nueva colección de favoritos
- */
 export const createCollection = async (name: string): Promise<FavoriteCollection> => {
   try {
     const fingerprint = await getFingerprint();
@@ -88,7 +77,6 @@ export const createCollection = async (name: string): Promise<FavoriteCollection
     if (error) throw error;
 
     const fullCollection = await getCollection();
-    console.log('fullCollection', fullCollection);
 
     return fullCollection as FavoriteCollection;
   } catch (error) {
@@ -97,9 +85,6 @@ export const createCollection = async (name: string): Promise<FavoriteCollection
   }
 };
 
-/**
- * Agrega un producto a una colección de favoritos
- */
 export const addProductToFavorites = async (productId: string, collectionId: string): Promise<FavoriteItem> => {
   try {
     const favoriteItem = {
@@ -107,24 +92,19 @@ export const addProductToFavorites = async (productId: string, collectionId: str
       product_id: productId,
     };
 
-    const { data, error } = await supabase
-      .from('favorite_items')
-      .insert(favoriteItem)
-      .select('*, product:products(*)')
-      .single();
+    const { error } = await supabase.from('favorite_items').insert(favoriteItem);
 
     if (error) throw error;
 
-    return data as FavoriteItem;
-  } catch (error: any) {
+    const fullFavoriteItem = await getFavoriteByProductId();
+
+    return fullFavoriteItem as FavoriteItem;
+  } catch (error) {
     console.error('Error al añadir producto a favoritos:', error);
     throw error;
   }
 };
 
-/**
- * Remueve un producto de los favoritos
- */
 export const removeProductFromFavorites = async (
   itemId: string,
   collectionId: string
@@ -141,9 +121,6 @@ export const removeProductFromFavorites = async (
   }
 };
 
-/**
- * Elimina una colección de favoritos
- */
 export const deleteCollection = async (collectionId: string): Promise<string> => {
   try {
     const { error } = await supabase.from('favorite_collections').delete().eq('id', collectionId);
@@ -154,5 +131,28 @@ export const deleteCollection = async (collectionId: string): Promise<string> =>
   } catch (error: any) {
     console.error('Error al eliminar colección de favoritos:', error);
     throw error;
+  }
+};
+
+export const getFavoriteByProductId = async (): Promise<FavoriteItem | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('favorite_items')
+      .select('*')
+      .order('added_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Error al obtener colección de favoritos:', error);
+      throw error;
+    }
+
+    console.log('getFavoriteByProductId', data);
+
+    return data as FavoriteItem;
+  } catch (error) {
+    console.error('Error en getCollection:', error);
+    return null;
   }
 };

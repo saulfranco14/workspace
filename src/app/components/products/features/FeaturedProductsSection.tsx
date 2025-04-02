@@ -6,5 +6,7 @@ export const FeaturedProductsSection = ({ products, selectedCategory }: Featured
     return null;
   }
 
-  return <ProductSection title="Destacados" products={products} viewMoreLink="/products/featured" showEmpty={false} />;
+  return (
+    <ProductSection title="Destacados" products={products} viewMoreLink="/productos/destacados" showEmpty={false} />
+  );
 };
