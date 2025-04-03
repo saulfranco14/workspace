@@ -16,7 +16,7 @@ export const AccessoryProductsSection = ({
     <ProductSection
       title="Equipamientos"
       products={products}
-      viewMoreLink="/productos/accesorios"
+      viewMoreLink="/productos"
       categoryName={selectedCategoryType === 'accessory' && selectedCategoryName ? selectedCategoryName : undefined}
     />
   );
