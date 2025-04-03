@@ -3,18 +3,26 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import { FiUser, FiLogOut, FiMenu } from 'react-icons/fi';
+import { FiLogOut, FiMenu } from 'react-icons/fi';
+import { useDispatch } from 'react-redux';
 
 import { useSession } from '@/hooks/useSession';
-import CartButton from '@/components/cart/CartButton';
 import { HeaderStyle } from '@/styles/components/HeaderStyle';
 import { useClientReady } from '@/hooks/useClientReady';
+import { logoutUserThunk } from '@/store/auth/thunk/authThunk';
+import { AppDispatch } from '@/store/store';
+import CartButton from '@/components/cart/CartButton';
 
 const Header = () => {
   const clientReady = useClientReady();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const { user } = useSession();
+
+  const handleLogout = () => {
+    dispatch(logoutUserThunk());
+  };
 
   if (!clientReady) return null;
 
@@ -37,12 +45,7 @@ const Header = () => {
 
             {user ? (
               <HeaderStyle.UserActions>
-                <Link href="/perfil">
-                  <HeaderStyle.ActionButton>
-                    <FiUser />
-                  </HeaderStyle.ActionButton>
-                </Link>
-                <HeaderStyle.ActionButton>
+                <HeaderStyle.ActionButton onClick={handleLogout}>
                   <FiLogOut />
                 </HeaderStyle.ActionButton>
               </HeaderStyle.UserActions>

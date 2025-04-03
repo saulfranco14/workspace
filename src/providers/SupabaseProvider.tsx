@@ -1,11 +1,13 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, Session } from '@supabase/supabase-js';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { SupabaseContextType } from '@/types/provider.type';
 import { supabase } from '@/config/supabaseClient';
 import { getSession } from '@/services/authService';
+import { setSession, logoutUser } from '@/store/auth/slices/authSlice';
+import { RootState } from '@/store/store';
 
 const defaultContextValue: SupabaseContextType = {
   user: null,
@@ -18,16 +20,17 @@ const SupabaseContext = createContext<SupabaseContextType>(defaultContextValue);
 export const useSupabase = () => useContext(SupabaseContext);
 
 export function SupabaseProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
+
+  const session = useSelector((state: RootState) => state.auth.session);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
     const fetchSession = async () => {
       try {
         const currentSession = await getSession();
-        setSession(currentSession);
-        setUser(currentSession?.user || null);
+        if (currentSession) dispatch(setSession(currentSession));
       } catch (error) {
         console.error('Error al cargar sesión:', error);
       } finally {
@@ -36,25 +39,12 @@ export function SupabaseProvider({ children }: { children: ReactNode }) {
     };
 
     fetchSession();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setSession(newSession);
-      setUser(newSession?.user || null);
-      setIsLoading(false);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+  }, [dispatch]);
 
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
-      setSession(null);
-      setUser(null);
+      dispatch(logoutUser());
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }

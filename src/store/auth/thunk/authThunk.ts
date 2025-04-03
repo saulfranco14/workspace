@@ -10,7 +10,7 @@ export const registerUserThunk = createAsyncThunk(
       if (!response.success) {
         return rejectWithValue(response.error);
       }
-      return response.data;
+      return response;
     } catch (error) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);

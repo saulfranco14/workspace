@@ -49,10 +49,10 @@ export const createCart = async (userId?: string, fingerprint?: string): Promise
 
     const newCart = {
       user_id: userId || null,
-      device_fingerprint: userId ? null : fingerprint,
+      device_fingerprint: fingerprint,
     };
 
-    const { data, error } = await supabase.from('carts').insert(newCart).select().single();
+    const { data, error } = await supabase.from('carts').insert(newCart);
 
     if (error) {
       console.error('Error al crear carrito:', error);
@@ -107,12 +107,6 @@ export const deleteCart = async (cartId: string): Promise<boolean> => {
   }
 };
 
-/**
- * Actualiza un carrito existente
- * @param cartId - ID del carrito
- * @param updates - Objeto con los campos a actualizar
- * @returns El carrito actualizado o null si hay error
- */
 export const updateCart = async (
   cartId: string,
   updates: Partial<Omit<Cart, 'id' | 'created_at' | 'updated_at'>>

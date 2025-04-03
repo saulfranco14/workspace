@@ -26,7 +26,6 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
         'Content-Type': 'application/json',
         Accept: 'application/json',
         apikey: supabaseAnonKey,
-        Authorization: `Bearer ${supabaseAnonKey}`,
       };
 
       return fetch(input, {

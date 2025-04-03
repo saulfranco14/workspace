@@ -1,36 +1,33 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { supabase } from '@/config/supabaseClient';
 import { RootState } from '@/store/store';
-import { migrateCart } from '@/services/cart/cartService';
-import { getFingerprint } from '@/services/deviceService';
+import { getSession } from '@/services/authService';
+import { setSession } from '@/store/auth/slices/authSlice';
 
 export const useSession = () => {
   const dispatch = useDispatch();
+
   const session = useSelector((state: RootState) => state.auth.session);
-  const user = session?.user || null;
+  const user = useSelector((state: RootState) => state.auth.user);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        dispatch({ type: 'auth/setSession', payload: session });
-
-        const fingerprint = await getFingerprint();
-        if (fingerprint && session.user) {
-          migrateCart(session.user.id, fingerprint);
+    const initSession = async () => {
+      try {
+        const currentSession = await getSession();
+        if (currentSession) {
+          dispatch(setSession(currentSession));
         }
-      } else if (event === 'SIGNED_OUT') {
-        dispatch({ type: 'auth/clearSession' });
+      } catch (error) {
+        console.error('Error al inicializar la sesión:', error);
       }
-    });
-
-    return () => {
-      subscription.unsubscribe();
     };
-  }, [dispatch]);
 
-  return { session, user };
+    if (!session) {
+      initSession();
+    }
+  }, [dispatch, session]);
+
+  return { session, user, isAuthenticated };
 };
