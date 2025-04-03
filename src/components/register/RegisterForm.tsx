@@ -12,8 +12,9 @@ import { AppDispatch } from '@/store/store';
 import { registerUserThunk } from '@/store/auth/thunk/authThunk';
 import { FormContainer, FormTitle, FormLink } from '@/styles/components/FormStyles';
 import useAuthRedirect from '@/hooks/useAuthRedirect';
-import AuthFormStatus from '../shared/FormStatus';
+import AuthFormStatus from '@/components/shared/FormStatus';
 import RegisterFormFields from '@/components/register/RegisterFormFields';
+
 export default function RegisterForm() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -28,8 +29,8 @@ export default function RegisterForm() {
 
   useAuthRedirect(success, router);
 
-  const onSubmit = (data: RegisterFormData) => {
-    dispatch(registerUserThunk(data));
+  const onSubmit = async (data: RegisterFormData) => {
+    await dispatch(registerUserThunk(data));
   };
 
   return (

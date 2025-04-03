@@ -107,7 +107,7 @@ export const HeaderStyle = {
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: var(--primary-dark);
+      color: var(--primary-dark);
     }
   `,
 

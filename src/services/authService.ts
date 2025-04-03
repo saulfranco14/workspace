@@ -12,13 +12,28 @@ export const getSession = async () => {
     console.error('Error al obtener la sesión:', error.message);
     return null;
   }
-
   return session;
 };
 
 export const getCurrentUser = async () => {
   const session = await getSession();
   return session?.user || null;
+};
+
+export const createUserProfile = async (userId: string) => {
+  try {
+    const { error } = await supabase.from('profiles').insert([{ id: userId }]);
+
+    if (error) {
+      console.error('Error al crear el perfil:', error.message);
+      return { success: false, error: error.message };
+    }
+
+    return { success: true };
+  } catch (err) {
+    console.error('Error al intentar crear el perfil:', err);
+    return { success: false, error: 'Error desconocido al crear el perfil' };
+  }
 };
 
 export const registerUser = async (userData: RegisterFormData): Promise<AuthResponse> => {
@@ -30,8 +45,15 @@ export const registerUser = async (userData: RegisterFormData): Promise<AuthResp
       password,
     });
 
-    if (error) {
-      throw new Error(error.message);
+    if (error) throw new Error(error.message);
+
+    if (data.user) {
+      await loginUser({ email, password });
+      return {
+        data,
+        success: true,
+        profilePending: true,
+      };
     }
 
     return { data, success: true };
@@ -40,6 +62,21 @@ export const registerUser = async (userData: RegisterFormData): Promise<AuthResp
       return { error: error.message, success: false };
     }
     return { error: 'Error desconocido durante el registro', success: false };
+  }
+};
+
+export const createProfileAfterSignUp = async (userId: string) => {
+  try {
+    const session = await getSession();
+
+    if (!session) {
+      console.warn('No hay sesión activa al intentar crear el perfil');
+    }
+
+    return await createUserProfile(userId);
+  } catch (err) {
+    console.error('Error al crear perfil después del registro:', err);
+    return { success: false, error: 'Error al crear perfil después del registro' };
   }
 };
 

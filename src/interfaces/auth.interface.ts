@@ -53,6 +53,7 @@ export interface AuthData {
 
 export interface AuthResponse extends BaseResponse {
   data?: AuthData | null;
+  profilePending?: boolean;
 }
 
 export type LogoutResponse = BaseResponse;

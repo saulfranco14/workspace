@@ -16,9 +16,11 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const { session } = useSession();
 
   useEffect(() => {
-    const userId = session?.user?.id;
-    dispatch(fetchCart(userId));
-  }, [dispatch]);
+    if (session) {
+      const userId = session.user.id;
+      if (userId) dispatch(fetchCart(userId));
+    }
+  }, [dispatch, session]);
 
   useEffect(() => {
     dispatch(fetchUserFavoriteCollections());

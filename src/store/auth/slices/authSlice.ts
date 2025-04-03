@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AuthData } from '@/interfaces/auth.interface';
 import { registerUserThunk, loginUserThunk, logoutUserThunk } from '@/store/auth/thunk/authThunk';
-import { User } from '@supabase/supabase-js';
+import { User, Session } from '@supabase/supabase-js';
 import { initialState } from '@/store/auth/initialState';
 
 const authSlice = createSlice({
@@ -15,12 +15,19 @@ const authSlice = createSlice({
     },
     logoutUser: (state) => {
       state.user = null;
+      state.session = null;
       state.success = false;
       state.error = null;
       state.loading = false;
+      state.isAuthenticated = false;
     },
     setUser: (state, action: PayloadAction<User | null>) => {
       state.user = action.payload;
+      state.isAuthenticated = !!action.payload;
+    },
+    setSession: (state, action: PayloadAction<Session | null>) => {
+      state.session = action.payload;
+      state.user = action.payload?.user || null;
       state.isAuthenticated = !!action.payload;
     },
   },
@@ -30,9 +37,10 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(registerUserThunk.fulfilled, (state, action: PayloadAction<AuthData | null | undefined>) => {
+      .addCase(registerUserThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload?.user || null;
+        state.user = action.payload?.data?.user || null;
+        state.session = action.payload?.data?.session || null;
         state.success = true;
       })
       .addCase(registerUserThunk.rejected, (state, action) => {
@@ -46,6 +54,7 @@ const authSlice = createSlice({
       .addCase(loginUserThunk.fulfilled, (state, action: PayloadAction<AuthData | null | undefined>) => {
         state.loading = false;
         state.user = action.payload?.user || null;
+        state.session = action.payload?.session || null;
         state.success = true;
       })
       .addCase(loginUserThunk.rejected, (state, action) => {
@@ -58,6 +67,7 @@ const authSlice = createSlice({
       .addCase(logoutUserThunk.fulfilled, (state) => {
         state.loading = false;
         state.user = null;
+        state.session = null;
         state.success = true;
       })
       .addCase(logoutUserThunk.rejected, (state, action) => {
@@ -67,5 +77,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { resetAuthState, logoutUser, setUser } = authSlice.actions;
+export const { resetAuthState, logoutUser, setUser, setSession } = authSlice.actions;
 export default authSlice.reducer;
