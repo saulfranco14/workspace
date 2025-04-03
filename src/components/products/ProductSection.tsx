@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Product } from '@/interfaces/product.interface';
 import ProductCard from '@/components/products/ProductCard';
 import EmptyResults from '@/components/shared/EmptyResults';
-import { getDisplayProducts, isProductsPage } from '@/helpers/productHelpers';
+import { getDisplayProducts } from '@/helpers/productHelpers';
 import { usePathname } from 'next/navigation';
 
 interface ProductSectionProps {
