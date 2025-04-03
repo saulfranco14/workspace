@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { fetchProducts, fetchCategories } from '@/store/products/thunk/productThunk';
 import { PlantProductsSection } from '@/components/products/section/PlantProductsSection';
-import { AccessoryProductsSection } from '@/components/products/AccessoryProductsSection';
-import { FeaturedProductsSection } from '@/components/products/features/FeaturedProductsSection';
 import { ProductsStyle } from '@/styles/components/ProductsStyle';
 import PlantCharacteristics from '@/components/products/PlantCharacteristics';
 
@@ -30,14 +28,7 @@ export default function ProductsPage() {
 
       <ProductsStyle.MainContent>
         <ProductsStyle.ProductsSection>
-          <FeaturedProductsSection products={products} selectedCategory={selectedCategory} />
           <PlantProductsSection
-            products={products}
-            selectedCategory={selectedCategory}
-            selectedCategoryType={selectedCategoryType}
-            selectedCategoryName={selectedCategoryName}
-          />
-          <AccessoryProductsSection
             products={products}
             selectedCategory={selectedCategory}
             selectedCategoryType={selectedCategoryType}

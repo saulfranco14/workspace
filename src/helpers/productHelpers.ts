@@ -1,4 +1,5 @@
 import { Category, Product } from '@/interfaces/product.interface';
+import { usePathname } from 'next/navigation';
 
 export const filterProductsByCategory = (products: Product[], categoryIds: string[]) => {
   if (!products.length) return [];
@@ -80,4 +81,27 @@ export const formatProduct = (product: Partial<Product>): Product => ({
 export const handleError = <T>(error: unknown, operation: string): { data: T | null; error: Error } => {
   console.error(`Error al ${operation}:`, error);
   return { data: null, error: error as Error };
+};
+
+export const removeLeadingSlash = (url?: string): string => {
+  if (!url) return '';
+  return url.startsWith('/') ? url.substring(1) : url;
+};
+
+export const isProductsPage = (url?: string): boolean => {
+  if (!url) return false;
+  const cleanUrl = removeLeadingSlash(url);
+  return cleanUrl === 'productos' || cleanUrl.startsWith('productos/');
+};
+
+export const getDisplayProducts = <T>(products: T[], currentPath?: string, limit: number = 4): T[] => {
+  if (isProductsPage(currentPath)) {
+    return products;
+  }
+  return products.slice(0, limit);
+};
+
+export const useDisplayProducts = <T>(products: T[], limit: number = 4): T[] => {
+  const pathname = usePathname();
+  return getDisplayProducts(products, pathname, limit);
 };
