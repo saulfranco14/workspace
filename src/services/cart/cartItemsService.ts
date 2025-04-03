@@ -14,8 +14,6 @@ export const insertCartItem = async (
   quantity: number = 1
 ): Promise<CartItem | null> => {
   try {
-    console.log('Intentando insertar:', { cartId, productId, quantity });
-
     const response = await supabase.from('cart_items').insert({
       cart_id: cartId,
       product_id: productId,

@@ -53,8 +53,6 @@ export const getCollection = async (): Promise<FavoriteCollection | null> => {
       throw error;
     }
 
-    console.log('getCollection', data);
-
     return data as FavoriteCollection;
   } catch (error) {
     console.error('Error en getCollection:', error);
@@ -99,8 +97,6 @@ export const getFavoriteItem = async (): Promise<FavoriteItem | null> => {
       throw error;
     }
 
-    console.log('getFavoriteItem', data);
-
     return data as FavoriteItem;
   } catch (error) {
     console.error('Error en getFavoriteItem:', error);
@@ -123,7 +119,6 @@ export const addProductToFavorites = async (
     if (checkError) throw checkError;
 
     if (existingItem) {
-      console.log('Producto ya existe en favoritos:', existingItem);
       return { item: existingItem as FavoriteItem, isExisting: true };
     }
 

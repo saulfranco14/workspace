@@ -60,8 +60,6 @@ const DroppableProductGrid: React.FC<{
 
           const targetId = collectionIdRef.current;
 
-          console.log('Dropping to grid of collection:', activeCollection?.name, 'ID:', targetId);
-
           await dispatch(
             addToFavorites({
               productId: item.product.id,

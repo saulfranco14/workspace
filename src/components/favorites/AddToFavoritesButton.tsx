@@ -37,9 +37,7 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
 
   const handleToggleFavorite = () => {
     if (!activeCollection) {
-      console.log('!activeCollection', activeCollection);
       if (collections.length === 0) {
-        console.log('collections.length === 0');
         dispatch(createFavoriteCollection('Mis Favoritos'))
           .unwrap()
           .then((collection) => {
@@ -47,7 +45,6 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
             dispatch(addToFavorites({ productId, collectionId: collection.id }));
           });
       } else {
-        console.log('collections.length !== 0');
         if (collections.length === 1) {
           dispatch(setActiveCollection(collections[0]));
           dispatch(addToFavorites({ productId, collectionId: collections[0].id }));
@@ -56,9 +53,7 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
         }
       }
     } else {
-      console.log('isInFavorites', isInFavorites);
       if (isInFavorites && favoriteItem) {
-        console.log('isInFavorites favoriteItem', favoriteItem.id, activeCollection.id);
         dispatch(
           removeFromFavorites({
             itemId: favoriteItem.id,
@@ -66,7 +61,6 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
           })
         );
       } else {
-        console.log('addToFavorites', productId, activeCollection.id);
         dispatch(
           addToFavorites({
             productId,
