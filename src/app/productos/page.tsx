@@ -30,14 +30,7 @@ export default function ProductsPage() {
 
       <ProductsStyle.MainContent>
         <ProductsStyle.ProductsSection>
-          <FeaturedProductsSection products={products} selectedCategory={selectedCategory} />
           <PlantProductsSection
-            products={products}
-            selectedCategory={selectedCategory}
-            selectedCategoryType={selectedCategoryType}
-            selectedCategoryName={selectedCategoryName}
-          />
-          <AccessoryProductsSection
             products={products}
             selectedCategory={selectedCategory}
             selectedCategoryType={selectedCategoryType}

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { Product } from '@/interfaces/product.interface';
 import ProductCard from '@/components/products/ProductCard';
 import EmptyResults from '@/components/shared/EmptyResults';
+import { getDisplayProducts, isProductsPage } from '@/helpers/productHelpers';
+import { usePathname } from 'next/navigation';
 
 interface ProductSectionProps {
   title: string;
@@ -9,6 +11,7 @@ interface ProductSectionProps {
   viewMoreLink?: string;
   categoryName?: string;
   showEmpty?: boolean;
+  limit?: number;
 }
 
 const ProductSection: React.FC<ProductSectionProps> = ({
@@ -17,7 +20,11 @@ const ProductSection: React.FC<ProductSectionProps> = ({
   viewMoreLink,
   categoryName,
   showEmpty = true,
+  limit = 4,
 }) => {
+  const pathname = usePathname();
+  const displayProducts = getDisplayProducts(products, pathname, limit);
+
   if (products.length === 0 && showEmpty) {
     return (
       <EmptyResults
@@ -74,7 +81,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-4 gap-4">
-        {products.slice(0, 4).map((product) => (
+        {displayProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
