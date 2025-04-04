@@ -1,5 +1,4 @@
 import { Category, Product } from '@/interfaces/product.interface';
-import { usePathname } from 'next/navigation';
 
 export const filterProductsByCategory = (products: Product[], categoryIds: string[]) => {
   if (!products.length) return [];
@@ -99,9 +98,4 @@ export const getDisplayProducts = <T>(products: T[], currentPath?: string, limit
     return products;
   }
   return products.slice(0, limit);
-};
-
-export const useDisplayProducts = <T>(products: T[], limit: number = 4): T[] => {
-  const pathname = usePathname();
-  return getDisplayProducts(products, pathname, limit);
 };

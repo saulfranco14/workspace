@@ -58,7 +58,6 @@ export const createCart = async (userId?: string, fingerprint?: string): Promise
       console.error('Error al crear carrito:', error);
       throw error;
     }
-
     return data;
   } catch (error) {
     console.error('Error en createCart:', error);

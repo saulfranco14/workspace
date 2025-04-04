@@ -98,14 +98,14 @@ export const ProductIdStyles = {
     color: var(--primary);
   `,
 
-  StockBadge: styled.div<{ stock: number }>`
+  StockBadge: styled.div<{ $stock: number }>`
     display: inline-block;
     padding: 0.25rem 0.75rem;
     border-radius: 9999px;
     font-size: 0.875rem;
     font-weight: 500;
-    background-color: ${({ stock }) => (stock > 10 ? '#e8f5e9' : stock > 0 ? '#fff8e1' : '#ffebee')};
-    color: ${({ stock }) => (stock > 10 ? '#388e3c' : stock > 0 ? '#ff8f00' : '#d32f2f')};
+    background-color: ${({ $stock }) => ($stock > 10 ? '#e8f5e9' : $stock > 0 ? '#fff8e1' : '#ffebee')};
+    color: ${({ $stock }) => ($stock > 10 ? '#388e3c' : $stock > 0 ? '#ff8f00' : '#d32f2f')};
   `,
 
   DescriptionContainer: styled.div`
