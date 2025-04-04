@@ -13,7 +13,7 @@ export const findCart = async (userId?: string, fingerprint?: string): Promise<C
       throw new Error('Se requiere userId o fingerprint para buscar un carrito');
     }
 
-    const query = supabase.from('carts').select('*');
+    const query = supabase.from('carts').select('*').limit(1).order('created_at', { ascending: false });
 
     if (userId) {
       query.eq('user_id', userId);
@@ -21,14 +21,14 @@ export const findCart = async (userId?: string, fingerprint?: string): Promise<C
       query.eq('device_fingerprint', fingerprint);
     }
 
-    const { data, error } = await query.maybeSingle();
+    const { data, error } = await query;
 
     if (error) {
       console.error('Error al buscar carrito:', error);
       throw error;
     }
 
-    return data;
+    return data && data.length > 0 ? { ...data[0] } : null;
   } catch (error) {
     console.error('Error en findCart:', error);
     return null;

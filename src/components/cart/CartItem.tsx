@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useCallback } from 'react';
-import { FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi';
+import { FiTrash2 } from 'react-icons/fi';
 
 import { useCart } from '@/hooks/useCart';
 import { CartItem as CartItemType } from '@/interfaces/cart.interface';
@@ -11,15 +11,7 @@ type CartItemProps = {
 };
 
 const CartItem = ({ item }: CartItemProps) => {
-  const { updateQuantity, removeItem } = useCart();
-
-  const handleQuantityChange = useCallback(
-    async (newQuantity: number) => {
-      if (!item?.product || newQuantity > item.product.stock || newQuantity <= 0) return;
-      await updateQuantity(item.id, newQuantity);
-    },
-    [item, updateQuantity]
-  );
+  const { removeItem } = useCart();
 
   const handleRemove = useCallback(async () => {
     if (!item) return;
@@ -29,7 +21,7 @@ const CartItem = ({ item }: CartItemProps) => {
   if (!item.product) return null;
 
   const { quantity, product } = item;
-  const { name, price, image_url, stock } = product;
+  const { name, price, image_url } = product;
 
   return (
     <CartStyle.ItemContainer>
@@ -49,15 +41,7 @@ const CartItem = ({ item }: CartItemProps) => {
 
         <CartStyle.QuantityContainer>
           <CartStyle.QuantityControls>
-            <CartStyle.QuantityButton onClick={() => handleQuantityChange(quantity - 1)} disabled={quantity <= 1}>
-              <FiMinus />
-            </CartStyle.QuantityButton>
-
             <CartStyle.QuantityValue>{quantity}</CartStyle.QuantityValue>
-
-            <CartStyle.QuantityButton onClick={() => handleQuantityChange(quantity + 1)} disabled={quantity >= stock}>
-              <FiPlus />
-            </CartStyle.QuantityButton>
           </CartStyle.QuantityControls>
 
           <CartStyle.RemoveButton onClick={handleRemove}>
