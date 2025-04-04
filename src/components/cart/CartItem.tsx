@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import { useCallback } from 'react';
-import { FiMinus, FiPlus, FiTrash2 } from 'react-icons/fi';
+import { FiTrash2 } from 'react-icons/fi';
 
 import { useCart } from '@/hooks/useCart';
 import { CartItem as CartItemType } from '@/interfaces/cart.interface';
