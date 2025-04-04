@@ -62,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, inFavorites = false 
 
         <ProductDetails>
           <Price>${product.price.toFixed(2)}</Price>
-          <StockBadge stock={product.stock}>
+          <StockBadge $stock={product.stock}>
             {product.stock > 10 ? 'En stock' : product.stock > 0 ? 'Stock bajo' : 'Agotado'}
           </StockBadge>
         </ProductDetails>
@@ -150,12 +150,12 @@ const Price = styled.span`
   font-size: 16px;
 `;
 
-const StockBadge = styled.div<{ stock: number }>`
+const StockBadge = styled.div<{ $stock: number }>`
   font-size: 11px;
   border-radius: 20px;
   padding: 3px 8px;
-  background-color: ${({ stock }) => (stock > 10 ? '#e8f5e9' : stock > 0 ? '#fff8e1' : '#ffebee')};
-  color: ${({ stock }) => (stock > 10 ? '#388e3c' : stock > 0 ? '#ff8f00' : '#d32f2f')};
+  background-color: ${({ $stock }) => ($stock > 10 ? '#e8f5e9' : $stock > 0 ? '#fff8e1' : '#ffebee')};
+  color: ${({ $stock }) => ($stock > 10 ? '#388e3c' : $stock > 0 ? '#ff8f00' : '#d32f2f')};
 `;
 
 const ButtonContainer = styled.div`

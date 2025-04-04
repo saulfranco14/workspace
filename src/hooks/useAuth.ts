@@ -26,7 +26,7 @@ export const useAuth = () => {
 
   useEffect(() => {
     if (!user && !loading) {
-      console.log('No hay usuario logeado');
+      console.log('No hay usuario logeado en useAuth');
     }
   }, [user, loading, router]);
 

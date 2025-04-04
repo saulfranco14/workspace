@@ -17,6 +17,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
 
   useEffect(() => {
     if (session) {
+      console.log('Tiene una sessión activa en CartProvider');
       const userId = session.user.id;
       if (userId) dispatch(fetchCart(userId));
     } else {
