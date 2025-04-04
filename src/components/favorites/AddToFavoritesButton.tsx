@@ -13,6 +13,7 @@ import {
 } from '@/selectors/favoriteSelectors';
 import { setActiveCollection } from '@/store/favorites/slices/favoritesSlice';
 import { AddFavoriteStyle } from '@/styles/components/FavoriteAddStyle';
+import { selectAuthUserEmail } from '@/selectors/authSelectors';
 
 type AddToFavoritesButtonProps = {
   productId: string;
@@ -30,6 +31,8 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
 
   const isInFavorites = useSelector((state) => selectIsProductInActiveCollection(state, productId));
   const favoriteItem = useSelector((state) => selectFavoriteItemByProductId(state, productId));
+  const userEmail = useSelector(selectAuthUserEmail);
+  const collectionName = `Mis Favoritos: ${userEmail ? userEmail : productId}`;
 
   const [showCollectionSelector, setShowCollectionSelector] = useState(false);
   const [newCollectionName, setNewCollectionName] = useState('');
@@ -38,7 +41,7 @@ const AddToFavoritesButton: React.FC<AddToFavoritesButtonProps> = ({ productId, 
   const handleToggleFavorite = () => {
     if (!activeCollection) {
       if (collections.length === 0) {
-        dispatch(createFavoriteCollection('Mis Favoritos'))
+        dispatch(createFavoriteCollection(collectionName))
           .unwrap()
           .then((collection) => {
             dispatch(setActiveCollection(collection));
