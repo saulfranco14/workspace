@@ -52,13 +52,21 @@ export const createCart = async (userId?: string, fingerprint?: string): Promise
       device_fingerprint: fingerprint,
     };
 
-    const { data, error } = await supabase.from('carts').insert(newCart);
+    const { error } = await supabase.from('carts').insert(newCart);
 
     if (error) {
       console.error('Error al crear carrito:', error);
       throw error;
     }
-    return data;
+
+    const foundCart = await findCart(userId, fingerprint);
+
+    if (!foundCart) {
+      console.error('No se pudo encontrar el carrito recién creado');
+      throw new Error('No se pudo encontrar el carrito recién creado');
+    }
+
+    return foundCart;
   } catch (error) {
     console.error('Error en createCart:', error);
     return null;
