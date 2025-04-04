@@ -12,12 +12,17 @@ export const getUserFavoriteCollections = async (): Promise<FavoriteCollection[]
       return [];
     }
 
-    const query = supabase.from('favorite_collections').select('*, items:favorite_items(*, product:products(*))');
+    let query = supabase.from('favorite_collections').select('*, items:favorite_items(*, product:products(*))');
 
-    if (user.user) {
-      query.eq('user_id', user.user.id);
+    if (user.user && fingerprint) {
+      const orConditions = [];
+      if (user.user?.id) orConditions.push(`user_id.eq.${user.user?.id}`);
+      if (fingerprint) orConditions.push(`device_fingerprint.eq.${fingerprint}`);
+      query = query.or(orConditions.join(','));
+    } else if (user.user?.id) {
+      query = query.eq('user_id', user.user?.id);
     } else if (fingerprint) {
-      query.eq('device_fingerprint', fingerprint);
+      query = query.eq('device_fingerprint', fingerprint);
     }
 
     const { data, error } = await query;
