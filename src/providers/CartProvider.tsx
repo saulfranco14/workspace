@@ -19,6 +19,8 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     if (session) {
       const userId = session.user.id;
       if (userId) dispatch(fetchCart(userId));
+    } else {
+      dispatch(fetchCart(undefined));
     }
   }, [dispatch, session]);
 

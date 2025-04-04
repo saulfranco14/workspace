@@ -49,15 +49,7 @@ const CartItem = ({ item }: CartItemProps) => {
 
         <CartStyle.QuantityContainer>
           <CartStyle.QuantityControls>
-            <CartStyle.QuantityButton onClick={() => handleQuantityChange(quantity - 1)} disabled={quantity <= 1}>
-              <FiMinus />
-            </CartStyle.QuantityButton>
-
             <CartStyle.QuantityValue>{quantity}</CartStyle.QuantityValue>
-
-            <CartStyle.QuantityButton onClick={() => handleQuantityChange(quantity + 1)} disabled={quantity >= stock}>
-              <FiPlus />
-            </CartStyle.QuantityButton>
           </CartStyle.QuantityControls>
 
           <CartStyle.RemoveButton onClick={handleRemove}>

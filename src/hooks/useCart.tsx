@@ -24,7 +24,7 @@ export const useCart = () => {
       const resultAction = await dispatch(addToCart({ productId, quantity }));
 
       if (!cart?.id) {
-        throw new Error('No hay un carrito activo');
+        throw new Error('No hay un carrito activo aaa');
       }
 
       if (resultAction.error) {

@@ -331,7 +331,7 @@ export const CartStyle = {
   `,
 
   QuantityValue: styled.span`
-    width: 30px;
+    width: 35px;
     text-align: center;
     font-size: 14px;
   `,
