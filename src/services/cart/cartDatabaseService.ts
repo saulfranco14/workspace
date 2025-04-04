@@ -10,27 +10,32 @@ import { Cart } from '@/interfaces/cart.interface';
 export const findCart = async (userId?: string, fingerprint?: string): Promise<Cart | null> => {
   try {
     if (!userId && !fingerprint) {
-      throw new Error('Se requiere userId o fingerprint para buscar un carrito');
+      throw new Error('userId or fingerprint is required to find a cart');
     }
 
-    const query = supabase.from('carts').select('*').limit(1).order('created_at', { ascending: false });
+    let query = supabase.from('carts').select('*').limit(1).order('created_at', { ascending: false });
 
-    if (userId) {
-      query.eq('user_id', userId);
+    if (userId && fingerprint) {
+      const orConditions = [];
+      if (userId) orConditions.push(`user_id.eq.${userId}`);
+      if (fingerprint) orConditions.push(`device_fingerprint.eq.${fingerprint}`);
+      query = query.or(orConditions.join(','));
+    } else if (userId) {
+      query = query.eq('user_id', userId);
     } else if (fingerprint) {
-      query.eq('device_fingerprint', fingerprint);
+      query = query.eq('device_fingerprint', fingerprint);
     }
 
     const { data, error } = await query;
 
     if (error) {
-      console.error('Error al buscar carrito:', error);
+      console.error('Error finding cart:', error);
       throw error;
     }
 
     return data && data.length > 0 ? { ...data[0] } : null;
   } catch (error) {
-    console.error('Error en findCart:', error);
+    console.error('Error in findCart:', error);
     return null;
   }
 };
@@ -52,13 +57,21 @@ export const createCart = async (userId?: string, fingerprint?: string): Promise
       device_fingerprint: fingerprint,
     };
 
-    const { data, error } = await supabase.from('carts').insert(newCart);
+    const { error } = await supabase.from('carts').insert(newCart);
 
     if (error) {
       console.error('Error al crear carrito:', error);
       throw error;
     }
-    return data;
+
+    const foundCart = await findCart(userId, fingerprint);
+
+    if (!foundCart) {
+      console.error('No se pudo encontrar el carrito recién creado');
+      throw new Error('No se pudo encontrar el carrito recién creado');
+    }
+
+    return foundCart;
   } catch (error) {
     console.error('Error en createCart:', error);
     return null;
