@@ -13,7 +13,7 @@ import {
 } from '@/selectors/favoriteSelectors';
 import { setActiveCollection } from '@/store/favorites/slices/favoritesSlice';
 import { AddFavoriteStyle } from '@/styles/components/FavoriteAddStyle';
-import { selectAuthUser, selectAuthUserEmail } from '@/selectors/authSelectors';
+import { selectAuthUserEmail } from '@/selectors/authSelectors';
 
 type AddToFavoritesButtonProps = {
   productId: string;
