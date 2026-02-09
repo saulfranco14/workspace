@@ -1,6 +1,6 @@
 # Workspace de Desarrollo Frontend
 
-Este proyecto está basado en [Next.js](https://nextjs.org) e inicializado con [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Este proyecto está basado en [Next.js](https://nextjs.org) 
 
 ## Objetivo General
 
